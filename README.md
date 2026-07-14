@@ -43,6 +43,12 @@ As the project develops, this repository will include:
 - Scripts and technical exercises
 - Final portfolio writeups
 
+## Completed Labs
+
+### [Lab 01: Documentation Setup](lab-01-documentation-setup/README.md)
+
+Established the folder structure, screenshot naming system, documentation templates, and portfolio workflow used throughout Project Athenaeum.
+
 ## Current Status
 
 Project Athenaeum is actively being developed. New labs and portfolio projects will be added as they are completed and reviewed.
