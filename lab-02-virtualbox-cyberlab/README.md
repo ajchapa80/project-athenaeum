@@ -94,19 +94,56 @@ During this lab, I:
 - Established safety rules for authorized lab activity
 - Documented the environment for repeatable future exercises
 
-## Validation
+## Validation Results
 
-Connectivity can be validated using commands such as:
+The completed configuration was validated through VirtualBox settings review, IP address verification, and bidirectional ping testing.
 
-```bash
-ip addr
-```
+- Kali Linux `eth0`: `192.168.56.101/24`
+- Metasploitable 2 `eth0`: `192.168.56.102/24`
+- Both systems use the VirtualBox Internal Network named `CyberLab`
+- Adapters 2 through 4 are disabled on both virtual machines
+- Neither virtual machine uses NAT or bridged networking
+- Ping testing succeeded in both directions
+- Connectivity testing completed with 0% packet loss
+- Static IP configurations remained active after reboot
 
-```bash
-ping 192.168.56.102
-```
+## Screenshots and Evidence
 
-The results confirm the IP configuration and communication between the authorized lab systems.
+### Kali Linux Network Configuration
+
+Kali Linux uses Adapter 1 on the isolated VirtualBox Internal Network named `CyberLab`.
+
+![Kali Linux VirtualBox network settings](screenshots/2026-07-14_Lab02_VirtualBox_01_Kali-Network-Settings.png)
+
+### Metasploitable 2 Network Configuration
+
+Metasploitable 2 uses Adapter 1 on the same isolated `CyberLab` internal network.
+
+![Metasploitable 2 VirtualBox network settings](screenshots/2026-07-14_Lab02_VirtualBox_02_Metasploitable-Network-Settings.png)
+
+### Kali Linux Static IP Address
+
+Kali Linux was configured with the persistent static IPv4 address `192.168.56.101/24`.
+
+![Kali Linux static IP configuration](screenshots/2026-07-14_Lab02_VirtualBox_03_Kali-Static-IP.png)
+
+### Metasploitable 2 Static IP Address
+
+Metasploitable 2 was configured with the persistent static IPv4 address `192.168.56.102/24`.
+
+![Metasploitable 2 static IP configuration](screenshots/2026-07-14_Lab02_VirtualBox_04_Metasploitable-Static-IP.png)
+
+### Kali-to-Metasploitable Connectivity Test
+
+Kali successfully communicated with Metasploitable 2 with 0% packet loss.
+
+![Kali pinging Metasploitable 2](screenshots/2026-07-14_Lab02_VirtualBox_05_Kali-Ping-Metasploitable.png)
+
+### Metasploitable-to-Kali Connectivity Test
+
+Metasploitable 2 successfully communicated with Kali with 0% packet loss.
+
+![Metasploitable 2 pinging Kali Linux](screenshots/2026-07-14_Lab02_VirtualBox_06_Metasploitable-Ping-Kali.png)
 
 ## Security and Safety Boundaries
 
@@ -144,4 +181,4 @@ Future exercises using this environment may include:
 
 ## Status
 
-**Network configuration completed and portfolio evidence collection in progress**
+**Completed and portfolio ready**
