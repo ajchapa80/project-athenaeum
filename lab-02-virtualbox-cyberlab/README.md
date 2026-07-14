@@ -38,7 +38,7 @@ Build and document a safe virtual cybersecurity lab that supports repeatable han
 
 Kali Linux serves as the security testing and analyst workstation. It provides tools for network discovery, traffic analysis, vulnerability assessment, web security testing, and security investigation exercises.
 
-Planned internal lab address:
+Static internal lab address:
 
 ```text
 192.168.56.101
@@ -48,7 +48,7 @@ Planned internal lab address:
 
 Metasploitable 2 is an intentionally vulnerable Linux virtual machine used only as an authorized target inside the isolated lab environment.
 
-Planned internal lab address:
+Static internal lab address:
 
 ```text
 192.168.56.102
@@ -144,4 +144,4 @@ Future exercises using this environment may include:
 
 ## Status
 
-**Environment created and documentation in progress**
+**Network configuration completed and portfolio evidence collection in progress**
