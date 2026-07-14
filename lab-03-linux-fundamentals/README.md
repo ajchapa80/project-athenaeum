@@ -144,20 +144,67 @@ During this lab, I:
 - Investigated a package-update failure caused by intentional network isolation
 - Collected ten screenshots documenting the completed exercises
 
-## Evidence Collected
+## Screenshots and Evidence
 
-The screenshot log contains ten pieces of evidence covering:
+### 1. Current Directory and File Listings
 
-1. Current directory and file listings
-2. Folder creation and navigation
-3. File creation and viewing
-4. Copying and moving files
-5. Searching with `grep` and `find`
-6. File permission changes with `chmod`
-7. Process monitoring with `ps`
-8. Starting and terminating a background process
-9. Removing a file with `rm`
-10. Package-update troubleshooting on the isolated network
+The `pwd`, `ls`, and `ls -la` commands were used to confirm the current directory and display standard, hidden, and detailed file information.
+
+![Linux pwd and directory listing commands](screenshots/2026-07-14_Lab03_Linux_01_pwd-and-ls.png)
+
+### 2. Directory Creation and Navigation
+
+A new directory was created with `mkdir`, and the `cd` command was used to enter the directory and confirm the working location.
+
+![Linux directory creation and navigation](screenshots/2026-07-14_Lab03_Linux_02_create-and-enter-folder.png)
+
+### 3. File Creation and Viewing
+
+A text file was created, content was added, and the file contents were displayed through the command line.
+
+![Linux file creation and viewing](screenshots/2026-07-14_Lab03_Linux_03_create-and-view-file.png)
+
+### 4. Copying and Moving Files
+
+The `cp` and `mv` commands were used to copy, move, and rename files within the Linux filesystem.
+
+![Linux copy and move file commands](screenshots/2026-07-14_Lab03_Linux_04_copy-and-move-file.png)
+
+### 5. Searching With Grep and Find
+
+The `grep` command was used to search for text inside a file, while `find` was used to locate files within the filesystem.
+
+![Linux grep and find commands](screenshots/2026-07-14_Lab03_Linux_05_grep-and-find.png)
+
+### 6. File Permission Management
+
+The `chmod` command was used to modify file permissions, and `ls -l` was used to verify the resulting permission settings.
+
+![Linux chmod permission changes](screenshots/2026-07-14_Lab03_Linux_06_chmod-permissions.png)
+
+### 7. Process Monitoring
+
+The `ps` and `grep` commands were used together to display and filter information about running processes.
+
+![Linux process monitoring with ps and grep](screenshots/2026-07-14_Lab03_Linux_07_processes-ps-grep.png)
+
+### 8. Background Process Control
+
+A background process was started, reviewed, and terminated using process and job-control commands.
+
+![Linux background process creation and termination](screenshots/2026-07-14_Lab03_Linux_08_start-and-kill-process.png)
+
+### 9. File Removal
+
+The `rm` command was used to remove a test file, and the directory contents were reviewed to confirm its removal.
+
+![Linux file removal with rm](screenshots/2026-07-14_Lab03_Linux_09_remove-file-rm.png)
+
+### 10. Package Management and Network Isolation
+
+The `sudo apt update` command could not reach external repositories because Kali was connected only to the isolated VirtualBox Internal Network. This result supported the earlier verification that the `CyberLab` environment did not provide internet access.
+
+![Linux apt update network isolation result](screenshots/2026-07-14_Lab03_Linux_10_sudo-apt-update-network-error.png)
 
 ## Security Relevance
 
@@ -173,4 +220,4 @@ The failed package update was not treated as a lab failure. It provided evidence
 
 ## Status
 
-**Completed and evidence upload in progress**
+**Completed and portfolio ready**
