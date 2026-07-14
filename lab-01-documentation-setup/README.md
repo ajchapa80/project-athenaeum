@@ -38,6 +38,32 @@ During this lab, I:
 - Saved and organized four setup screenshots
 - Completed a final portfolio writeup for the lab
 
+## Screenshots and Evidence
+
+### Main Project Athenaeum Folder Structure
+
+The main folder structure organizes lab documentation, screenshots, templates, portfolio materials, career documents, and project tracking resources.
+
+![Project Athenaeum main folder structure](screenshots/01-main-folder-structure.png)
+
+### Planned Lab Documentation Structure
+
+The lab documentation folders provide a structured path for developing and documenting cybersecurity, networking, operating system, and SOC analysis skills.
+
+![Project Athenaeum lab documentation folders](screenshots/02-lab-documentation-folders.png)
+
+### Documentation Template Structure
+
+Reusable templates support consistent lab notes, screenshot tracking, project management, job searching, and career documentation.
+
+![Project Athenaeum templates folder structure](screenshots/03-templates-folder-structure.png)
+
+### AI Career Development Structure
+
+The AI career development folders organize learning activities involving cybersecurity, IT support, prompt development, verification, and portfolio planning.
+
+![Project Athenaeum AI career development folders](screenshots/04-ai-career-development-folders.png)
+
 ## Documentation Created
 
 The following working documents were created and retained locally:
