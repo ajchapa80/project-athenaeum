@@ -49,6 +49,10 @@ As the project develops, this repository will include:
 
 Established the folder structure, screenshot naming system, documentation templates, and portfolio workflow used throughout Project Athenaeum.
 
+### [Lab 02: VirtualBox CyberLab](lab-02-virtualbox-cyberlab/README.md)
+
+Built and validated an isolated VirtualBox cybersecurity lab using Kali Linux and Metasploitable 2. Both virtual machines use persistent static IP addresses on the private `CyberLab` internal network, with successful bidirectional connectivity testing and 0% packet loss.
+
 ## Current Status
 
 Project Athenaeum is actively being developed. New labs and portfolio projects will be added as they are completed and reviewed.
