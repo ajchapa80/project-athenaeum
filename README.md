@@ -53,6 +53,10 @@ Established the folder structure, screenshot naming system, documentation templa
 
 Built and validated an isolated VirtualBox cybersecurity lab using Kali Linux and Metasploitable 2. Both virtual machines use persistent static IP addresses on the private `CyberLab` internal network, with successful bidirectional connectivity testing and 0% packet loss.
 
+### [Lab 03: Linux Fundamentals](lab-03-linux-fundamentals/README.md)
+
+Practiced and documented essential Linux command-line skills, including navigation, file management, searching, permissions, process monitoring, background process control, file removal, and troubleshooting package updates on an isolated network.
+
 ## Current Status
 
 Project Athenaeum is actively being developed. New labs and portfolio projects will be added as they are completed and reviewed.
