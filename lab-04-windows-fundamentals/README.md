@@ -175,23 +175,113 @@ Maintaining current operating system and security updates is an important part o
 
 ## Screenshots and Evidence
 
-Eighteen sanitized screenshots were collected during this lab. The evidence documents:
+### Windows Version
 
-- Windows version information
-- Detailed system information
-- Task Manager processes and performance
-- Windows Event Viewer
-- Windows Security
-- Virus and threat protection
-- Firewall and network protection
-- PowerShell
-- Network configuration
-- Device security
-- Device performance and health
-- Windows Update status
-- Windows Update history
+The `winver` utility confirmed the installed Windows edition and version.
 
-Screenshots containing the system name or local network details were redacted before publication.
+![Windows version information](screenshots/2026-07-16_Lab04_Windows_01_windows-version-winver.png)
+
+### System Information
+
+System Information was reviewed to examine the operating system, processor, memory, system type, and hardware environment. Sensitive system-identifying information was redacted.
+
+![Redacted Windows system information](screenshots/2026-07-16_Lab04_Windows_02_system-information-redacted.png)
+
+### Task Manager Performance
+
+Task Manager was used to review CPU, memory, disk, network, and system-performance information.
+
+![Task Manager performance review](screenshots/2026-07-16_Lab04_Windows_03_task-manager-performance.png)
+
+### Task Manager Processes
+
+Running applications and background processes were reviewed for resource usage and system activity.
+
+![Task Manager process review](screenshots/2026-07-16_Lab04_Windows_04_task-manager-processes.png)
+
+### Task Manager Services
+
+Windows services were reviewed through Task Manager to examine their current status and associated process information.
+
+![Task Manager services review](screenshots/2026-07-16_Lab04_Windows_05_task-manager-services.png)
+
+### Event Viewer Application Log
+
+The Windows Application log was reviewed for informational events, warnings, errors, and application activity.
+
+![Event Viewer Application log](screenshots/2026-07-16_Lab04_Windows_06_event-viewer-application-log.png)
+
+### Event Viewer System Log
+
+The Windows System log was reviewed for operating-system, driver, hardware, and service-related events.
+
+![Event Viewer System log](screenshots/2026-07-16_Lab04_Windows_07_event-viewer-system-log.png)
+
+### Windows Security Overview
+
+The Windows Security dashboard was reviewed to examine the status of built-in endpoint protection and security features.
+
+![Windows Security overview](screenshots/2026-07-16_Lab04_Windows_08_windows-security-overview.png)
+
+### PowerShell Basic Commands
+
+PowerShell was used to practice command-line navigation and basic Windows administration commands.
+
+![PowerShell basic commands](screenshots/2026-07-16_Lab04_Windows_09_powershell-basic-commands.png)
+
+### PowerShell Process Review
+
+PowerShell commands were used to review active processes and system activity.
+
+![PowerShell process review](screenshots/2026-07-16_Lab04_Windows_10_powershell-process-review.png)
+
+### PowerShell Services Review
+
+PowerShell was used to review Windows services and their current operating status.
+
+![PowerShell services review](screenshots/2026-07-16_Lab04_Windows_11_powershell-services-review.png)
+
+### Network Configuration
+
+Windows network configuration was reviewed using `ipconfig`. Local IP addresses, gateway information, and other sensitive network details were redacted before publication.
+
+![Redacted Windows network configuration](screenshots/2026-07-16_Lab04_Windows_12_ipconfig-network-info-redacted.png)
+
+### Firewall and Network Protection
+
+Microsoft Defender Firewall settings were reviewed to examine the available Domain, Private, and Public network profiles.
+
+![Firewall and network protection](screenshots/2026-07-16_Lab04_Windows_13_firewall-network-protection.png)
+
+### Protection History
+
+Windows Security protection history was reviewed to examine previously detected or remediated security events.
+
+![Windows Security protection history](screenshots/2026-07-16_Lab04_Windows_14_protection-history.png)
+
+### Device Security
+
+Windows device-security features were reviewed to identify available hardware-backed and operating-system protections.
+
+![Windows device security](screenshots/2026-07-16_Lab04_Windows_15_device-security.png)
+
+### Device Performance and Health
+
+Device performance and health information was reviewed to examine storage, application, system, and update health.
+
+![Windows device performance and health](screenshots/2026-07-16_Lab04_Windows_16_device-performance-health.png)
+
+### Windows Update Status
+
+Windows Update was reviewed to confirm the current operating-system update status.
+
+![Windows Update status](screenshots/2026-07-16_Lab04_Windows_17_windows-update-status.png)
+
+### Windows Update History
+
+The Windows Update history was reviewed to identify previously installed quality, driver, definition, feature, and other Microsoft updates.
+
+![Windows Update history](screenshots/2026-07-16_Lab04_Windows_18_windows-update-history.png)
 
 ## Security and Privacy
 
@@ -223,4 +313,4 @@ The lab also reinforced the importance of reviewing screenshots for sensitive sy
 
 ## Status
 
-**Completed and evidence upload in progress**
+**Completed and portfolio ready**
