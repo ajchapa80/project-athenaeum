@@ -57,6 +57,10 @@ Built and validated an isolated VirtualBox cybersecurity lab using Kali Linux an
 
 Practiced and documented essential Linux command-line skills, including navigation, file management, searching, permissions, process monitoring, background process control, file removal, and troubleshooting package updates on an isolated network.
 
+### [Lab 04: Windows Fundamentals](lab-04-windows-fundamentals/README.md)
+
+Reviewed core Windows 11 administration and security tools, including System Information, Task Manager, Event Viewer, Windows Security, PowerShell, network configuration, firewall settings, device health, and Windows Update. The lab includes 18 sanitized evidence screenshots.
+
 ## Current Status
 
 Project Athenaeum is actively being developed. New labs and portfolio projects will be added as they are completed and reviewed.
