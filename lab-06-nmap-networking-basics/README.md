@@ -193,25 +193,85 @@ Basic scans provide a quick overview, while service detection and aggressive sca
 
 The lab also reinforced that scanning must remain within an authorized scope. Even basic scanning can reveal detailed information about a system and should not be performed against networks or devices without permission.
 
-## Evidence Collected
+## Screenshots and Evidence
 
-The Lab 06 evidence includes:
+### Kali Linux Network Address
 
-1. Kali Linux network address
-2. Successful ping to Metasploitable 2
-3. Nmap version
-4. Basic Nmap scan
-5. Service and version scan
-6. Web-port scan
-7. Database-port scan
-8. Remote-access-port scan
-9. Operating-system detection scan
-10. Aggressive scan results, upper section
-11. Aggressive scan results, lower section
-12. Saved Nmap-results file
-13. Viewed saved-results file
+Kali Linux was configured as the authorized Nmap scanning workstation on the isolated `CyberLab` network.
 
-The screenshots will be displayed in this README after the sanitized files are uploaded.
+![Kali Linux network address](screenshots/2026-07-17_Lab06_Nmap_01_kali-network-address.png)
+
+### Connectivity to Metasploitable 2
+
+Successful ping testing confirmed communication with the authorized Metasploitable 2 target.
+
+![Successful ping to Metasploitable 2](screenshots/2026-07-17_Lab06_Nmap_02_ping-metasploitable2.png)
+
+### Nmap Version
+
+The installed Nmap version was verified before beginning the scanning exercises.
+
+![Nmap version information](screenshots/2026-07-17_Lab06_Nmap_03_nmap-version.png)
+
+### Basic Nmap Scan
+
+A basic scan identified open TCP ports on Metasploitable 2 and established an initial view of its exposed services.
+
+![Basic Nmap scan of Metasploitable 2](screenshots/2026-07-17_Lab06_Nmap_04_basic-scan-metasploitable2.png)
+
+### Service and Version Detection
+
+The `-sV` option gathered additional information about the software and versions associated with open ports.
+
+![Nmap service and version scan](screenshots/2026-07-17_Lab06_Nmap_05_service-version-scan.png)
+
+### Web-Port Scan
+
+A targeted scan examined common web-service ports on the authorized target.
+
+![Nmap web-port scan](screenshots/2026-07-17_Lab06_Nmap_06_web-port-scan.png)
+
+### Database-Port Scan
+
+A targeted scan examined ports commonly associated with database services.
+
+![Nmap database-port scan](screenshots/2026-07-17_Lab06_Nmap_07_database-port-scan.png)
+
+### Remote-Access Port Scan
+
+Remote-access and administrative service ports were examined to identify exposed services.
+
+![Nmap remote-access port scan](screenshots/2026-07-17_Lab06_Nmap_08_remote-access-port-scan.png)
+
+### Operating-System Detection
+
+Nmap operating-system detection was used to estimate the target system’s operating-system family and characteristics.
+
+![Nmap operating-system detection scan](screenshots/2026-07-17_Lab06_Nmap_09_os-detection-scan.png)
+
+### Aggressive Scan — Upper Section
+
+The upper section of the aggressive scan displayed detailed port, service, and script-scanning results.
+
+![Nmap aggressive scan upper section](screenshots/2026-07-17_Lab06_Nmap_10a_aggressive-scan-top.png)
+
+### Aggressive Scan — Lower Section
+
+The lower section documented additional script results, operating-system findings, network distance, and scan-completion information.
+
+![Nmap aggressive scan lower section](screenshots/2026-07-17_Lab06_Nmap_10b_aggressive-scan-bottom.png)
+
+### Saving Scan Results
+
+Nmap output was saved to a text file to support documentation and later review.
+
+![Saving Nmap scan results](screenshots/2026-07-17_Lab06_Nmap_11_save-scan-results-file.png)
+
+### Reviewing Saved Results
+
+The saved Nmap-results file was opened in the Linux terminal to confirm that the scan information had been retained successfully.
+
+![Viewing saved Nmap scan results](screenshots/2026-07-17_Lab06_Nmap_12_view-saved-results-file.png)
 
 ## Documentation Created
 
@@ -224,4 +284,4 @@ The following documentation was retained locally:
 
 ## Status
 
-**Completed and evidence upload in progress**
+**Completed and portfolio ready**
