@@ -240,4 +240,4 @@ The following Lab 05 documentation was completed and retained locally:
 
 ## Status
 
-**Completed and evidence upload in progress**
+**Completed and Portfolio Ready**
