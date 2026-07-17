@@ -65,6 +65,10 @@ Reviewed core Windows 11 administration and security tools, including System Inf
 
 Performed authorized web application security testing against DVWA inside the isolated CyberLab environment. The lab documents command injection and SQL injection testing, comparisons between Low and High security settings, defensive recommendations, and 12 sanitized evidence screenshots.
 
+### [Lab 06: Nmap Networking Basics](lab-06-nmap-networking-basics/README.md)
+
+Performed authorized Nmap scanning against Metasploitable 2 inside the isolated CyberLab environment. The lab documents basic scanning, service and version detection, targeted web, database, and remote-access port scans, operating-system detection, aggressive scanning, saved scan results, and 13 sanitized evidence screenshots.
+
 ## Current Status
 
 Project Athenaeum is actively being developed. New labs and portfolio projects will be added as they are completed and reviewed.
