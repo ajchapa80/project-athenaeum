@@ -112,24 +112,79 @@ The High setting introduces stronger defensive handling. Testing showed that the
 
 The comparison reinforced that security controls can reduce risk, but secure application development should also include server-side validation, parameterized database queries, least privilege, and careful handling of operating-system commands.
 
-## Evidence Collected
+## Screenshots and Evidence
 
-Twelve screenshots were collected during the lab:
+### Kali Linux Network Address
 
-1. Kali Linux network address
-2. Successful ping to Metasploitable 2
-3. Metasploitable 2 web home page
-4. DVWA login page
-5. DVWA home page
-6. DVWA Security set to Low
-7. Command Injection normal test
-8. Command Injection Low security `whoami` test
-9. Command Injection High security comparison
-10. SQL Injection normal test
-11. SQL Injection Low security test
-12. SQL Injection High security comparison
+Kali Linux was configured as the testing workstation on the isolated `CyberLab` network.
 
-The screenshots will be displayed in this README after the sanitized files are uploaded to the repository.
+![Kali Linux network address](screenshots/2026-07-16_Lab05_DVWA_01_kali-network-address.png)
+
+### Connectivity to Metasploitable 2
+
+Successful ping testing confirmed communication between Kali Linux and the authorized Metasploitable 2 target.
+
+![Successful ping to Metasploitable 2](screenshots/2026-07-16_Lab05_DVWA_02_ping-metasploitable2.png)
+
+### Metasploitable 2 Web Interface
+
+The Metasploitable 2 web interface provided access to the intentionally vulnerable applications hosted inside the lab.
+
+![Metasploitable 2 web home page](screenshots/2026-07-16_Lab05_DVWA_03_metasploitable-web-home.png)
+
+### DVWA Login Page
+
+The DVWA login page was accessed through the isolated lab network.
+
+![DVWA login page](screenshots/2026-07-16_Lab05_DVWA_04_dvwa-login-page.png)
+
+### DVWA Home Page
+
+Successful authentication provided access to the DVWA vulnerability exercises.
+
+![DVWA home page](screenshots/2026-07-16_Lab05_DVWA_05_dvwa-home-page.png)
+
+### DVWA Low Security Setting
+
+DVWA Security was set to Low to establish the intentionally vulnerable testing condition.
+
+![DVWA Security set to Low](screenshots/2026-07-16_Lab05_DVWA_06_security-level-low.png)
+
+### Command Injection Normal Test
+
+A normal ping request established the expected application behavior before manipulated input was tested.
+
+![Command injection normal function test](screenshots/2026-07-16_Lab05_DVWA_07_command-injection-normal-test.png)
+
+### Command Injection at Low Security
+
+The controlled `whoami` test demonstrated operating-system command execution through insufficient input handling.
+
+![Command injection Low security whoami test](screenshots/2026-07-16_Lab05_DVWA_08_command-injection-low-whoami.png)
+
+### Command Injection High Security Comparison
+
+The same testing approach was repeated at the High security level to compare the effect of stronger input filtering.
+
+![Command injection High security comparison](screenshots/2026-07-16_Lab05_DVWA_09_command-injection-high-comparison.png)
+
+### SQL Injection Normal Test
+
+Standard input was used to establish the expected SQL Injection exercise behavior.
+
+![SQL injection normal function test](screenshots/2026-07-16_Lab05_DVWA_10_sql-injection-normal-test.png)
+
+### SQL Injection at Low Security
+
+Controlled SQL injection input demonstrated how insufficient query handling could alter the application’s database response.
+
+![SQL injection Low security test](screenshots/2026-07-16_Lab05_DVWA_11_sql-injection-low-test.png)
+
+### SQL Injection High Security Comparison
+
+The test was repeated at the High security level to compare the effect of additional defensive controls.
+
+![SQL injection High security comparison](screenshots/2026-07-16_Lab05_DVWA_12_sql-injection-high-comparison.png)
 
 ## Security and Safety Boundaries
 
