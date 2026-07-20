@@ -9,14 +9,17 @@ The purpose of Project Athenaeum is to demonstrate practical technical skills th
 ## Focus Areas
 
 - Security operations and alert investigation
-- SIEM and log analysis
-- Endpoint detection and response
+- SIEM, endpoint telemetry, and log analysis
 - Linux and Windows administration
 - Networking and traffic analysis
 - Vulnerability assessment
 - Incident response
-- IT troubleshooting
+- Python security automation
+- AI-assisted alert explanation and decision support
+- Backup, business-continuity, and financial-risk monitoring
+- IT troubleshooting and support
 - Technical documentation
+- Secure tool and dashboard development
 
 ## Lab Environment
 
@@ -71,7 +74,63 @@ Performed authorized Nmap scanning against Metasploitable 2 inside the isolated 
 
 ## Current Status
 
-Project Athenaeum is actively being developed. New labs and portfolio projects will be added as they are completed and reviewed.
+Project Athenaeum is current through Lab 06. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
+
+- Lab 01: Documentation Setup
+- Lab 02: VirtualBox CyberLab
+- Lab 03: Linux Fundamentals
+- Lab 04: Windows Fundamentals
+- Lab 05: DVWA Web Security
+- Lab 06: Nmap Networking Basics
+
+The next active project is Lab 07: Athenaeum Business Guardian MVP.
+
+## Next Lab
+
+### Lab 07: Athenaeum Business Guardian MVP
+
+Lab 07 will create a safe, simulated small-business security-monitoring environment. The lab will focus on protecting a fictional accounting workstation and identifying technical, operational, backup, and financial-risk events.
+
+The environment will use an isolated VirtualBox Internal Network named:
+
+```text
+BusinessGuardianLab
+```
+
+No Bridged Adapter will be used.
+
+Planned components include:
+
+- A Wazuh security-monitoring server
+- A Windows accounting workstation with a Wazuh agent
+- Synthetic QuickBooks-style activity
+- Continuous endpoint and log monitoring
+- Python-based detection and event correlation
+- AI-assisted alert explanations
+- Backup and recovery monitoring
+- Financial-risk indicators
+- Human approval controls for sensitive actions
+- A simple security dashboard
+- Incident reports and response documentation
+- Sanitized screenshots and GitHub portfolio evidence
+
+The first milestone will be establishing the Wazuh server, connecting the Windows accounting workstation, and confirming that the workstation is visible and actively reporting in the Wazuh dashboard.
+
+## Future Roadmap
+
+Later Project Athenaeum work may include:
+
+- Wireshark traffic-analysis fundamentals
+- SOC alert triage and investigation
+- PowerShell administration and automation
+- AI-assisted cybersecurity and IT support tools
+- A Windows Network Troubleshooting Toolkit built manually as a batch file
+- Administrator elevation, menu controls, and safety confirmations for the troubleshooting toolkit
+- A simulated incident-response and business-continuity environment
+- A lean Pueblo-based IT services business test
+- Website, booking, remote-support, and mobile IT-service development
+
+Lab numbers for later projects will be assigned as the roadmap develops. This prevents completed work from having to be renumbered when priorities change.
 
 ## Professional Goal
 
