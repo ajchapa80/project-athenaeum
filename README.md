@@ -134,4 +134,8 @@ Lab numbers for later projects will be assigned as the roadmap develops. This pr
 
 ## Professional Goal
 
-My goal is to build the practical experience and technical foundation needed to begin a career in cybersecurity, security operations, or information technology support.
+My immediate goal is to begin in an entry-level IT support, service desk, technical support, or cybersecurity support role where I can apply my customer service, troubleshooting, documentation, and security knowledge while gaining practical experience.
+
+As I continue developing my technical skills, I plan to advance into security operations, incident investigation, and cybersecurity analysis.
+
+My long-term goal is to build a practical IT services business and eventually expand into responsible cybersecurity services as my experience, certifications, and capabilities grow.
