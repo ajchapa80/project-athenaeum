@@ -72,9 +72,13 @@ Performed authorized web application security testing against DVWA inside the is
 
 Performed authorized Nmap scanning against Metasploitable 2 inside the isolated CyberLab environment. The lab documents basic scanning, service and version detection, targeted web, database, and remote-access port scans, operating-system detection, aggressive scanning, saved scan results, and 13 sanitized evidence screenshots.
 
+### [Lab 07: BusinessGuardianLab Network Setup](lab-07-businessguardianlab-network-setup/README.md)
+
+Created and validated an isolated Windows 11 small-business lab environment using the VirtualBox Internal Network `BusinessGuardianLab`. The workstation was installed, isolated from the internet, assigned the persistent static address `192.168.70.10/24`, preserved with a clean snapshot, and documented with 18 sanitized evidence screenshots.
+
 ## Current Status
 
-Project Athenaeum is current through Lab 06. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
+Project Athenaeum is current through Lab 07. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
 
 - Lab 01: Documentation Setup
 - Lab 02: VirtualBox CyberLab
@@ -82,39 +86,40 @@ Project Athenaeum is current through Lab 06. The following labs are completed, d
 - Lab 04: Windows Fundamentals
 - Lab 05: DVWA Web Security
 - Lab 06: Nmap Networking Basics
+- Lab 07: BusinessGuardianLab Network Setup
 
-The next active project is Lab 07: Athenaeum Business Guardian MVP.
+The isolated Windows 11 foundation for the Athenaeum Business Guardian MVP is complete. The next phase will expand the environment with centralized monitoring, endpoint telemetry, simulated business activity, Python-based detection, and AI-assisted alert explanations.
 
-## Next Lab
+## Next Project Phase
 
-### Lab 07: Athenaeum Business Guardian MVP
+### Athenaeum Business Guardian MVP — Monitoring Foundation
 
-Lab 07 will create a safe, simulated small-business security-monitoring environment. The lab will focus on protecting a fictional accounting workstation and identifying technical, operational, backup, and financial-risk events.
+With the isolated Windows 11 workstation and `BusinessGuardianLab` network foundation complete, the next phase will introduce centralized security monitoring.
 
-The environment will use an isolated VirtualBox Internal Network named:
+Planned work includes:
 
-```text
-BusinessGuardianLab
-```
+- Deploying a Wazuh security-monitoring server
+- Connecting the server to the isolated `BusinessGuardianLab` network
+- Installing the Wazuh agent on `BusinessGuardian-Win11-Workstation`
+- Confirming that the workstation reports successfully to the Wazuh dashboard
+- Reviewing Windows endpoint and security telemetry
+- Generating controlled test events
+- Documenting alerts, findings, and troubleshooting steps
+- Creating sanitized screenshots and portfolio evidence
+- Preserving clean snapshots before major configuration changes
 
-No Bridged Adapter will be used.
+Later Business Guardian phases will add:
 
-Planned components include:
-
-- A Wazuh security-monitoring server
-- A Windows accounting workstation with a Wazuh agent
 - Synthetic QuickBooks-style activity
-- Continuous endpoint and log monitoring
 - Python-based detection and event correlation
 - AI-assisted alert explanations
 - Backup and recovery monitoring
 - Financial-risk indicators
-- Human approval controls for sensitive actions
-- A simple security dashboard
+- Human approval controls
+- A simple monitoring dashboard
 - Incident reports and response documentation
-- Sanitized screenshots and GitHub portfolio evidence
 
-The first milestone will be establishing the Wazuh server, connecting the Windows accounting workstation, and confirming that the workstation is visible and actively reporting in the Wazuh dashboard.
+The next lab number and final title will be assigned when this phase begins.
 
 ## Future Roadmap
 
