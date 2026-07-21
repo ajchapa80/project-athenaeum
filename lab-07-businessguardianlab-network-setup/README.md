@@ -106,6 +106,116 @@ During this lab, I:
 - Completed the Lab 07 screenshot log
 - Began the Lab 07 technical notes
 
+## Screenshots and Evidence
+
+### Documentation Folder Created
+
+The Lab 07 documentation folder was created to organize technical notes, screenshot logs, and the final portfolio writeup.
+
+![Lab 07 documentation folder](screenshots/2026-07-21_Lab07_BusinessGuardianLab_01a_documentation-folder.png)
+
+### Screenshot Folder Created
+
+A dedicated screenshot folder was created to maintain organized and sequential evidence throughout the lab.
+
+![Lab 07 screenshots folder](screenshots/2026-07-21_Lab07_BusinessGuardianLab_01b_screenshots-folder.png)
+
+### Windows 11 Installation Media
+
+The Windows 11 ISO was downloaded for use in the authorized VirtualBox environment.
+
+![Windows 11 ISO downloaded](screenshots/2026-07-21_Lab07_BusinessGuardianLab_02_windows11-iso-downloaded.png)
+
+### Windows 11 Virtual Machine Created
+
+The `BusinessGuardian-Win11-Workstation` virtual machine was created in Oracle VirtualBox.
+
+![Windows 11 virtual machine created](screenshots/2026-07-21_Lab07_BusinessGuardianLab_03_windows11-vm-created.png)
+
+### Initial Network Configuration
+
+The workstation initially used NAT networking so Windows installation and initial setup could be completed.
+
+![Windows 11 network before isolation](screenshots/2026-07-21_Lab07_BusinessGuardianLab_04_windows11-network-before-isolation.png)
+
+### Windows 11 Installation Started
+
+The Windows 11 installation process was started inside the virtual machine.
+
+![Windows 11 installation start](screenshots/2026-07-21_Lab07_BusinessGuardianLab_05_windows11-install-start.png)
+
+### Installation Disk Selected
+
+The virtual disk was selected as the installation destination for Windows 11.
+
+![Windows 11 installation disk selection](screenshots/2026-07-21_Lab07_BusinessGuardianLab_06_windows11-install-disk-selection.png)
+
+### Windows 11 Pro Selected
+
+Windows 11 Pro was selected as the operating-system edition for the simulated business workstation.
+
+![Windows 11 Pro ready to install](screenshots/2026-07-21_Lab07_BusinessGuardianLab_07_windows11-ready-to-install-pro.png)
+
+### Installation Progress
+
+Windows installation progress was monitored until the operating system was ready for initial configuration.
+
+![Windows 11 installation progress](screenshots/2026-07-21_Lab07_BusinessGuardianLab_08_windows11-install-progress.png)
+
+### Device Setup Choice
+
+The workstation was configured for personal setup within the isolated lab rather than being connected to a real organization.
+
+![Windows 11 device setup choice](screenshots/2026-07-21_Lab07_BusinessGuardianLab_09_windows11-device-setup-choice.png)
+
+### Local User Created
+
+The local `BusinessUser` account was created for the simulated business workstation.
+
+![Windows 11 local user created](screenshots/2026-07-21_Lab07_BusinessGuardianLab_10_windows11-local-user-created.png)
+
+### Privacy Settings Reviewed
+
+Windows privacy settings were reviewed during the initial setup process.
+
+![Windows 11 privacy settings](screenshots/2026-07-21_Lab07_BusinessGuardianLab_11_windows11-privacy-settings.png)
+
+### First Desktop Login
+
+The first successful login confirmed that Windows 11 installation and local account setup were complete.
+
+![Windows 11 first desktop login](screenshots/2026-07-21_Lab07_BusinessGuardianLab_12_windows11-desktop-first-login.png)
+
+### Internal Network Isolation
+
+The virtual-machine adapter was changed from NAT to the isolated VirtualBox Internal Network named `BusinessGuardianLab`.
+
+![Windows 11 isolated network configuration](screenshots/2026-07-21_Lab07_BusinessGuardianLab_13_windows11-network-isolated.png)
+
+### Isolated Network Address Review
+
+The initial `ipconfig` results showed that the workstation did not receive an address from DHCP after isolation.
+
+![Windows 11 ipconfig on isolated network](screenshots/2026-07-21_Lab07_BusinessGuardianLab_14_windows11-ipconfig-isolated-network.png)
+
+### Internet Isolation Validated
+
+A ping to `8.8.8.8` failed after the network was isolated. This confirmed that the workstation could not reach the public internet.
+
+![Windows 11 failed internet ping after isolation](screenshots/2026-07-21_Lab07_BusinessGuardianLab_15_windows11-internet-ping-fail-isolated.png)
+
+### Static IPv4 Address Configured
+
+The workstation was assigned the persistent static IPv4 address `192.168.70.10/24`.
+
+![Windows 11 static IP configured](screenshots/2026-07-21_Lab07_BusinessGuardianLab_16_windows11-static-ip-configured.png)
+
+### Clean Snapshot Created
+
+A clean VirtualBox snapshot was created after installation, isolation, and static-address configuration were completed.
+
+![Windows 11 clean snapshot created](screenshots/2026-07-21_Lab07_BusinessGuardianLab_17_windows11-clean-snapshot-created.png)
+
 ## Isolation Validation
 
 After the workstation was moved from NAT to the `BusinessGuardianLab` Internal Network, an internet connectivity test was performed:
@@ -219,4 +329,4 @@ The following documentation is being retained locally:
 
 ## Status
 
-**Network setup completed and GitHub evidence upload in progress**
+**Network setup completed and portfolio ready**
