@@ -160,6 +160,146 @@ During this lab, I:
 - Protected screenshots containing generated credentials
 - Documented installation, networking, troubleshooting, and validation results
 
+## Screenshots and Evidence
+
+### Lab Documentation Setup
+
+The Lab 08 folder structure was created to organize technical notes, screenshots, and portfolio documentation.
+
+![Lab 08 folder setup](screenshots/2026-07-22_Lab08_Wazuh_01_folder-setup.png)
+
+### VirtualBox Environment Before Deployment
+
+The existing VirtualBox environment was reviewed before creating the Wazuh monitoring server.
+
+![VirtualBox before Wazuh server deployment](screenshots/2026-07-22_Lab08_Wazuh_02_virtualbox-before-wazuh-server-clone.png)
+
+### Ubuntu Server Profile Configuration
+
+The Ubuntu Server profile, hostname, user account, and server identity were configured during installation.
+
+![Ubuntu Server profile configuration](screenshots/2026-07-22_Lab08_Wazuh_07_ubuntu-server-profile-configuration.png)
+
+### SSH Configuration During Installation
+
+The Ubuntu Server installer was configured to include OpenSSH support for authorized remote administration.
+
+![Ubuntu Server SSH configuration](screenshots/2026-07-22_Lab08_Wazuh_08_ubuntu-server-ssh-configuration.png)
+
+### Featured Server Packages
+
+Optional featured server packages were reviewed during the Ubuntu Server installation.
+
+![Ubuntu Server featured snaps](screenshots/2026-07-22_Lab08_Wazuh_09_ubuntu-server-featured-snaps.png)
+
+### Ubuntu Server Installation Completed
+
+The Linux server operating-system installation completed successfully.
+
+![Ubuntu Server installation complete](screenshots/2026-07-22_Lab08_Wazuh_10_ubuntu-server-install-complete.png)
+
+### First Login and System Check
+
+The first server login was completed and basic system information was reviewed.
+
+![Ubuntu Server first login and system check](screenshots/2026-07-22_Lab08_Wazuh_11_ubuntu-server-first-login-system-check.png)
+
+### Server Updated After Reboot
+
+The server was updated and verified after the initial reboot.
+
+![Ubuntu Server updated after reboot](screenshots/2026-07-22_Lab08_Wazuh_12_ubuntu-server-updated-after-reboot.png)
+
+### Pre-Wazuh Snapshot
+
+A clean VirtualBox snapshot was created before installing the Wazuh components.
+
+![Pre-Wazuh snapshot created](screenshots/2026-07-22_Lab08_Wazuh_13_pre-wazuh-snapshot-created.png)
+
+### Wazuh Installation
+
+The Wazuh installation process was started on the Ubuntu Server virtual machine.
+
+![Wazuh installation in progress](screenshots/2026-07-22_Lab08_Wazuh_14_wazuh-installation-in-progress.png)
+
+### Wazuh Manager Service
+
+The Wazuh manager service was reviewed to confirm that the central analysis service was running.
+
+![Wazuh manager service status](screenshots/2026-07-22_Lab08_Wazuh_16_wazuh-manager-service-status.png)
+
+### Wazuh Indexer Service
+
+The Wazuh indexer service was reviewed to confirm that security data could be indexed and stored.
+
+![Wazuh indexer service status](screenshots/2026-07-22_Lab08_Wazuh_17_wazuh-indexer-service-status.png)
+
+### Wazuh Dashboard Service
+
+The dashboard service was reviewed to confirm that the web interface was active.
+
+![Wazuh dashboard service status](screenshots/2026-07-22_Lab08_Wazuh_18_wazuh-dashboard-service-status.png)
+
+### NAT Port Forwarding
+
+A VirtualBox NAT port-forwarding rule was created to provide local host access to the Wazuh dashboard.
+
+![Wazuh dashboard NAT port forwarding](screenshots/2026-07-22_Lab08_Wazuh_19_nat-port-forwarding-dashboard.png)
+
+### Wazuh Dashboard Login Page
+
+The Wazuh dashboard login page was successfully reached from the host browser through `https://127.0.0.1:8443`.
+
+![Wazuh dashboard login page](screenshots/2026-07-22_Lab08_Wazuh_20_wazuh-dashboard-login-page.png)
+
+### First Dashboard Login
+
+Successful authentication confirmed that the Wazuh dashboard installation was operational.
+
+![Wazuh dashboard first login](screenshots/2026-07-22_Lab08_Wazuh_21_wazuh-dashboard-first-login.png)
+
+### Internal Network Adapter Added
+
+A second virtual network adapter was connected to the isolated `BusinessGuardianLab` Internal Network.
+
+![Wazuh server second internal network adapter](screenshots/2026-07-22_Lab08_Wazuh_22_wazuh-server-second-adapter-internal-network.png)
+
+### Two Network Interfaces Detected
+
+Linux detected both the NAT interface and the isolated internal-network interface.
+
+![Two Wazuh server network adapters detected](screenshots/2026-07-22_Lab08_Wazuh_23_two-network-adapters-detected.png)
+
+### Static Internal Address Configured
+
+The internal interface was assigned the persistent static IPv4 address `192.168.70.20/24`.
+
+![Wazuh server static lab IP configured](screenshots/2026-07-22_Lab08_Wazuh_24_wazuh-server-static-lab-ip-configured.png)
+
+### SSH Service Enabled — Part 1
+
+The SSH service was enabled to support authorized server administration.
+
+![SSH service enabled](screenshots/2026-07-22_Lab08_Wazuh_26a_ssh-service-enabled.png)
+
+### SSH Service Enabled — Part 2
+
+Additional service validation confirmed that SSH was available on the Wazuh server.
+
+![SSH service validation](screenshots/2026-07-22_Lab08_Wazuh_26b_ssh-service-enabled.png)
+
+### Windows-to-Wazuh Connectivity
+
+The Windows business workstation successfully communicated with the Wazuh server at `192.168.70.20`.
+
+![Windows workstation pinging Wazuh server](screenshots/2026-07-22_Lab08_Wazuh_27_windows-workstation-pings-wazuh-server.png)
+
+### Post-Wazuh Snapshot
+
+A recovery snapshot was created after the Wazuh installation, networking, service validation, and dashboard configuration were completed.
+
+![Post-Wazuh snapshot created](screenshots/2026-07-22_Lab08_Wazuh_28_post-wazuh-snapshot-created.png)
+
 ## Static Internal Address Configuration
 
 The internal Wazuh interface was configured with:
@@ -325,4 +465,4 @@ The next Business Guardian phase will include:
 
 ## Status
 
-**Technical configuration completed and GitHub evidence upload in progress**
+**Technical configuration completed and portfolio ready**
