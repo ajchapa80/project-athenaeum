@@ -80,9 +80,13 @@ Created and validated an isolated Windows 11 small-business lab environment usin
 
 Deployed and configured a centralized Wazuh monitoring server for the isolated `BusinessGuardianLab` environment. The server uses separate NAT and internal-network adapters, the persistent internal address `192.168.70.20/24`, local dashboard access through VirtualBox port forwarding, validated Wazuh services, and 23 sanitized public evidence screenshots.
 
+### [Lab 09: Wazuh Windows Agent Deployment](lab-09-wazuh-windows-agent-deployment/README.md)
+
+Installed, configured, troubleshot, and validated the Wazuh Windows agent on the isolated Business Guardian workstation. The endpoint successfully registered with the Wazuh server at `192.168.70.20`, remained active after temporary NAT was removed, and was documented with 13 sanitized evidence screenshots.
+
 ## Current Status
 
-Project Athenaeum is current through Lab 08. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
+Project Athenaeum is current through Lab 09. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
 
 - Lab 01: Documentation Setup
 - Lab 02: VirtualBox CyberLab
@@ -92,40 +96,41 @@ Project Athenaeum is current through Lab 08. The following labs are completed, d
 - Lab 06: Nmap Networking Basics
 - Lab 07: BusinessGuardianLab Network Setup
 - Lab 08: Wazuh Monitoring Server Setup
+- Lab 09: Wazuh Windows Agent Deployment
 
-The isolated Windows business workstation and centralized Wazuh monitoring server are now operational on the `BusinessGuardianLab` network.
+The Business Guardian environment now includes an isolated Windows 11 workstation, a centralized Wazuh monitoring server, and an active Windows endpoint agent.
 
-The next phase will connect the Windows workstation to Wazuh, verify endpoint reporting, review Windows telemetry, and generate controlled test events.
+The workstation communicates with the Wazuh server across the isolated `BusinessGuardianLab` network while remaining disconnected from the public internet.
 
 ## Next Project Phase
 
-### Business Guardian — Windows Endpoint Integration
+### Business Guardian — Endpoint Telemetry and Alert Validation
 
-The next phase will connect `BusinessGuardian-Win11-Workstation` to the Wazuh monitoring server.
+The next phase will use the active Windows agent to review endpoint telemetry and generate controlled security events.
 
 Planned work includes:
 
-- Installing the Wazuh agent on the Windows 11 workstation
-- Configuring the agent to communicate with `192.168.70.20`
-- Registering the workstation with the Wazuh manager
-- Confirming that the endpoint appears as active in the Wazuh dashboard
-- Reviewing Windows system and security telemetry
-- Generating controlled authentication, file, and system events
-- Reviewing resulting Wazuh alerts
-- Troubleshooting agent communication if required
-- Creating clean recovery snapshots
-- Documenting procedures, findings, and sanitized evidence
+- Reviewing Windows endpoint inventory in Wazuh
+- Examining Windows system and security events
+- Generating controlled authentication activity
+- Creating authorized file-integrity monitoring events
+- Reviewing Wazuh alert severity and rule information
+- Validating timestamps, host information, and supporting evidence
+- Documenting false-positive and escalation considerations
+- Creating an incident-investigation timeline
+- Preserving clean recovery snapshots
+- Publishing sanitized screenshots and portfolio documentation
 
-Later Business Guardian phases will add:
+Later Business Guardian development may include:
 
 - Synthetic QuickBooks-style activity
-- Python-based detection and event correlation
+- Python-based event correlation
 - AI-assisted alert explanations
 - Backup and recovery monitoring
 - Financial-risk indicators
 - Human approval controls
-- A simple monitoring dashboard
-- Incident reports and response documentation
+- A simplified monitoring dashboard
+- Incident reports and response recommendations
 
 ## Future Roadmap
 
