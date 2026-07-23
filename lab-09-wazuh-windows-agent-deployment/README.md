@@ -134,6 +134,86 @@ During this lab, I:
 - Created post-agent recovery snapshots
 - Completed the screenshot log, technical notes, and final portfolio writeup
 
+## Screenshots and Evidence
+
+### Lab Documentation Setup
+
+The Lab 09 documentation structure was prepared to organize technical notes, screenshot evidence, troubleshooting results, and the final portfolio writeup.
+
+![Lab 09 folder setup](screenshots/2026-07-23_Lab09_WazuhAgent_01_folder-setup.png)
+
+### Dashboard Before Agent Deployment
+
+The Wazuh dashboard was reviewed before deployment to establish that no Windows endpoint was actively enrolled.
+
+![Wazuh dashboard before agent deployment](screenshots/2026-07-23_Lab09_WazuhAgent_02_dashboard-before-agent-deployment.png)
+
+### Temporary NAT Enabled
+
+Temporary NAT connectivity was enabled on the Windows workstation to support the authorized agent download and installation process.
+
+![Windows workstation temporary NAT enabled](screenshots/2026-07-23_Lab09_WazuhAgent_03_workstation-temporary-nat-enabled.png)
+
+### Installation Connectivity Verified
+
+The workstation was tested for internet access and communication with the Wazuh monitoring server before the agent installation.
+
+![Windows workstation internet and server connectivity](screenshots/2026-07-23_Lab09_WazuhAgent_04_workstation-internet-and-server-connectivity.png)
+
+### Wazuh Agent Installer Downloaded
+
+The official Wazuh Windows agent installer was downloaded to the authorized business workstation.
+
+![Wazuh Windows agent installer downloaded](screenshots/2026-07-23_Lab09_WazuhAgent_05_wazuh-agent-installer-downloaded.png)
+
+### Wazuh Agent Service Running
+
+Windows Services confirmed that the Wazuh agent service was installed and running after configuration troubleshooting was completed.
+
+![Wazuh agent service running](screenshots/2026-07-23_Lab09_WazuhAgent_06_wazuh-agent-service-running.png)
+
+### Agent Visible in Dashboard
+
+The Windows workstation appeared in the Wazuh dashboard after successful agent-manager communication was established.
+
+![Windows agent visible in Wazuh dashboard](screenshots/2026-07-23_Lab09_WazuhAgent_07_agent-visible-in-dashboard.png)
+
+### Active Agent Details
+
+The agent-details page confirmed that the Windows 11 workstation was active and reporting from its internal address.
+
+![Wazuh agent details showing active status](screenshots/2026-07-23_Lab09_WazuhAgent_08_agent-details-active.png)
+
+### Temporary NAT Disabled
+
+Temporary NAT connectivity was disabled after the agent installation and dashboard validation were complete.
+
+![Windows workstation temporary NAT disabled](screenshots/2026-07-23_Lab09_WazuhAgent_09_workstation-temporary-nat-disabled.png)
+
+### Workstation Isolation Restored
+
+Connectivity testing confirmed that the workstation could reach the Wazuh server while remaining isolated from the public internet.
+
+![Windows workstation isolated after agent installation](screenshots/2026-07-23_Lab09_WazuhAgent_10_workstation-isolated-after-agent-install.png)
+
+### Agent Active After Isolation
+
+The Wazuh dashboard confirmed that the Windows agent remained active after temporary NAT connectivity was removed.
+
+![Wazuh agent active after workstation isolation](screenshots/2026-07-23_Lab09_WazuhAgent_11_agent-active-after-isolation.png)
+
+### Wazuh Server Recovery Snapshot
+
+A post-deployment snapshot preserved the Wazuh server after successful Windows agent enrollment.
+
+![Wazuh server agent-enrolled snapshot](screenshots/2026-07-23_Lab09_WazuhAgent_12a_wazuh-server-agent-enrolled-snapshot.png)
+
+### Windows Workstation Recovery Snapshot
+
+A post-deployment snapshot preserved the Windows workstation with the Wazuh agent installed, active, and operating on the isolated network.
+
+![Windows workstation agent-installed isolated snapshot](screenshots/2026-07-23_Lab09_WazuhAgent_12b_windows-workstation-agent-installed-isolated-snapshot.png)
+
 ## Agent Deployment
 
 The Wazuh dashboard deployment interface was used to generate the Windows agent installation instructions.
@@ -330,4 +410,4 @@ The next Business Guardian phase may include:
 
 ## Status
 
-**Technical work and local documentation completed; GitHub evidence upload in progress**
+**Completed and portfolio ready**
