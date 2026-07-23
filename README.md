@@ -76,9 +76,13 @@ Performed authorized Nmap scanning against Metasploitable 2 inside the isolated 
 
 Created and validated an isolated Windows 11 small-business lab environment using the VirtualBox Internal Network `BusinessGuardianLab`. The workstation was installed, isolated from the internet, assigned the persistent static address `192.168.70.10/24`, preserved with a clean snapshot, and documented with 18 sanitized evidence screenshots.
 
+### [Lab 08: Wazuh Monitoring Server Setup](lab-08-wazuh-monitoring-server-setup/README.md)
+
+Deployed and configured a centralized Wazuh monitoring server for the isolated `BusinessGuardianLab` environment. The server uses separate NAT and internal-network adapters, the persistent internal address `192.168.70.20/24`, local dashboard access through VirtualBox port forwarding, validated Wazuh services, and 23 sanitized public evidence screenshots.
+
 ## Current Status
 
-Project Athenaeum is current through Lab 07. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
+Project Athenaeum is current through Lab 08. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
 
 - Lab 01: Documentation Setup
 - Lab 02: VirtualBox CyberLab
@@ -87,26 +91,30 @@ Project Athenaeum is current through Lab 07. The following labs are completed, d
 - Lab 05: DVWA Web Security
 - Lab 06: Nmap Networking Basics
 - Lab 07: BusinessGuardianLab Network Setup
+- Lab 08: Wazuh Monitoring Server Setup
 
-The isolated Windows 11 foundation for the Athenaeum Business Guardian MVP is complete. The next phase will expand the environment with centralized monitoring, endpoint telemetry, simulated business activity, Python-based detection, and AI-assisted alert explanations.
+The isolated Windows business workstation and centralized Wazuh monitoring server are now operational on the `BusinessGuardianLab` network.
+
+The next phase will connect the Windows workstation to Wazuh, verify endpoint reporting, review Windows telemetry, and generate controlled test events.
 
 ## Next Project Phase
 
-### Athenaeum Business Guardian MVP — Monitoring Foundation
+### Business Guardian — Windows Endpoint Integration
 
-With the isolated Windows 11 workstation and `BusinessGuardianLab` network foundation complete, the next phase will introduce centralized security monitoring.
+The next phase will connect `BusinessGuardian-Win11-Workstation` to the Wazuh monitoring server.
 
 Planned work includes:
 
-- Deploying a Wazuh security-monitoring server
-- Connecting the server to the isolated `BusinessGuardianLab` network
-- Installing the Wazuh agent on `BusinessGuardian-Win11-Workstation`
-- Confirming that the workstation reports successfully to the Wazuh dashboard
-- Reviewing Windows endpoint and security telemetry
-- Generating controlled test events
-- Documenting alerts, findings, and troubleshooting steps
-- Creating sanitized screenshots and portfolio evidence
-- Preserving clean snapshots before major configuration changes
+- Installing the Wazuh agent on the Windows 11 workstation
+- Configuring the agent to communicate with `192.168.70.20`
+- Registering the workstation with the Wazuh manager
+- Confirming that the endpoint appears as active in the Wazuh dashboard
+- Reviewing Windows system and security telemetry
+- Generating controlled authentication, file, and system events
+- Reviewing resulting Wazuh alerts
+- Troubleshooting agent communication if required
+- Creating clean recovery snapshots
+- Documenting procedures, findings, and sanitized evidence
 
 Later Business Guardian phases will add:
 
@@ -118,8 +126,6 @@ Later Business Guardian phases will add:
 - Human approval controls
 - A simple monitoring dashboard
 - Incident reports and response documentation
-
-The next lab number and final title will be assigned when this phase begins.
 
 ## Future Roadmap
 
