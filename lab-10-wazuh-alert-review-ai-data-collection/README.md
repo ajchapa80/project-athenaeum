@@ -112,6 +112,74 @@ During this lab, I:
 - Created recovery snapshots after successful validation
 - Completed the screenshot log, technical notes, and final portfolio writeup
 
+## Screenshots and Evidence
+
+### Lab Documentation Setup
+
+The Lab 10 documentation structure was prepared to organize alert evidence, technical notes, the screenshot log, AI data samples, and the final portfolio writeup.
+
+![Lab 10 folder setup](screenshots/2026-07-24_Lab10_WazuhAI_01_folder-setup.png)
+
+### Active Agent Starting State
+
+The Wazuh dashboard confirmed that the Windows workstation agent was active before controlled events were generated.
+
+![Wazuh agent active at starting state](screenshots/2026-07-24_Lab10_WazuhAI_02_agent-active-starting-state.png)
+
+### Controlled Windows Events Created
+
+Safe Windows events were created on the authorized Business Guardian workstation to test the endpoint-monitoring pipeline.
+
+![Safe Windows events created](screenshots/2026-07-24_Lab10_WazuhAI_03_safe-windows-events-created.png)
+
+### Simulated Windows Error Alert Visible
+
+The resulting simulated Windows error alert appeared in the Wazuh dashboard, confirming successful collection and detection.
+
+![Simulated Windows error alert visible in Wazuh](screenshots/2026-07-24_Lab10_WazuhAI_04_wazuh-simulated-windows-error-alert-visible.png)
+
+### Alert Details — Overview
+
+The upper section of the alert-details view displayed the alert timestamp, monitored agent, severity, description, and supporting event information.
+
+![Windows error alert details upper section](screenshots/2026-07-24_Lab10_WazuhAI_05a_windows-error-alert-details-top.png)
+
+### Alert Details — Rule Fields
+
+The rule fields were reviewed to identify the Wazuh rule, severity level, description, and information relevant to analyst triage.
+
+![Windows error alert rule fields](screenshots/2026-07-24_Lab10_WazuhAI_05b_windows-error-alert-details-rule-fields.png)
+
+### JSON Review — Event Fields
+
+The alert’s structured JSON event fields were examined to identify endpoint, timestamp, source, and Windows event information.
+
+![Windows error alert JSON event fields](screenshots/2026-07-24_Lab10_WazuhAI_06a_windows-error-alert-json-event-fields.png)
+
+### JSON Review — Rule Fields
+
+The JSON rule fields were reviewed to identify structured detection information suitable for searching, automation, and later AI analysis.
+
+![Windows error alert JSON rule fields](screenshots/2026-07-24_Lab10_WazuhAI_06b_windows-error-alert-json-rule-fields.png)
+
+### AI Data Sample Created
+
+A smaller sanitized alert-data file was created using selected fields from the Wazuh event.
+
+![AI alert data sample file created](screenshots/2026-07-24_Lab10_WazuhAI_07_ai-data-sample-file-created.png)
+
+### Wazuh Server Recovery Snapshot
+
+A recovery snapshot preserved the Wazuh server after successful alert collection, review, and data preparation.
+
+![Wazuh server alert-data snapshot](screenshots/2026-07-24_Lab10_WazuhAI_08a_wazuh-server-alert-data-snapshot.png)
+
+### Windows Workstation Recovery Snapshot
+
+A recovery snapshot preserved the Windows workstation after the controlled events were created and successfully collected.
+
+![Windows workstation events-created snapshot](screenshots/2026-07-24_Lab10_WazuhAI_08b_windows-events-created-snapshot.png)
+
 ## Controlled Windows Event
 
 A safe Windows test event was generated on the authorized Business Guardian workstation.
