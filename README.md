@@ -84,9 +84,13 @@ Deployed and configured a centralized Wazuh monitoring server for the isolated `
 
 Installed, configured, troubleshot, and validated the Wazuh Windows agent on the isolated Business Guardian workstation. The endpoint successfully registered with the Wazuh server at `192.168.70.20`, remained active after temporary NAT was removed, and was documented with 13 sanitized evidence screenshots.
 
+### [Lab 10: Wazuh Alert Review and AI Data Collection](lab-10-wazuh-alert-review-ai-data-collection/README.md)
+
+Generated safe Windows events, validated end-to-end Wazuh alert detection, reviewed alert details and structured JSON fields, and created a sanitized AI-ready data sample. The lab includes 11 cropped evidence screenshots documenting the complete event-to-alert workflow.
+
 ## Current Status
 
-Project Athenaeum is current through Lab 09. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
+Project Athenaeum is current through Lab 10. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
 
 - Lab 01: Documentation Setup
 - Lab 02: VirtualBox CyberLab
@@ -97,56 +101,42 @@ Project Athenaeum is current through Lab 09. The following labs are completed, d
 - Lab 07: BusinessGuardianLab Network Setup
 - Lab 08: Wazuh Monitoring Server Setup
 - Lab 09: Wazuh Windows Agent Deployment
+- Lab 10: Wazuh Alert Review and AI Data Collection
 
-The Business Guardian environment now includes an isolated Windows 11 workstation, a centralized Wazuh monitoring server, and an active Windows endpoint agent.
-
-The workstation communicates with the Wazuh server across the isolated `BusinessGuardianLab` network while remaining disconnected from the public internet.
+The Business Guardian environment now supports an end-to-end monitoring workflow. Controlled Windows activity can be collected by the endpoint agent, processed by the Wazuh server, displayed as an alert, reviewed through structured JSON data, and converted into a sanitized sample for later automation and AI-assisted analysis.
 
 ## Next Project Phase
 
-### Business Guardian — Endpoint Telemetry and Alert Validation
+### Business Guardian — Python Alert Processing and AI-Assisted Explanation
 
-The next phase will use the active Windows agent to review endpoint telemetry and generate controlled security events.
+The next phase will begin turning selected Wazuh alert data into a practical security-analysis tool.
 
-Planned work includes:
+Planned work may include:
 
-- Reviewing Windows endpoint inventory in Wazuh
-- Examining Windows system and security events
-- Generating controlled authentication activity
-- Creating authorized file-integrity monitoring events
-- Reviewing Wazuh alert severity and rule information
-- Validating timestamps, host information, and supporting evidence
-- Documenting false-positive and escalation considerations
-- Creating an incident-investigation timeline
-- Preserving clean recovery snapshots
-- Publishing sanitized screenshots and portfolio documentation
+- Reading sanitized Wazuh alert data with Python
+- Extracting important alert fields
+- Separating useful evidence from unnecessary data
+- Creating a consistent alert-summary format
+- Explaining alerts in plain language
+- Identifying severity, affected endpoint, and likely meaning
+- Producing recommended investigation steps
+- Adding human review before any response action
+- Testing the process with multiple controlled alert samples
+- Documenting limitations, false positives, and verification requirements
+- Creating sanitized evidence and portfolio documentation
 
 Later Business Guardian development may include:
 
+- Correlating multiple related alerts
 - Synthetic QuickBooks-style activity
-- Python-based event correlation
-- AI-assisted alert explanations
 - Backup and recovery monitoring
 - Financial-risk indicators
-- Human approval controls
+- Business-focused incident summaries
 - A simplified monitoring dashboard
+- Human approval controls
 - Incident reports and response recommendations
 
-## Future Roadmap
-
-Later Project Athenaeum work may include:
-
-- Wireshark traffic-analysis fundamentals
-- SOC alert triage and investigation
-- PowerShell administration and automation
-- AI-assisted cybersecurity and IT support tools
-- A Windows Network Troubleshooting Toolkit built manually as a batch file
-- Administrator elevation, menu controls, and safety confirmations for the troubleshooting toolkit
-- A simulated incident-response and business-continuity environment
-- A lean Pueblo-based IT services business test
-- Website, booking, remote-support, and mobile IT-service development
-
-Lab numbers for later projects will be assigned as the roadmap develops. This prevents completed work from having to be renumbered when priorities change.
+The final lab number and title will be assigned when the next technical phase begins.
 
 ## Professional Goal
 
