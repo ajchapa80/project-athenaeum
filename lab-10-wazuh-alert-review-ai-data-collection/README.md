@@ -266,7 +266,7 @@ The resulting structure can later support an AI tool that explains:
 
 The AI sample created during this lab is an early building block rather than a completed automated security product.
 
-## Why This Matters
+## Importance
 
 Security tools often produce alerts containing large amounts of technical data.
 
