@@ -92,9 +92,13 @@ Generated safe Windows events, validated end-to-end Wazuh alert detection, revie
 
 Built a functional Python alert-explanation tool using the sanitized Wazuh data prepared during Lab 10. The MVP extracts selected endpoint, Windows event, and Wazuh rule fields; explains alert severity; generates analyst context and review steps; and preserves human verification before any security decision. The published lab includes the working Python script, sanitized input sample, generated output, and nine evidence screenshots.
 
+### [Lab 12: AI Alert Explainer Testing and Validation](lab-12-ai-alert-explainer-testing-validation/README.md)
+
+Tested and validated the Python-based AI Alert Explainer MVP created in Lab 11 while preserving the published MVP as a stable baseline. Validation covered normal execution, output-file creation, missing and empty input files, missing-field behavior, severity-logic changes, and final restoration to the original baseline. The published lab includes the copied working files and 17 sanitized evidence screenshots.
+
 ## Current Status
 
-Project Athenaeum is current through Lab 11. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
+Project Athenaeum is current through Lab 12. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
 
 - Lab 01: Documentation Setup
 - Lab 02: VirtualBox CyberLab
@@ -107,44 +111,44 @@ Project Athenaeum is current through Lab 11. The following labs are completed, d
 - Lab 09: Wazuh Windows Agent Deployment
 - Lab 10: Wazuh Alert Review and AI Data Collection
 - Lab 11: AI Alert Explainer MVP
+- Lab 12: AI Alert Explainer Testing and Validation
 
-Project Athenaeum now includes a complete progression from isolated lab creation and endpoint monitoring to alert generation, structured security-data review, and Python-based alert explanation.
+Project Athenaeum now includes a complete progression from isolated lab deployment and endpoint monitoring to alert generation, Python-based alert explanation, and structured validation testing.
 
-The Lab 11 MVP uses selected fields from a sanitized Wazuh alert to produce a plain-language report containing endpoint information, Windows event context, Wazuh rule context, severity interpretation, recommended review steps, and a human-reviewed final assessment.
+Lab 12 preserved the published Lab 11 MVP as a stable baseline and tested copied files in a separate workspace. All planned tests passed, including baseline execution, missing-file handling, empty-file handling, missing-field behavior, severity-logic validation, and final restoration to the original working state.
 
 ## Next Project Phase
 
-### AI Alert Explainer Validation and Expansion
+### AI Alert Explainer Expansion Planning
 
-The next phase will strengthen the Lab 11 MVP by testing it with additional sanitized alert types and improving its reliability, flexibility, and analyst usefulness.
+Lab 12 established documented evidence about how the current MVP behaves under normal and abnormal input conditions. Future improvements will be based on those validation results rather than being rushed into the stable Lab 11 version.
 
-Planned development may include:
+Potential next steps include:
 
-- Testing the tool with additional Wazuh alert samples
-- Comparing low-, medium-, and higher-level alerts
-- Parsing complete JSON alert records
-- Supporting multiple input files
+- Testing additional sanitized Wazuh alert samples
+- Comparing different rule levels and alert categories
+- Creating repeatable automated test cases
 - Improving missing-field handling
+- Parsing complete JSON alert records
+- Supporting multiple alert files
 - Creating reusable severity mappings
-- Exporting explanations in text and structured formats
-- Comparing generated explanations with the original alert evidence
+- Exporting reports in text and structured formats
+- Comparing generated explanations with original alert evidence
 - Recording analyst corrections and feedback
-- Documenting false-positive and escalation considerations
 - Measuring explanation consistency and accuracy
-- Preserving human approval before any response action
 
-Later development may include:
+Later Business Guardian development may include:
 
-- Correlating multiple related alerts
-- Adding a simple graphical interface
-- Connecting to a local or approved AI model
-- Creating business-focused incident summaries
-- Adding synthetic QuickBooks-style activity
-- Monitoring backup and financial-risk indicators
-- Building a simplified Business Guardian dashboard
-- Generating incident reports and response recommendations
+- Alert correlation
+- A simplified graphical interface
+- Dashboard integration
+- Business-focused incident summaries
+- Synthetic financial and QuickBooks-style activity
+- Backup and recovery monitoring
+- Approved local or external AI-model integration
+- Human-approved investigation and response actions
 
-The next lab number and final title will be assigned after the technical scope is confirmed.
+The next lab number and final scope will be assigned inside Project Athenaeum after the next technical phase is planned.
 
 ## Professional Goal
 
