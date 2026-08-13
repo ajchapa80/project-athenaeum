@@ -96,64 +96,139 @@ Built a functional Python alert-explanation tool using the sanitized Wazuh data 
 
 Tested and validated the Python-based AI Alert Explainer MVP created in Lab 11 while preserving the published MVP as a stable baseline. Validation covered normal execution, output-file creation, missing and empty input files, missing-field behavior, severity-logic changes, and final restoration to the original baseline. The published lab includes the copied working files and 17 sanitized evidence screenshots.
 
+### [Lab 13: AI Alert Explainer v2 Requirements and Design](lab-13-ai-alert-explainer-v2-requirements-design/README.md)
+
+Designed the next version of the AI Alert Explainer before beginning implementation. Lab 13 used the validated results from Labs 11 and 12 to define a vendor-neutral normalized alert model, Wazuh-to-normalized field mapping, normalized severity, validation rules, multiple-alert processing, individual alert reports, batch-summary reporting, five deterministic test cases, and the controlled Lab 14 implementation scope.
+
+Six sanitized design screenshots are published as portfolio evidence. The complete internal design record and proprietary Business Guardian implementation details remain outside the public repository.
+
 ## Current Status
 
-Project Athenaeum is current through Lab 12. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
+Project Athenaeum is current through Lab 13. The following labs are completed, documented, supported by sanitized evidence, and published in this repository:
 
-- Lab 01: Documentation Setup
-- Lab 02: VirtualBox CyberLab
-- Lab 03: Linux Fundamentals
-- Lab 04: Windows Fundamentals
-- Lab 05: DVWA Web Security
-- Lab 06: Nmap Networking Basics
-- Lab 07: BusinessGuardianLab Network Setup
-- Lab 08: Wazuh Monitoring Server Setup
-- Lab 09: Wazuh Windows Agent Deployment
-- Lab 10: Wazuh Alert Review and AI Data Collection
-- Lab 11: AI Alert Explainer MVP
-- Lab 12: AI Alert Explainer Testing and Validation
+* Lab 01: Documentation Setup
+* Lab 02: VirtualBox CyberLab
+* Lab 03: Linux Fundamentals
+* Lab 04: Windows Fundamentals
+* Lab 05: DVWA Web Security
+* Lab 06: Nmap Networking Basics
+* Lab 07: BusinessGuardianLab Network Setup
+* Lab 08: Wazuh Monitoring Server Setup
+* Lab 09: Wazuh Windows Agent Deployment
+* Lab 10: Wazuh Alert Review and AI Data Collection
+* Lab 11: AI Alert Explainer MVP
+* Lab 12: AI Alert Explainer Testing and Validation
+* Lab 13: AI Alert Explainer v2 Requirements and Design
 
-Project Athenaeum now includes a complete progression from isolated lab deployment and endpoint monitoring to alert generation, Python-based alert explanation, and structured validation testing.
+Project Athenaeum now documents a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert explanation, software validation, and requirements-driven security-tool design.
 
-Lab 12 preserved the published Lab 11 MVP as a stable baseline and tested copied files in a separate workspace. All planned tests passed, including baseline execution, missing-file handling, empty-file handling, missing-field behavior, severity-logic validation, and final restoration to the original working state.
+Labs 11 and 12 remain preserved as the validated MVP baseline. Lab 13 used the results of that work to design the next version before new code is introduced.
 
 ## Next Project Phase
 
-### AI Alert Explainer Expansion Planning
+### Lab 14: AI Alert Explainer v2 Multiple Alert Processing
 
-Lab 12 established documented evidence about how the current MVP behaves under normal and abnormal input conditions. Future improvements will be based on those validation results rather than being rushed into the stable Lab 11 version.
+Lab 14 will begin controlled implementation of the v2 design approved during Lab 13.
 
-Potential next steps include:
+Initial implementation priorities include:
 
-- Testing additional sanitized Wazuh alert samples
-- Comparing different rule levels and alert categories
-- Creating repeatable automated test cases
-- Improving missing-field handling
-- Parsing complete JSON alert records
-- Supporting multiple alert files
-- Creating reusable severity mappings
-- Exporting reports in text and structured formats
-- Comparing generated explanations with original alert evidence
-- Recording analyst corrections and feedback
-- Measuring explanation consistency and accuracy
+* Creating a separate v2 development workspace
+* Supporting multiple sanitized alert samples
+* Separating input and output handling
+* Building the normalized alert structure
+* Creating the first Wazuh-to-normalized mapping process
+* Applying validation rules
+* Adding normalized severity handling
+* Improving missing-field reporting
+* Generating unique individual alert reports
+* Preventing accidental report overwrites
+* Isolating failures so one invalid alert does not stop the batch
+* Creating a batch-summary report
+* Running the five deterministic test scenarios defined during Lab 13
+* Comparing v2 behavior with the validated Lab 11 and Lab 12 baseline
 
-Later Business Guardian development may include:
+Dashboard development, advanced AI integration, automated response, and commercial product functionality remain outside the immediate Lab 14 scope.
 
-- Alert correlation
-- A simplified graphical interface
-- Dashboard integration
-- Business-focused incident summaries
-- Synthetic financial and QuickBooks-style activity
-- Backup and recovery monitoring
-- Approved local or external AI-model integration
-- Human-approved investigation and response actions
+## Future Roadmap
 
-The next lab number and final scope will be assigned inside Project Athenaeum after the next technical phase is planned.
+Project Athenaeum will continue to expand through controlled, documented projects rather than adding features without testing.
 
-## Professional Goal
+Future portfolio-safe development may include:
 
-My immediate goal is to begin in an entry-level IT support, service desk, technical support, or cybersecurity support role where I can apply my customer service, troubleshooting, documentation, and security knowledge while gaining practical experience.
+* Additional Wazuh alert types and controlled security events
+* Complete JSON alert parsing
+* Improved alert normalization and validation
+* Multiple-alert correlation
+* Reusable severity mappings
+* Additional automated and deterministic testing
+* Structured incident-summary generation
+* Analyst feedback and correction workflows
+* Accuracy and consistency testing
+* Windows and Linux administration exercises
+* Networking and troubleshooting projects
+* Security monitoring and incident-investigation labs
+* IT support automation
+* A polished browser-based security monitoring interface
+* Additional Python security automation
+* Security+ certification preparation and supporting technical practice
 
-As I continue developing my technical skills, I plan to advance into security operations, incident investigation, and cybersecurity analysis.
+More advanced Business Guardian product development, proprietary workflows, sensitive configuration, connectors, approval mechanisms, tenant logic, commercial material, and product-level architecture remain outside the public Project Athenaeum repository.
 
-My long-term goal is to build a practical IT services business and eventually expand into responsible cybersecurity services as my experience, certifications, and capabilities grow.
+## Home Lab
+
+My current lab infrastructure includes:
+
+* Windows 11 host computer
+* Oracle VirtualBox
+* Kali Linux security workstation
+* Ubuntu Linux practice virtual machine
+* Metasploitable 2 vulnerable target
+* Windows 11 administration lab
+* VirtualBox Internal Network: `CyberLab`
+* CyberLab subnet: `192.168.56.0/24`
+* BusinessGuardian-Win11-Workstation: `192.168.70.10/24`
+* Wazuh Monitoring Server: `192.168.70.20/24`
+* Active Wazuh Windows endpoint agent
+* VirtualBox Internal Network: `BusinessGuardianLab`
+* BusinessGuardianLab subnet: `192.168.70.0/24`
+* NAT and isolated internal-network segmentation
+* Local Wazuh dashboard access through VirtualBox port forwarding
+* Clean recovery snapshots for major deployment stages
+
+### Validated Lab Capabilities
+
+* End-to-end Windows-to-Wazuh monitoring
+* Controlled Windows event and Wazuh alert generation
+* Wazuh alert-detail, rule-field, and JSON review
+* Sanitized security-data preparation
+* Functional Python AI Alert Explainer MVP
+* Plain-language alert report generation
+* Missing-file and empty-file testing
+* Missing alert-field behavior testing
+* Wazuh severity-logic validation
+* Stable baseline restoration and verification
+* Vendor-neutral alert-model design
+* Wazuh-to-normalized field-mapping design
+* Normalized severity design
+* Multiple-alert processing workflow design
+* Deterministic validation-test planning
+* Human-reviewed investigation recommendations
+
+All security exercises are performed using personally owned or authorized systems in isolated lab environments.
+
+## Education and Development
+
+* Bachelor of Science in Cybersecurity, Project Management Fundamentals concentration — expected September 2026
+* InfoSec Labs Pre-Security Fundamentals Certificate
+* InfoSec Labs Alert Investigation Specialist training
+* CompTIA Security+ preparation
+* Ongoing SOC, SIEM, endpoint monitoring, Python, networking, Windows, Linux, and IT support practice
+* Continued Project Athenaeum development focused on practical technical skills, testing, documentation, and portfolio evidence
+
+## Professional Goals
+
+My immediate goal is to begin in an IT support, SOC analyst, cybersecurity support, or public-sector IT role where I can apply practical troubleshooting, documentation, endpoint monitoring, and security-analysis skills while continuing to build experience.
+
+I am developing a foundation that combines IT support, cybersecurity operations, system administration, networking, Python automation, and clear technical communication. My longer-term goal is to continue growing into more advanced security and systems responsibilities while using Project Athenaeum to demonstrate measurable hands-on progress.
+
+I also want to continue learning how security tools can make technical information easier for people to understand without removing human judgment from important security decisions.
