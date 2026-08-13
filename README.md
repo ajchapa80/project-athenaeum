@@ -149,6 +149,18 @@ Initial implementation priorities include:
 
 Dashboard development, advanced AI integration, automated response, and commercial product functionality remain outside the immediate Lab 14 scope.
 
+## Development Principles
+
+Project Athenaeum follows a build, validate, document, and extend approach.
+
+- Validated work is preserved rather than rebuilt unnecessarily.
+- New capabilities are designed and tested before being added to stable versions.
+- Security-platform-specific data is translated into normalized internal structures where practical.
+- Core parsing, validation, severity handling, and control logic remain deterministic and testable.
+- AI-assisted features support explanation and analysis rather than independently making consequential security decisions.
+- Human review remains required for security actions and final incident decisions.
+- Public repository content is sanitized and portfolio-focused; proprietary Business Guardian product implementation remains private.
+
 ## Future Roadmap
 
 Project Athenaeum will continue to expand through controlled, documented projects rather than adding features without testing.
