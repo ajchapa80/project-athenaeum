@@ -1,0 +1,107 @@
+Lab 14 - AI Alert Explainer v2 Multiple Alert Processing
+Validation Results
+
+Validation Date:
+2026-08-17
+
+Purpose
+
+Validate the AI Alert Explainer v2 multiple-alert processing implementation against the approved requirements and expected results established in Lab 13.
+
+Controlled Test Set
+
+Five sanitized alert files were processed during one batch:
+
+1. Valid Windows application error alert
+2. Valid higher-severity authentication alert
+3. Valid alert with deliberately missing expected fields
+4. Valid alert with deliberately malformed source severity
+5. Invalid content containing no recognized supported alert fields
+
+Expected Batch Result
+
+Total Supported Alert Files Discovered: 5
+Successfully Processed: 2
+Processed With Warnings: 2
+Failed: 1
+Individual Reports Created: 4
+Batch Summaries Created: 1
+
+Observed First-Run Result
+
+Processing Run: 20260817_105319
+
+Total Supported Alert Files Discovered: 5
+Successfully Processed: 2
+Processed With Warnings: 2
+Failed: 1
+Individual Reports Created: 4
+Batch Summaries Created: 1
+
+Per-Alert Validation
+
+Alert 001
+Result: Processed Successfully
+Validation Status: Processed Normally
+Normalized Severity: MEDIUM
+Report Created: Yes
+
+Alert 002
+Result: Processed Successfully
+Validation Status: Processed Normally
+Normalized Severity: HIGH
+Report Created: Yes
+
+Alert 003
+Result: Processed With Warnings
+Validation Status: Processed With Warnings
+Normalized Severity: LOW
+Missing Fields: endpoint_ip, event_provider
+Report Created: Yes
+
+Alert 004
+Result: Processed With Warnings
+Validation Status: Processed With Warnings
+Source Severity: invalid
+Normalized Severity: UNKNOWN
+Report Created: Yes
+
+Alert 005
+Result: Failed
+Validation Status: Failed Validation
+Report Created: No
+Failure Reason: No recognized supported alert fields were found.
+
+Safety and Reliability Validation
+
+PASS - One failed alert did not prevent the remaining alerts from being processed.
+PASS - Missing expected information was reported rather than fabricated.
+PASS - Malformed severity was preserved and normalized to UNKNOWN rather than guessed.
+PASS - Source alert files remained unchanged after processing.
+PASS - Failed validation did not generate an analyst alert report.
+PASS - Generated reports retained source traceability.
+PASS - Individual reports used unique filenames.
+PASS - Batch summaries used unique filenames.
+PASS - A second complete processing run created new output files without overwriting the first run.
+PASS - Processing totals were calculated from actual results rather than hard-coded expected values.
+
+Second-Run Overwrite Validation
+
+Processing Run: 20260817_110753
+
+Total Supported Alert Files Discovered: 5
+Successfully Processed: 2
+Processed With Warnings: 2
+Failed: 1
+Individual Reports Created: 4
+Batch Summaries Created: 1
+
+The first-run output files remained intact after the second execution.
+
+Final Validation Result
+
+PASS
+
+AI Alert Explainer v2 successfully processed multiple alerts independently, normalized supported Wazuh alert data into the common alert model, applied platform-neutral severity categories, identified missing and malformed information, contained individual alert failures, generated unique analyst reports for processable alerts, created an auditable batch summary, preserved source data, and protected previously generated output from overwrite.
+
+Lab 14 implementation satisfies the controlled validation requirements established in Lab 13.
