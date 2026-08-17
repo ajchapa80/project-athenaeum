@@ -1,0 +1,56 @@
+AI Alert Explainer v2 Report
+
+Processing Run: 20260817_124241
+Source Alert File: alert_003_missing_fields.txt
+
+Processing Status
+Validation Status: Processed With Warnings
+Review Status: Requires Review
+
+Alert Summary
+Event Type: Controlled event with incomplete context.
+Endpoint: DESKTOP-THFNAGI
+
+Endpoint Context
+Endpoint Name: DESKTOP-THFNAGI
+Endpoint IP: Unavailable
+
+Event Context
+Event Type: Controlled event with incomplete context.
+Event ID: 1001
+Event Provider: Unavailable
+Event Message: Lab14 synthetic test: controlled low-severity event with selected expected context intentionally omitted
+
+Source Security Context
+Source Platform: Wazuh
+Source Rule ID: 62003
+Source Rule Description: Controlled event with incomplete context.
+Source Severity: 5
+Normalized Severity: LOW
+
+Severity Explanation
+This event has limited security relevance or represents low-priority abnormal activity.
+
+Validation Information
+Missing Fields:
+- endpoint_ip
+- event_provider
+
+Validation Notes:
+None
+
+Analyst Review Guidance
+1. Confirm whether the event was expected or unexpected.
+2. Review the endpoint and event context that is available.
+3. Check whether similar or related activity occurred around the same time.
+4. Review source rule and severity information.
+5. Determine whether additional investigation or escalation is appropriate.
+
+Assessment
+The available information was sufficient to create a report, but validation warnings were identified. The alert requires analyst review, and missing or uncertain information should be considered before a security conclusion is made.
+
+Source Traceability
+Original Input File: alert_003_missing_fields.txt
+Source Platform: Wazuh
+Source Alert ID: Unavailable
+Source Event Timestamp: Unavailable

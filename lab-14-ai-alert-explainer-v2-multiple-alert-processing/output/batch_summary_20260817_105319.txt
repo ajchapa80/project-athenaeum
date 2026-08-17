@@ -1,0 +1,47 @@
+AI Alert Explainer v2 Batch Summary
+
+Processing Run: 20260817_105319
+Input Location: input
+Output Location: output
+
+Processing Totals
+Total Supported Alert Files Discovered: 5
+Successfully Processed: 2
+Processed With Warnings: 2
+Failed: 1
+Individual Reports Created: 4
+
+Per-Alert Results
+Source File: alert_001_windows_application_error.txt
+Processing Result: Processed Successfully
+Validation Status: Processed Normally
+Normalized Severity: MEDIUM
+Report: alert_001_windows_application_error_report_20260817_105319.txt
+
+Source File: alert_002_high_severity.txt
+Processing Result: Processed Successfully
+Validation Status: Processed Normally
+Normalized Severity: HIGH
+Report: alert_002_high_severity_report_20260817_105319.txt
+
+Source File: alert_003_missing_fields.txt
+Processing Result: Processed With Warnings
+Validation Status: Processed With Warnings
+Normalized Severity: LOW
+Report: alert_003_missing_fields_report_20260817_105319.txt
+
+Source File: alert_004_invalid_severity.txt
+Processing Result: Processed With Warnings
+Validation Status: Processed With Warnings
+Normalized Severity: UNKNOWN
+Report: alert_004_invalid_severity_report_20260817_105319.txt
+
+Source File: alert_005_invalid_content.txt
+Processing Result: Failed
+Validation Status: Failed Validation
+Normalized Severity: Unavailable
+Report: Not Created
+Failure Reason: No recognized supported alert fields were found: alert_005_invalid_content.txt
+
+Batch Completion
+All discovered supported alert files were attempted.
