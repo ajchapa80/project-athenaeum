@@ -1,0 +1,15 @@
+AI Data Sample 04: Invalid Severity Value
+
+agent.name: DESKTOP-THFNAGI
+agent.ip: 192.168.70.10
+manager.name: businessguardian-wazuh-server
+data.win.system.eventID: 4624
+data.win.system.providerName: Microsoft-Windows-Security-Auditing
+data.win.system.severityValue: INFORMATION
+data.win.system.message: Lab14 synthetic test: valid event information supplied with an intentionally malformed Wazuh rule severity
+rule.description: Controlled authentication event with invalid source severity.
+rule.id: 63004
+rule.level: invalid
+rule.groups: windows, authentication, lab14_test
+decoder.name: windows_eventchannel
+location: EventChannel

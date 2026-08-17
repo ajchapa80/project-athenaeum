@@ -1,0 +1,15 @@
+AI Data Sample 02: Higher-Severity Security Event
+
+agent.name: DESKTOP-THFNAGI
+agent.ip: 192.168.70.10
+manager.name: businessguardian-wazuh-server
+data.win.system.eventID: 4625
+data.win.system.providerName: Microsoft-Windows-Security-Auditing
+data.win.system.severityValue: WARNING
+data.win.system.message: Lab14 synthetic test: repeated failed authentication activity detected for controlled alert-processing validation
+rule.description: Repeated failed authentication activity.
+rule.id: 61002
+rule.level: 11
+rule.groups: windows, authentication, failed_login
+decoder.name: windows_eventchannel
+location: EventChannel

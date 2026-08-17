@@ -1,0 +1,13 @@
+AI Data Sample 03: Alert With Missing Fields
+
+agent.name: DESKTOP-THFNAGI
+manager.name: businessguardian-wazuh-server
+data.win.system.eventID: 1001
+data.win.system.severityValue: WARNING
+data.win.system.message: Lab14 synthetic test: controlled low-severity event with selected expected context intentionally omitted
+rule.description: Controlled event with incomplete context.
+rule.id: 62003
+rule.level: 5
+rule.groups: windows, lab14_test, incomplete_context
+decoder.name: windows_eventchannel
+location: EventChannel

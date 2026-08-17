@@ -1,0 +1,7 @@
+AI Data Sample 05 - Invalid Alert Content
+
+This sanitized file intentionally contains no supported Wazuh alert fields.
+
+It is used to confirm that Lab 14 rejects unsupported alert content safely.
+
+No security event should be inferred from this text.
