@@ -143,80 +143,62 @@ Six sanitized design screenshots are published as portfolio evidence.
 
 The complete internal design record and proprietary Business Guardian implementation details remain outside the public repository.
 
+### [Lab 14: AI Alert Explainer v2 Multiple Alert Processing](lab-14-ai-alert-explainer-v2-multiple-alert-processing/README.md)
+
+Implemented and validated the multiple-alert processing architecture designed during Lab 13. Lab 14 processes multiple supported alert files during one controlled execution, translates Wazuh-specific data into a vendor-neutral normalized alert model, applies platform-neutral severity, identifies missing and malformed information, isolates per-alert failures, generates unique analyst reports, creates batch summaries, preserves source traceability, and protects previous output from overwrite.
+
+The predetermined Lab 13 validation target was matched exactly: 5 alerts discovered, 2 processed normally, 2 processed with warnings, 1 failed validation, 4 individual reports created, and 1 batch summary generated. A second validation run produced the same result without overwriting the first run.
+
 ## Current Status
 
-Project Athenaeum is current through **Lab 13**.
+Project Athenaeum is current through **Lab 14**.
 
 The following labs are completed and published:
 
-* Lab 01: Documentation Setup
-* Lab 02: VirtualBox CyberLab
-* Lab 03: Linux Fundamentals
-* Lab 04: Windows Fundamentals
-* Lab 05: DVWA Web Security
-* Lab 06: Nmap Networking Basics
-* Lab 07: BusinessGuardianLab Network Setup
-* Lab 08: Wazuh Monitoring Server Setup
-* Lab 09: Wazuh Windows Agent Deployment
-* Lab 10: Wazuh Alert Review and AI Data Collection
-* Lab 11: AI Alert Explainer MVP
-* Lab 12: AI Alert Explainer Testing and Validation
-* Lab 13: AI Alert Explainer v2 Requirements and Design
+- Lab 01: Documentation Setup
+- Lab 02: VirtualBox CyberLab
+- Lab 03: Linux Fundamentals
+- Lab 04: Windows Fundamentals
+- Lab 05: DVWA Web Security
+- Lab 06: Nmap Networking Basics
+- Lab 07: BusinessGuardianLab Network Setup
+- Lab 08: Wazuh Monitoring Server Setup
+- Lab 09: Wazuh Windows Agent Deployment
+- Lab 10: Wazuh Alert Review and AI Data Collection
+- Lab 11: AI Alert Explainer MVP
+- Lab 12: AI Alert Explainer Testing and Validation
+- Lab 13: AI Alert Explainer v2 Requirements and Design
+- Lab 14: AI Alert Explainer v2 Multiple Alert Processing
 
-Project Athenaeum now documents a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert explanation, software validation, and requirements-driven security-tool design.
+Project Athenaeum now documents a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert explanation, software validation, requirements-driven design, and validated multiple-alert processing.
 
-Labs 11 and 12 remain preserved as the validated MVP baseline.
+Labs 11 and 12 remain preserved as the validated single-alert MVP baseline. Lab 13 established the requirements and architecture for v2, and Lab 14 successfully implemented and validated the first multiple-alert processing baseline.
 
-Lab 13 used the results of that work to design the next version before additional code is introduced.
+The Lab 14 implementation matched its predetermined acceptance criteria and demonstrated safe handling of normal, incomplete, malformed, and unsupported alert data while preserving human review requirements and source traceability.
 
 ## Next Project Phase
 
-### Lab 14: AI Alert Explainer v2 Multiple Alert Processing
+With the multiple-alert processing foundation validated, the next Project Athenaeum phase will focus on determining the appropriate next technical layer before implementation begins.
 
-Lab 14 will begin controlled implementation of the v2 design approved during Lab 13.
+Future work will build on the Lab 14 baseline rather than modifying it retroactively.
 
-Initial implementation priorities include:
+The next development stage is expected to move beyond organizing and explaining alerts toward stronger investigation and decision-support capabilities, including areas such as:
 
-* Creating a separate v2 development workspace
-* Separating input and output locations
-* Discovering multiple supported alert files in one run
-* Reusing validated Lab 11 parsing and file-handling concepts
-* Building the normalized alert structure
-* Creating the first Wazuh-to-normalized translation process
-* Adding normalized severity handling
-* Applying validation rules
-* Improving missing-field reporting
-* Producing validation notes
-* Assigning processing outcomes
-* Defaulting processed alerts to `Requires Review`
-* Generating unique individual alert reports
-* Preventing accidental report overwrites
-* Preserving source files without modification
-* Isolating failures so one invalid alert does not stop the batch
-* Creating one batch summary per processing run
-* Running the five deterministic test scenarios defined during Lab 13
-* Comparing v2 behavior with the validated Lab 11 and Lab 12 baseline
+- Additional alert-type validation
+- Improved security-data quality checks
+- Structured processing and audit records
+- Multiple-alert correlation
+- Context-aware investigation guidance
+- Evidence collection
+- Security-control and configuration review
+- Reusable report components
+- Additional security-platform adapters
+- Human-reviewed workflow decisions
+- Structured incident reporting
 
-Planned processing outcomes include:
+The exact scope of the next lab will be defined and documented before implementation begins.
 
-* `Processed Normally`
-* `Processed With Warnings`
-* `Failed Validation`
-
-### Lab 14 Validation Target
-
-The first v2 implementation has a defined validation target:
-
-* 5 alerts discovered
-* 2 processed normally
-* 2 processed with warnings
-* 1 failed validation
-* 4 individual alert reports
-* 1 batch summary
-
-These acceptance criteria were defined before implementation so the completed Lab 14 workflow can be evaluated against measurable expected results.
-
-Dashboard development, advanced AI integration, automated response, and commercial product functionality remain outside the immediate Lab 14 scope.
+Business Guardian product-level remediation, policy enforcement, approval workflows, tenant logic, proprietary investigation architecture, and commercial functionality remain outside the public Project Athenaeum repository.
 
 ## Development Principles
 
@@ -323,28 +305,36 @@ My current lab infrastructure includes:
 
 ### Validated Lab Capabilities
 
-* Isolated virtual-network deployment
-* Static IPv4 configuration
-* Windows and Linux administration
-* Authorized vulnerability testing
-* Nmap service and network scanning
-* End-to-end Windows-to-Wazuh monitoring
-* Controlled Windows event generation
-* Wazuh alert generation and review
-* Wazuh alert-detail, rule-field, and JSON analysis
-* Sanitized security-data preparation
-* Functional Python AI Alert Explainer MVP
-* Plain-language alert report generation
-* Missing-file and empty-file testing
-* Missing alert-field behavior testing
-* Wazuh severity-logic validation
-* Stable baseline restoration and verification
-* Vendor-neutral alert-model design
-* Wazuh-to-normalized field-mapping design
-* Normalized severity design
-* Multiple-alert processing workflow design
-* Deterministic validation-test planning
-* Human-reviewed investigation recommendations
+- Isolated virtual-network deployment
+- Static IPv4 configuration
+- Windows and Linux administration
+- Authorized vulnerability testing
+- Nmap service and network scanning
+- End-to-end Windows-to-Wazuh monitoring
+- Controlled Windows event generation
+- Wazuh alert generation and review
+- Wazuh alert-detail, rule-field, and JSON analysis
+- Sanitized security-data preparation
+- Functional Python AI Alert Explainer MVP
+- Plain-language alert report generation
+- Missing-file and empty-file testing
+- Missing alert-field behavior testing
+- Wazuh severity-logic validation
+- Stable baseline restoration and verification
+- Vendor-neutral normalized alert processing
+- Wazuh-to-normalized field translation
+- Platform-neutral severity normalization
+- Multiple-alert batch processing
+- Missing and malformed data validation
+- Per-alert failure isolation
+- Unique individual report generation
+- Batch-summary generation
+- Source traceability
+- Non-destructive source-file handling
+- Output overwrite protection
+- Deterministic acceptance testing
+- Repeatable processing validation
+- Human-reviewed security decision support
 
 All cybersecurity exercises are performed using personally owned or authorized systems in isolated lab environments.
 
