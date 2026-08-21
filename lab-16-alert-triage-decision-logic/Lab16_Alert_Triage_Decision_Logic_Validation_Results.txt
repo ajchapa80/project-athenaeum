@@ -1,0 +1,197 @@
+Lab 16 - Alert Triage and Decision Logic
+Validation Results
+
+Validation Date:
+2026-08-21
+
+Purpose
+
+Validate the public, vendor-neutral Lab 16 alert-triage and decision-routing implementation against the frozen requirements and controlled validation plan established before coding.
+
+Lab 16 uses validated Lab 15-style alert records as its starting point. It does not rebuild alert ingestion, normalization, validation, or traceability and does not execute remediation.
+
+Controlled Test Set
+
+Five sanitized, processable alert records were evaluated during each controlled batch:
+
+1. Known Windows application error
+2. Known repeated authentication failure
+3. Application-error pattern with material triage context missing
+4. Controlled unusual configuration-change event
+5. Valid but currently unknown security condition
+
+Expected First-Run Result
+
+Total Processable Alert Records Discovered: 5
+
+KNOWN_COMMON: 2
+INSUFFICIENT_DATA: 1
+UNUSUAL: 1
+UNKNOWN: 1
+
+POLICY_EVALUATION: 2
+INVESTIGATION: 3
+HUMAN_REVIEW: 0
+NO_ACTION_YET: 0
+
+Triage Decision Records Created: 5
+Failed: 0
+Batch Summaries Created: 1
+
+Observed First-Run Result
+
+Processing Run:
+2026-08-21T21:07:47Z
+
+Total Processable Alert Records Discovered: 5
+
+KNOWN_COMMON: 2
+INSUFFICIENT_DATA: 1
+UNUSUAL: 1
+UNKNOWN: 1
+
+POLICY_EVALUATION: 2
+INVESTIGATION: 3
+HUMAN_REVIEW: 0
+NO_ACTION_YET: 0
+
+Triage Decision Records Created: 5
+Failed: 0
+Batch Summaries Created: 1
+
+Per-Record Validation
+
+Test 1 - Known Windows Application Error
+
+Result: Triaged Successfully
+Classification: KNOWN_COMMON
+Confidence: HIGH
+Matched Rule: TRIAGE-RULE-002
+Investigation Required: false
+Human Review Required: false
+Next Stage: POLICY_EVALUATION
+
+PASS - The documented Windows application-error pattern was identified using validated event and rule context.
+
+Test 2 - Known Repeated Authentication Failure
+
+Result: Triaged Successfully
+Technical Severity: HIGH
+Classification: KNOWN_COMMON
+Confidence: HIGH
+Matched Rule: TRIAGE-RULE-003
+Investigation Required: false
+Human Review Required: false
+Next Stage: POLICY_EVALUATION
+
+PASS - HIGH technical severity did not independently determine the triage classification. The deterministic event and rule pattern produced the classification.
+
+Test 3 - Insufficient Data
+
+Result: Triaged Successfully
+Technical Severity: MEDIUM
+Classification: INSUFFICIENT_DATA
+Confidence: HIGH
+Matched Rule: TRIAGE-RULE-001
+Missing Material Fields: endpoint_ip, event_provider
+Investigation Required: true
+Human Review Required: false
+Next Stage: INVESTIGATION
+
+PASS - Evidence-quality problems took priority over known-pattern matching. Missing material context was preserved rather than invented.
+
+Test 4 - Controlled Unusual Configuration Change
+
+Result: Triaged Successfully
+Classification: UNUSUAL
+Confidence: MEDIUM
+Matched Rule: TRIAGE-RULE-004
+Investigation Required: true
+Human Review Required: false
+Next Stage: INVESTIGATION
+
+PASS - The controlled unusual condition was routed toward investigation without being automatically labeled malicious.
+
+Test 5 - Unknown Condition
+
+Result: Triaged Successfully
+Technical Severity: LOW
+Classification: UNKNOWN
+Confidence: LOW
+Matched Rule: TRIAGE-RULE-005
+Investigation Required: true
+Human Review Required: false
+Next Stage: INVESTIGATION
+
+PASS - LOW technical severity did not cause the condition to be treated as known, benign, resolved, or safe. Uncertainty remained explicit.
+
+Identity and Traceability Validation
+
+PASS - Every processable source record retained its original AR record_id.
+PASS - Every triage decision received a separate unique TR triage_id.
+PASS - The TR identifier did not replace or regenerate the originating AR identifier.
+PASS - Source validation status was preserved.
+PASS - Source normalized severity was preserved.
+PASS - Missing-field information was preserved.
+PASS - Validation-note information was preserved.
+PASS - Matched deterministic rule IDs were recorded.
+PASS - Classification reasons were recorded.
+PASS - Next-stage decisions were recorded.
+PASS - Triage history remained chronological.
+
+Safety Validation
+
+PASS - Technical severity remained separate from triage classification.
+PASS - HIGH severity was not treated as proof of malicious activity.
+PASS - LOW severity was not treated as proof of safety.
+PASS - Missing evidence was not invented.
+PASS - Evidence-quality problems overrode otherwise recognizable known-pattern matches.
+PASS - UNKNOWN remained explicit when supported deterministic rules could not establish a more reliable classification.
+PASS - POLICY_EVALUATION was treated only as a routing state and not as authorization.
+PASS - No alert was marked resolved.
+PASS - No defensive action was authorized.
+PASS - No defensive action was executed.
+PASS - Alert or log content was not converted into executable instructions.
+
+Repeat-Processing Validation
+
+Second Processing Run:
+2026-08-21T21:19:17Z
+
+Observed Second-Run Result
+
+Total Processable Alert Records Discovered: 5
+
+KNOWN_COMMON: 2
+INSUFFICIENT_DATA: 1
+UNUSUAL: 1
+UNKNOWN: 1
+
+POLICY_EVALUATION: 2
+INVESTIGATION: 3
+HUMAN_REVIEW: 0
+NO_ACTION_YET: 0
+
+Triage Decision Records Created: 5
+Failed: 0
+Batch Summaries Created: 1
+
+PASS - The second run reproduced the expected classifications.
+PASS - The second run reproduced the expected routing decisions.
+PASS - The original AR identifiers remained unchanged.
+PASS - New TR identifiers were generated for the second set of triage decisions.
+PASS - First-run TR records remained intact.
+PASS - The first-run batch summary remained intact.
+PASS - Second-run output did not overwrite previously generated output.
+
+Final Validation Result
+
+PASS
+
+Lab 16 successfully implemented and validated a public, vendor-neutral alert-triage and decision-routing layer using deterministic, evidence-based rules.
+
+The implementation preserved Lab 15 alert-record identity and validation context, created separate traceable triage-decision records, classified known/common, insufficient-data, unusual, and unknown conditions, and routed those decisions toward POLICY_EVALUATION or INVESTIGATION without treating triage as authorization or a final security conclusion.
+
+Controlled validation confirmed that evidence quality takes priority over recognizable patterns, technical severity does not independently determine classification, uncertainty is preserved when appropriate, repeated processing produces consistent decisions with new TR identities, previous output remains intact, and no defensive action is authorized or executed.
+
+Lab 16 satisfies the frozen controlled-validation requirements established before implementation.
