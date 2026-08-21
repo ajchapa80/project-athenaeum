@@ -1,0 +1,7 @@
+source_alert_id=LAB15-ALERT-003
+source_platform=Sanitized Security Source
+source_timestamp=2026-08-21T14:10:00Z
+endpoint_name=LAB-WIN11-02
+source_severity=5
+event_type=Endpoint Activity
+message=Sanitized alert intentionally missing endpoint IP and event provider for validation testing.
