@@ -169,6 +169,58 @@ This lab does not recreate private product functionality.
 **Failure Isolation:** PASS  
 **Traceability Validation:** PASS
 
+## Selected Validation Evidence
+
+The screenshots below show the strongest portfolio-safe evidence from the controlled Lab 15 validation.
+
+### Multiple-Alert Batch Processing
+
+![Lab 15 multiple-alert batch processing](Screenshots/2026-08-20_Lab15_AlertRecords_36_multiple-alert-batch-processing.png)
+
+The batch-processing workflow discovers supported alert files, processes each alert independently, preserves failure isolation, and calculates totals only after all discovered alerts have been attempted.
+
+### First Controlled Validation Run
+
+![Lab 15 first controlled validation run](Screenshots/2026-08-21_Lab15_AlertRecords_45_first-controlled-run.png)
+
+The first controlled execution produced the frozen expected result: five alerts discovered, two processed normally, two processed with warnings, one failed validation, and four processable records created.
+
+### Batch Summary and Traceability
+
+![Lab 15 batch summary and traceability](Screenshots/2026-08-21_Lab15_AlertRecords_47_batch-summary-totals-and-traceability-1.png)
+
+The batch summary preserves source-to-record traceability while reporting totals derived from actual processing results.
+
+### Ordered Processing History
+
+![Lab 15 record processing history](Screenshots/2026-08-21_Lab15_AlertRecords_50_record1-processing-history.png)
+
+Structured processing-history entries preserve stage, timestamp, outcome, and notes information for audit-oriented traceability.
+
+### Missing-Field Handling
+
+![Lab 15 missing-field validation](Screenshots/2026-08-21_Lab15_AlertRecords_51_record3-missing-field-validation.png)
+
+Missing endpoint IP and event-provider information are represented explicitly rather than fabricated, while the alert remains processable with warnings.
+
+### Malformed Severity Handling
+
+![Lab 15 malformed severity validation](Screenshots/2026-08-21_Lab15_AlertRecords_52_record4-malformed-severity-validation.png)
+
+The malformed source severity remains preserved while the normalized severity safely becomes `UNKNOWN` and a validation note records the condition.
+
+### Repeat Processing and Overwrite Protection
+
+![Lab 15 repeat-processing validation](Screenshots/2026-08-21_Lab15_AlertRecords_54_repeat-processing-overwrite-protection.png)
+
+A second complete execution generated separate output rather than overwriting the first run, demonstrating repeat-processing support and output preservation.
+
+### Final Validation Record
+
+![Lab 15 final validation results](Screenshots/2026-08-21_Lab15_AlertRecords_56_validation-results-record.png)
+
+The final validation record documents the controlled test results and confirms that Lab 15 completed with a `PASS` result.
+
 ## Skills Demonstrated
 
 - Python
