@@ -1,0 +1,379 @@
+Project Athenaeum
+Lab 15 — Alert Records, Validation, and Traceability
+Controlled Validation Results
+
+Date: August 21, 2026
+
+----------------------------------------------------------------------
+1. FINAL VALIDATION STATUS
+----------------------------------------------------------------------
+
+Final Lab 15 Validation:
+
+PASS
+
+The controlled validation set produced the exact frozen expected result.
+
+----------------------------------------------------------------------
+2. CONTROLLED VALIDATION SET
+----------------------------------------------------------------------
+
+Five sanitized alert files were processed.
+
+Alert 001 — Complete Windows Application Error
+
+Observed outcome:
+Processed Normally
+
+Result:
+PASS
+
+
+Alert 002 — Complete Authentication Event
+
+Observed outcome:
+Processed Normally
+
+Result:
+PASS
+
+
+Alert 003 — Missing Fields
+
+Intentionally missing:
+
+endpoint_ip
+event_provider
+
+Observed outcome:
+Processed With Warnings
+
+Observed behavior:
+
+- endpoint_ip was recorded as unavailable.
+- event_provider was recorded as unavailable.
+- Missing fields were listed explicitly.
+- No replacement values were fabricated.
+- A processable alert record was still created.
+
+Result:
+PASS
+
+
+Alert 004 — Malformed Source Severity
+
+Source severity:
+
+invalid
+
+Observed outcome:
+Processed With Warnings
+
+Observed behavior:
+
+- Original source severity remained preserved as "invalid".
+- Normalized severity became UNKNOWN.
+- A validation note documented the malformed source severity.
+- No replacement severity value was guessed.
+- A processable alert record was still created.
+
+Result:
+PASS
+
+
+Alert 005 — Unsupported / Invalid Content
+
+Observed outcome:
+Failed Validation
+
+Observed behavior:
+
+- No recognized processable alert record was created.
+- No AR- record identifier was assigned.
+- No JSON alert record was generated.
+- The failure did not prevent Alerts 001–004 from completing.
+
+Result:
+PASS
+
+----------------------------------------------------------------------
+3. EXPECTED BATCH RESULT
+----------------------------------------------------------------------
+
+Frozen expected result:
+
+Total Supported Alert Files Discovered: 5
+Processed Normally: 2
+Processed With Warnings: 2
+Failed Validation: 1
+Processable Alert Records Created: 4
+Batch Summaries Created: 1
+
+Compact expected result:
+
+5 / 2 / 2 / 1 / 4
+
+----------------------------------------------------------------------
+4. OBSERVED FIRST-RUN RESULT
+----------------------------------------------------------------------
+
+Total Supported Alert Files Discovered: 5
+Processed Normally: 2
+Processed With Warnings: 2
+Failed Validation: 1
+Processable Alert Records Created: 4
+Batch Summaries Created: 1
+
+Compact observed result:
+
+5 / 2 / 2 / 1 / 4
+
+Expected vs. observed:
+
+Exact match
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+5. RECORD ID VALIDATION
+----------------------------------------------------------------------
+
+Observed:
+
+- Each processable alert received an AR- identifier.
+- Separate processable alerts received different identifiers.
+- Record IDs were UUID-based.
+- Record IDs did not contain endpoint names.
+- Record IDs did not contain IP addresses.
+- Record IDs did not contain source filenames.
+- Record IDs did not contain usernames.
+- Record IDs did not contain source alert identifiers.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+6. TIMESTAMP VALIDATION
+----------------------------------------------------------------------
+
+Observed:
+
+- Original source event timestamps remained preserved.
+- Ingestion timestamps were recorded separately.
+- Ingestion timestamps used ISO 8601 UTC format.
+- Processing-history entries included their own timestamps.
+- Source timestamps were not replaced by ingestion timestamps.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+7. SOURCE TRACEABILITY VALIDATION
+----------------------------------------------------------------------
+
+Observed:
+
+- Original source alert identifiers remained preserved.
+- Source filenames remained associated with generated records.
+- Supported source data remained preserved in structured form.
+- Processing history retained ordered stage, timestamp, outcome, and notes
+  information.
+- Generated records remained traceable back to their source files.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+8. MISSING-DATA VALIDATION
+----------------------------------------------------------------------
+
+Alert 003 intentionally omitted:
+
+endpoint_ip
+event_provider
+
+Observed:
+
+- Both missing fields were detected.
+- Missing fields were represented explicitly.
+- Unavailable values remained null/unavailable.
+- No data was fabricated.
+- Processing continued with warnings.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+9. MALFORMED-DATA VALIDATION
+----------------------------------------------------------------------
+
+Alert 004 contained:
+
+source_severity=invalid
+
+Observed:
+
+- The malformed source value remained preserved.
+- Normalized severity became UNKNOWN.
+- Validation notes recorded the malformed condition.
+- No replacement value was invented.
+- Processing continued with warnings.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+10. FAILURE ISOLATION VALIDATION
+----------------------------------------------------------------------
+
+Alert 005 contained unsupported content.
+
+Observed:
+
+- Alert 005 failed validation safely.
+- No processable record ID was assigned.
+- No JSON alert record was generated.
+- Alerts 001–004 continued processing.
+- Batch execution completed.
+- Final totals reflected the failed alert accurately.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+11. SOURCE PRESERVATION VALIDATION
+----------------------------------------------------------------------
+
+Observed:
+
+- Input files remained unchanged after processing.
+- Source files were not overwritten.
+- Generated records were written separately from source data.
+- Supported raw source information remained preserved in generated records.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+12. REPEAT-PROCESSING VALIDATION
+----------------------------------------------------------------------
+
+A second complete execution was performed using the same controlled input
+set.
+
+Observed second-run result:
+
+Total Supported Alert Files Discovered: 5
+Processed Normally: 2
+Processed With Warnings: 2
+Failed Validation: 1
+Processable Alert Records Created: 4
+Batch Summaries Created: 1
+
+Compact second-run result:
+
+5 / 2 / 2 / 1 / 4
+
+Observed:
+
+- The second run reproduced the same processing totals.
+- A separate output directory was created.
+- First-run output remained intact.
+- Existing JSON records were not overwritten.
+- The second run generated new AR- identifiers for newly created records.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+13. BATCH SUMMARY VALIDATION
+----------------------------------------------------------------------
+
+Observed:
+
+- Batch totals were derived from actual processing results.
+- The summary reported all five discovered alert files.
+- The summary accurately reported normal, warning, and failed outcomes.
+- The summary accurately reported four processable alert records.
+- One batch summary was generated for the run.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+14. SECURITY AND RELIABILITY VALIDATION
+----------------------------------------------------------------------
+
+Observed:
+
+- Alert content was treated as untrusted source data.
+- Source content was not interpreted as executable instructions.
+- Missing values were not fabricated.
+- Malformed values were preserved when safe.
+- Unsupported content failed visibly.
+- Failure handling remained isolated by alert.
+- Source files remained non-destructive.
+- Previous output remained protected from overwrite.
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+15. PUBLIC / PRIVATE BOUNDARY VALIDATION
+----------------------------------------------------------------------
+
+The public Lab 15 implementation contains only:
+
+- Vendor-neutral alert-record logic
+- Sanitized test data
+- Structured JSON examples
+- Validation documentation
+- Portfolio-safe traceability concepts
+
+The public lab does not contain:
+
+- Private Business Guardian connector source
+- Live Wazuh API or Indexer implementation
+- Runtime credentials or tokens
+- Private deploy-key information
+- Proprietary investigation logic
+- Policy or approval implementation
+- Defensive-action logic
+- Verification-engine implementation
+- Sensitive backend or tenant architecture
+
+Result:
+
+PASS
+
+----------------------------------------------------------------------
+16. FINAL RESULT
+----------------------------------------------------------------------
+
+Expected result:
+
+5 / 2 / 2 / 1 / 4
+
+Observed first run:
+
+5 / 2 / 2 / 1 / 4
+
+Observed second run:
+
+5 / 2 / 2 / 1 / 4
+
+Final Lab 15 Validation:
+
+PASS
