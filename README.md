@@ -172,9 +172,23 @@ Controlled validation produced the frozen expected result:
 
 **Final validation: PASS**
 
+### [Lab 16 — Alert Triage and Decision Logic](lab-16-alert-triage-decision-logic/README.md)
+
+Extended the validated Lab 15 alert-record baseline with deterministic, vendor-neutral triage classifications and next-stage routing.
+
+Lab 16 preserves the original `AR-...` alert-record identity, creates separate `TR-...` triage-decision identities, keeps technical severity separate from classification, gives evidence-quality problems priority, preserves uncertainty when stronger conclusions are unsupported, and records traceable routing decisions without authorizing or executing defensive action.
+
+Controlled validation produced:
+
+`5 records / 2 KNOWN_COMMON / 1 INSUFFICIENT_DATA / 1 UNUSUAL / 1 UNKNOWN / 2 POLICY_EVALUATION / 3 INVESTIGATION / 0 failures`
+
+A second complete run reproduced the same classification and routing totals, preserved all original `AR-...` identities, generated new `TR-...` identities, and kept first-run output intact.
+
+**Final validation: PASS**
+
 ## Current Status
 
-Project Athenaeum is current through **Lab 15 — Alert Records, Validation, and Traceability**.
+Project Athenaeum is current through **Lab 16 — Alert Triage and Decision Logic**.
 
 The following labs are complete and published:
 
@@ -193,14 +207,29 @@ The following labs are complete and published:
 - Lab 13: AI Alert Explainer v2 Requirements and Design
 - Lab 14: AI Alert Explainer v2 Multiple Alert Processing
 - Lab 15: Alert Records, Validation, and Traceability
+- Lab 16: Alert Triage and Decision Logic
 
-Project Athenaeum now demonstrates a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert processing, requirements-driven software design, validation, multiple-alert processing, and vendor-neutral alert records with source-to-processing traceability.
+Project Athenaeum now demonstrates a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert processing, requirements-driven software design, deterministic validation, vendor-neutral alert records, source-to-processing traceability, and controlled cybersecurity triage decisions.
 
-Labs 11 and 12 preserve the validated single-alert MVP baseline. Lab 13 established the requirements and architecture for the next processing model, and Lab 14 implemented and validated controlled multiple-alert processing without rebuilding the earlier work.
+Labs 11 and 12 preserve the validated single-alert MVP baseline. Lab 13 established the next processing architecture, Lab 14 implemented validated multiple-alert processing, and Lab 15 added persistent alert identity, validation outcomes, processing history, and traceability without rebuilding the earlier work.
 
-Lab 15 extends that foundation with structured vendor-neutral alert records, non-sensitive record identifiers, preserved source IDs and timestamps, explicit validation outcomes, missing- and malformed-data handling, ordered processing history, failure isolation, non-destructive source handling, repeat-processing protection, and auditable batch summaries. Controlled validation matched the frozen expected result of `5 discovered / 2 normal / 2 warnings / 1 failed / 4 records`, and the final Lab 15 validation returned `PASS`.
+Lab 16 extends that foundation with deterministic triage classifications and next-stage routing. Original `AR-...` alert-record identities remain preserved while separate `TR-...` triage-decision identities record the decision. Evidence-quality problems take priority over recognizable patterns, technical severity remains separate from classification, and uncertainty remains explicit when the available evidence does not support a stronger conclusion.
 
-Private Business Guardian development has also advanced beyond the public portfolio labs. A live read-only Wazuh evidence connector was validated against the isolated lab using both server and indexed evidence paths, with 257 automated tests passing and final live validation returning `PASS`. Proprietary connector, investigation, policy, approval, remediation, verification, and other product-specific implementation remains in the separate private Business Guardian repository.
+Controlled Lab 16 validation processed five alert records with zero failures:
+
+`2 KNOWN_COMMON / 1 INSUFFICIENT_DATA / 1 UNUSUAL / 1 UNKNOWN`
+
+Routing produced:
+
+`2 POLICY_EVALUATION / 3 INVESTIGATION / 0 HUMAN_REVIEW / 0 NO_ACTION_YET`
+
+A second complete execution reproduced the same classification and routing totals, preserved the original alert-record identities, created new triage-decision identities, and left previous output intact.
+
+**Final Lab 16 validation: PASS**
+
+Lab 16 is a decision-routing layer, not a remediation layer. `KNOWN_COMMON` does not mean benign or resolved, and `POLICY_EVALUATION` does not authorize defensive action. No remediation, defensive action, verification, or closure occurs in this public lab.
+
+Private Business Guardian development continues separately. Production triage heuristics, evidence orchestration, investigation workflows, business-risk scoring, policy and approval logic, defensive execution, verification, audit mechanisms, tenant logic, and other proprietary product capabilities remain in the private repository.
 
 Project Athenaeum will continue to publish sanitized technical milestones and portfolio-safe validation evidence while preserving the public/private repository boundary and the rule that **nothing gets built twice**.
 
