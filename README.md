@@ -149,11 +149,34 @@ Implemented and validated the multiple-alert processing architecture designed du
 
 The predetermined Lab 13 validation target was matched exactly: 5 alerts discovered, 2 processed normally, 2 processed with warnings, 1 failed validation, 4 individual reports created, and 1 batch summary generated. A second validation run produced the same result without overwriting the first run.
 
+### Private Business Guardian Milestone — Live Wazuh Evidence Validation
+
+Business Guardian development has progressed beyond the public portfolio labs into a separate private product repository. A live Wazuh evidence connector was validated against the Project Athenaeum lab using both server and indexed evidence paths.
+
+- Live read-only evidence retrieval validated against the isolated Wazuh lab
+- Both supported evidence paths returned security data successfully
+- 257 automated tests passed
+- Final live validation returned `PASS`
+- A live compatibility issue was identified, corrected, and regression-tested
+- GitHub Actions passed after the correction
+
+Proprietary connector and investigation implementation remains private. Project Athenaeum continues to publish sanitized technical milestones and validation evidence without duplicating private product functionality.
+
+### [Lab 15 — Alert Records, Validation, and Traceability](lab-15-alert-records-validation-traceability/README.md)
+
+Built a vendor-neutral alert-record and traceability layer for structured security processing. Lab 15 introduced non-sensitive `AR-...` record identifiers, source and ingestion timestamp preservation, explicit validation outcomes, missing and malformed-data handling, ordered processing history, failure isolation, non-destructive source handling, and repeat-processing protection.
+
+Controlled validation produced the frozen expected result:
+
+`5 discovered / 2 normal / 2 warnings / 1 failed / 4 records`
+
+**Final validation: PASS**
+
 ## Current Status
 
-Project Athenaeum is current through **Lab 14**.
+Project Athenaeum is current through **Lab 15 — Alert Records, Validation, and Traceability**.
 
-The following labs are completed and published:
+The following labs are complete and published:
 
 - Lab 01: Documentation Setup
 - Lab 02: VirtualBox CyberLab
@@ -169,12 +192,17 @@ The following labs are completed and published:
 - Lab 12: AI Alert Explainer Testing and Validation
 - Lab 13: AI Alert Explainer v2 Requirements and Design
 - Lab 14: AI Alert Explainer v2 Multiple Alert Processing
+- Lab 15: Alert Records, Validation, and Traceability
 
-Project Athenaeum now documents a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert explanation, software validation, requirements-driven design, and validated multiple-alert processing.
+Project Athenaeum now demonstrates a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert processing, requirements-driven software design, validation, multiple-alert processing, and vendor-neutral alert records with source-to-processing traceability.
 
-Labs 11 and 12 remain preserved as the validated single-alert MVP baseline. Lab 13 established the requirements and architecture for v2, and Lab 14 successfully implemented and validated the first multiple-alert processing baseline.
+Labs 11 and 12 preserve the validated single-alert MVP baseline. Lab 13 established the requirements and architecture for the next processing model, and Lab 14 implemented and validated controlled multiple-alert processing without rebuilding the earlier work.
 
-The Lab 14 implementation matched its predetermined acceptance criteria and demonstrated safe handling of normal, incomplete, malformed, and unsupported alert data while preserving human review requirements and source traceability.
+Lab 15 extends that foundation with structured vendor-neutral alert records, non-sensitive record identifiers, preserved source IDs and timestamps, explicit validation outcomes, missing- and malformed-data handling, ordered processing history, failure isolation, non-destructive source handling, repeat-processing protection, and auditable batch summaries. Controlled validation matched the frozen expected result of `5 discovered / 2 normal / 2 warnings / 1 failed / 4 records`, and the final Lab 15 validation returned `PASS`.
+
+Private Business Guardian development has also advanced beyond the public portfolio labs. A live read-only Wazuh evidence connector was validated against the isolated lab using both server and indexed evidence paths, with 257 automated tests passing and final live validation returning `PASS`. Proprietary connector, investigation, policy, approval, remediation, verification, and other product-specific implementation remains in the separate private Business Guardian repository.
+
+Project Athenaeum will continue to publish sanitized technical milestones and portfolio-safe validation evidence while preserving the public/private repository boundary and the rule that **nothing gets built twice**.
 
 ## Next Project Phase
 
