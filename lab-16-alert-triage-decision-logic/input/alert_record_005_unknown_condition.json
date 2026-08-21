@@ -1,0 +1,37 @@
+{
+    "record_id": "AR-00000000-0000-4000-8000-000000000005",
+    "record_version": "1.0",
+    "source_platform": "Wazuh",
+    "source_alert_id": "BG-L16-005",
+    "source_event_timestamp": "2026-08-20T18:20:00Z",
+    "ingested_timestamp": "2026-08-21T12:20:00Z",
+    "endpoint_name": "DESKTOP-THFNAGI",
+    "endpoint_ip": "192.168.70.10",
+    "event_type": "Controlled unclassified security event.",
+    "event_id": "9005",
+    "event_provider": "BusinessGuardianLab16",
+    "event_message": "Controlled Lab 16 event with usable evidence but no supported deterministic pattern match.",
+    "source_rule_id": "65005",
+    "source_rule_description": "Controlled unclassified security event.",
+    "source_severity": "5",
+    "normalized_severity": "LOW",
+    "validation_status": "Processed Normally",
+    "missing_fields": [],
+    "validation_notes": [],
+    "review_status": "Requires Review",
+    "source_reference": "sanitized_lab16_alert_005",
+    "processing_history": [
+        {
+            "stage": "Record Created",
+            "timestamp": "2026-08-21T12:20:00Z",
+            "outcome": "Created",
+            "notes": "Controlled sanitized Lab 15-style record prepared for Lab 16 validation."
+        },
+        {
+            "stage": "Validation Completed",
+            "timestamp": "2026-08-21T12:20:01Z",
+            "outcome": "Processed Normally",
+            "notes": "Record contains sufficient validated context for controlled triage."
+        }
+    ]
+}

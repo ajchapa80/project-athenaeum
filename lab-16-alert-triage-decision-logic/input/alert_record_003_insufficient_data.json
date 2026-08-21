@@ -1,0 +1,40 @@
+{
+    "record_id": "AR-00000000-0000-4000-8000-000000000003",
+    "record_version": "1.0",
+    "source_platform": "Wazuh",
+    "source_alert_id": "BG-L16-003",
+    "source_event_timestamp": "2026-08-20T18:10:00Z",
+    "ingested_timestamp": "2026-08-21T12:10:00Z",
+    "endpoint_name": "DESKTOP-THFNAGI",
+    "endpoint_ip": null,
+    "event_type": "Windows application error event.",
+    "event_id": "903",
+    "event_provider": null,
+    "event_message": "Controlled Lab 16 application error event with material triage context intentionally omitted.",
+    "source_rule_id": "60602",
+    "source_rule_description": "Windows application error event.",
+    "source_severity": "9",
+    "normalized_severity": "MEDIUM",
+    "validation_status": "Processed With Warnings",
+    "missing_fields": [
+        "endpoint_ip",
+        "event_provider"
+    ],
+    "validation_notes": [],
+    "review_status": "Requires Review",
+    "source_reference": "sanitized_lab16_alert_003",
+    "processing_history": [
+        {
+            "stage": "Record Created",
+            "timestamp": "2026-08-21T12:10:00Z",
+            "outcome": "Created",
+            "notes": "Controlled sanitized Lab 15-style record prepared for Lab 16 validation."
+        },
+        {
+            "stage": "Validation Completed",
+            "timestamp": "2026-08-21T12:10:01Z",
+            "outcome": "Processed With Warnings",
+            "notes": "Expected context is missing but the record remains processable."
+        }
+    ]
+}

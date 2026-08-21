@@ -1,0 +1,37 @@
+{
+    "record_id": "AR-00000000-0000-4000-8000-000000000004",
+    "record_version": "1.0",
+    "source_platform": "Wazuh",
+    "source_alert_id": "BG-L16-004",
+    "source_event_timestamp": "2026-08-20T18:15:00Z",
+    "ingested_timestamp": "2026-08-21T12:15:00Z",
+    "endpoint_name": "DESKTOP-THFNAGI",
+    "endpoint_ip": "192.168.70.10",
+    "event_type": "Controlled unusual configuration-change event.",
+    "event_id": "4719",
+    "event_provider": "Microsoft-Windows-Security-Auditing",
+    "event_message": "Controlled Lab 16 unusual configuration-change event for triage validation.",
+    "source_rule_id": "64004",
+    "source_rule_description": "Controlled unusual configuration-change event.",
+    "source_severity": "8",
+    "normalized_severity": "MEDIUM",
+    "validation_status": "Processed Normally",
+    "missing_fields": [],
+    "validation_notes": [],
+    "review_status": "Requires Review",
+    "source_reference": "sanitized_lab16_alert_004",
+    "processing_history": [
+        {
+            "stage": "Record Created",
+            "timestamp": "2026-08-21T12:15:00Z",
+            "outcome": "Created",
+            "notes": "Controlled sanitized Lab 15-style record prepared for Lab 16 validation."
+        },
+        {
+            "stage": "Validation Completed",
+            "timestamp": "2026-08-21T12:15:01Z",
+            "outcome": "Processed Normally",
+            "notes": "Record contains sufficient validated context for controlled triage."
+        }
+    ]
+}
