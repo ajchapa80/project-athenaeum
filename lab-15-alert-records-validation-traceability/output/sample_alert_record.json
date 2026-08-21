@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "alert_record_id": "AR-2e8d4b14-4a1c-4f14-94c8-8f4a01315f7e",
+  "source_alert_id": "LAB15-ALERT-003",
+  "source_platform": "Sanitized Security Source",
+  "source_file": "alert_003_missing_fields.txt",
+  "source_timestamp": "2026-08-21T14:10:00Z",
+  "ingestion_timestamp": "2026-08-21T14:20:31.482000+00:00",
+  "endpoint_name": "LAB-WIN11-02",
+  "endpoint_ip": null,
+  "event_provider": null,
+  "source_severity": "5",
+  "normalized_severity": "LOW",
+  "event_type": "Endpoint Activity",
+  "message": "Sanitized alert intentionally missing endpoint IP and event provider for validation testing.",
+  "validation_outcome": "Processed With Warnings",
+  "missing_fields": [
+    "endpoint_ip",
+    "event_provider"
+  ],
+  "validation_notes": [
+    "endpoint_ip was unavailable in the source alert.",
+    "event_provider was unavailable in the source alert."
+  ],
+  "processing_history": [
+    {
+      "stage": "INGESTION",
+      "timestamp": "2026-08-21T14:20:31.482000+00:00",
+      "outcome": "SOURCE RECEIVED",
+      "notes": "Supported source file received for controlled record processing."
+    },
+    {
+      "stage": "VALIDATION",
+      "timestamp": "2026-08-21T14:20:31.483000+00:00",
+      "outcome": "Processed With Warnings",
+      "notes": "Alert data validated without fabrication. Missing or malformed values were recorded explicitly."
+    },
+    {
+      "stage": "RECORD_CREATION",
+      "timestamp": "2026-08-21T14:20:31.484000+00:00",
+      "outcome": "RECORD CREATED",
+      "notes": "Vendor-neutral alert record created with a non-sensitive UUID-based identifier."
+    }
+  ],
+  "raw_supported_source_data": {
+    "source_alert_id": "LAB15-ALERT-003",
+    "source_platform": "Sanitized Security Source",
+    "source_timestamp": "2026-08-21T14:10:00Z",
+    "endpoint_name": "LAB-WIN11-02",
+    "source_severity": "5",
+    "event_type": "Endpoint Activity",
+    "message": "Sanitized alert intentionally missing endpoint IP and event provider for validation testing."
+  }
+}
