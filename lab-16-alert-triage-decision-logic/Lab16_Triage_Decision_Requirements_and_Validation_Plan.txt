@@ -1,0 +1,1089 @@
+Lab 16 - Alert Triage and Decision Logic
+Requirements and Validation Plan
+
+Date:
+2026-08-21
+
+Purpose
+
+The purpose of Lab 16 is to design and validate a vendor-neutral triage and decision layer that determines what should happen next after a security alert has been normalized, validated, and assigned a stable alert record in Lab 15.
+
+Lab 16 will use the validated Lab 15 alert-record structure as its input baseline rather than rebuilding alert ingestion, normalization, validation, or traceability.
+
+The triage layer must distinguish between known/common conditions, unusual conditions, unknown conditions, and alerts with insufficient usable information. It must then route each alert toward the appropriate next stage without treating triage as proof that an event is malicious, benign, or resolved.
+
+Lab 16 does not execute remediation. It prepares the decision foundation that later Business Guardian components will use for investigation, policy evaluation, authorization, controlled defensive action execution, verification, and audit.
+
+Proprietary Business Guardian connector, investigation, correlation, policy, and execution logic remains in the private Business Guardian repository and will not be duplicated in this public lab.
+
+Design Goals
+
+The Lab 16 triage design must:
+
+1. Remain vendor-neutral.
+
+2. Accept a validated Lab 15-style alert record as its starting point.
+
+3. Preserve the original alert record_id so later triage decisions remain traceable to the same alert.
+
+4. Assign a separate triage_id to each triage decision record.
+
+5. Record when triage occurred using ISO 8601 UTC timestamps.
+
+6. Distinguish technical severity from triage classification.
+
+7. Distinguish data quality from security meaning.
+
+8. Classify alerts using explicit deterministic rules rather than vague or unsupported assumptions.
+
+9. Record the reason a classification was assigned.
+
+10. Record whether additional investigation is required.
+
+11. Record whether human review is required.
+
+12. Route each alert toward an explicit next stage.
+
+13. Avoid automatically treating HIGH or CRITICAL severity as proof of malicious activity.
+
+14. Avoid treating LOW severity as proof that an alert is safe.
+
+15. Treat UNKNOWN or incomplete information conservatively.
+
+16. Preserve missing-field and validation-warning information from Lab 15.
+
+17. Treat alert, log, and external content as untrusted evidence rather than executable instructions.
+
+18. Support future Business Guardian policy, approval, action, verification, and audit components without redesigning the triage record.
+
+19. Keep public Lab 16 decision logic portfolio-safe and sanitized.
+
+20. Preserve the rule that consequential or disruptive defensive actions require appropriate authorization before execution.
+
+Triage Classification Definitions
+
+Lab 16 will use four initial vendor-neutral triage classifications.
+
+KNOWN_COMMON
+
+Definition:
+
+A condition that matches an explicitly supported and previously defined pattern with enough validated evidence to identify the condition reliably.
+
+Requirements:
+
+- The condition must match a documented deterministic rule.
+- The alert record must contain enough usable context to support the match.
+- Missing or malformed evidence must not materially undermine the classification.
+- KNOWN_COMMON does not mean benign.
+- KNOWN_COMMON does not mean automatically safe to remediate.
+- Technical severity remains separate from the classification.
+
+Expected routing:
+
+A KNOWN_COMMON condition may be routed toward POLICY_EVALUATION when a supported response path exists.
+
+If no supported response path exists, the condition may instead require HUMAN_REVIEW or INVESTIGATION.
+
+
+UNUSUAL
+
+Definition:
+
+A valid and processable condition that does not match an established known/common pattern but contains enough evidence to show that the activity is meaningfully different from currently supported expected patterns.
+
+Requirements:
+
+- The record must contain usable event evidence.
+- The condition must not be classified as unusual solely because severity is HIGH or CRITICAL.
+- The classification must record why the event was considered unusual.
+- UNUSUAL does not automatically mean malicious.
+
+Expected routing:
+
+UNUSUAL conditions should normally route to INVESTIGATION.
+
+
+UNKNOWN
+
+Definition:
+
+A condition for which usable evidence exists, but the available information is not sufficient to determine a reliable known/common or unusual classification.
+
+Requirements:
+
+- UNKNOWN must not be converted into a lower-risk classification for convenience.
+- UNKNOWN must preserve uncertainty explicitly.
+- UNKNOWN severity and UNKNOWN triage classification remain separate concepts.
+- Additional evidence should be gathered when possible.
+
+Expected routing:
+
+UNKNOWN conditions should route to INVESTIGATION.
+
+
+INSUFFICIENT_DATA
+
+Definition:
+
+A condition where the alert record does not contain enough reliable information to support a meaningful triage classification.
+
+Requirements:
+
+- Missing or invalid evidence must be recorded explicitly.
+- No security meaning should be invented from unavailable information.
+- The condition must not be routed directly toward an automated defensive action.
+- Additional evidence collection or human review may be required.
+
+Expected routing:
+
+INSUFFICIENT_DATA should normally route to INVESTIGATION or HUMAN_REVIEW depending on what evidence is unavailable.
+
+
+Classification Priority
+
+When more than one condition appears possible, Lab 16 will apply classifications conservatively in this order:
+
+1. INSUFFICIENT_DATA
+2. UNKNOWN
+3. UNUSUAL
+4. KNOWN_COMMON
+
+A more specific or confident classification must not override evidence-quality problems that make the decision unreliable.
+
+Next-Stage Routing Definitions
+
+Lab 16 will use four initial next-stage routing values.
+
+POLICY_EVALUATION
+
+Definition:
+
+The condition is sufficiently understood to determine whether a supported response exists, but authorization and policy requirements must be evaluated before any defensive action can occur.
+
+Requirements:
+
+- Normally associated with a reliable KNOWN_COMMON classification.
+- Does not authorize or execute an action by itself.
+- Must preserve the originating alert record_id and triage_id.
+- Later policy logic will determine whether an action is allowed, pre-approved, approval-required, prohibited, or unsupported.
+
+POLICY_EVALUATION is a decision-routing state, not an execution state.
+
+
+INVESTIGATION
+
+Definition:
+
+Additional evidence or analysis is required before Business Guardian can reliably determine the condition or appropriate response.
+
+Requirements:
+
+- Used for UNUSUAL conditions.
+- Used for UNKNOWN conditions.
+- May be used for INSUFFICIENT_DATA when additional evidence can reasonably be gathered.
+- Investigation should attempt to reduce uncertainty rather than simply restating that the alert is unknown.
+- Later private Business Guardian investigation components may collect approved evidence, correlate activity, inspect controls/configuration, and reassess the condition.
+
+Lab 16 does not implement the proprietary investigation engine.
+
+
+HUMAN_REVIEW
+
+Definition:
+
+Human judgment is required before the workflow can safely continue.
+
+Requirements:
+
+- May be used when evidence cannot be collected automatically.
+- May be used when the meaning of missing or conflicting information requires human judgment.
+- May be used when the supported public Lab 16 rules cannot safely determine another route.
+- HUMAN_REVIEW must not be used merely as a substitute for building supported deterministic logic.
+
+Human review is a safety and judgment path, not the default destination for every alert.
+
+
+NO_ACTION_YET
+
+Definition:
+
+No defensive action should be initiated at the current stage because the condition has not been sufficiently established or because no supported response path is available.
+
+Requirements:
+
+- Must preserve the reason no action is currently appropriate.
+- Does not mean the alert is benign.
+- Does not mean the case is resolved.
+- May later transition to INVESTIGATION, HUMAN_REVIEW, or POLICY_EVALUATION when additional evidence or supported logic becomes available.
+
+
+Routing Safety Rule
+
+Lab 16 may determine the next processing stage, but it cannot authorize or execute a defensive action.
+
+The intended future path is:
+
+Validated Alert Record
+        ↓
+Triage Classification
+        ↓
+Next-Stage Routing
+        ↓
+POLICY_EVALUATION or INVESTIGATION or HUMAN_REVIEW
+        ↓
+Later Business Guardian components
+        ↓
+Authorization when required
+        ↓
+Controlled Defensive Action when permitted
+        ↓
+Verification
+        ↓
+Audit / Closure
+
+NO_ACTION_YET must never be interpreted as Resolved.
+
+Vendor-Neutral Triage Decision Record
+
+Lab 16 will create a separate triage decision record that references the original Lab 15 alert record rather than replacing or modifying its identity.
+
+Initial Triage Record Fields
+
+triage_id
+triage_version
+record_id
+triage_timestamp
+source_validation_status
+source_normalized_severity
+source_missing_fields
+source_validation_notes
+triage_classification
+triage_confidence
+matched_rule_id
+classification_reason
+investigation_required
+human_review_required
+next_stage
+decision_notes
+triage_history
+
+
+Field Requirements
+
+triage_id
+
+A unique non-sensitive identifier assigned to one triage decision record.
+
+The triage_id must remain separate from the original alert record_id.
+
+Example:
+
+TR-550e8400-e29b-41d4-a716-446655440000
+
+
+triage_version
+
+Identifies the version of the Lab 16 triage decision schema.
+
+Initial version:
+
+1.0
+
+
+record_id
+
+Preserves the AR identifier of the originating Lab 15 alert record.
+
+The triage decision must never replace or regenerate the original record_id.
+
+
+triage_timestamp
+
+Records when the triage decision was created.
+
+Lab-generated timestamps will use ISO 8601 UTC format.
+
+
+source_validation_status
+
+Preserves the Lab 15 validation outcome used during triage.
+
+Allowed values:
+
+Processed Normally
+Processed With Warnings
+
+A Lab 15 Failed Validation result does not receive a processable alert record or AR identifier and therefore does not enter the Lab 16 triage workflow.
+
+Failed-validation inputs remain documented in the Lab 15 processing and audit results rather than being converted into triage decisions.
+
+source_normalized_severity
+
+Preserves the platform-neutral technical severity from the alert record.
+
+Examples:
+
+INFORMATIONAL
+LOW
+MEDIUM
+HIGH
+CRITICAL
+UNKNOWN
+
+Technical severity does not determine triage classification by itself.
+
+
+source_missing_fields
+
+Carries forward missing-field information from the originating alert record.
+
+
+source_validation_notes
+
+Carries forward malformed-data or validation-warning information from the originating alert record.
+
+
+triage_classification
+
+Records one of the Lab 16 classification values:
+
+KNOWN_COMMON
+UNUSUAL
+UNKNOWN
+INSUFFICIENT_DATA
+
+
+triage_confidence
+
+Records how strongly the deterministic Lab 16 rules support the assigned classification.
+
+Initial allowed values:
+
+HIGH
+MEDIUM
+LOW
+UNKNOWN
+
+Confidence must be based on available evidence and documented rule behavior rather than intuition.
+
+
+matched_rule_id
+
+Identifies the deterministic Lab 16 triage rule that produced the classification when one applies.
+
+If no supported rule produced the classification, the value must remain unavailable rather than invented.
+
+
+classification_reason
+
+Provides a concise explanation of why the classification was assigned.
+
+The explanation must reference observed record characteristics rather than unsupported assumptions.
+
+
+investigation_required
+
+Boolean value indicating whether additional evidence gathering or analysis is required.
+
+Allowed values:
+
+true
+false
+
+
+human_review_required
+
+Boolean value indicating whether human judgment is required before the workflow can safely continue.
+
+Allowed values:
+
+true
+false
+
+
+next_stage
+
+Records one of the Lab 16 routing values:
+
+POLICY_EVALUATION
+INVESTIGATION
+HUMAN_REVIEW
+NO_ACTION_YET
+
+
+decision_notes
+
+Stores important decision context that does not belong in the classification reason.
+
+This field must not contain executable instructions derived from alert or log content.
+
+
+triage_history
+
+Maintains an ordered history of important triage-processing events.
+
+Each history entry will contain:
+
+stage
+timestamp
+outcome
+notes
+
+
+Identity and Traceability Model
+
+The relationship between Lab 15 and Lab 16 must remain:
+
+Alert Record
+record_id = AR-...
+        ↓
+Triage Decision
+triage_id = TR-...
+record_id = same AR-...
+        ↓
+Future Investigation / Policy / Action Records
+reference the same AR-... and appropriate TR-...
+
+The original alert record identity must never be replaced by the triage identifier.
+
+Deterministic Triage Rule Design
+
+Lab 16 classifications will be produced by explicit deterministic rules.
+
+The public Lab 16 rules are intentionally limited and sanitized. They demonstrate safe triage behavior without reproducing proprietary Business Guardian investigation, correlation, policy, or action-selection logic.
+
+Rule Evaluation Order
+
+Rules will be evaluated conservatively in this order:
+
+1. Evidence-quality rules
+2. Known/common pattern rules
+3. Unusual-pattern rules
+4. Unknown fallback rule
+
+A lower-priority rule must not override an evidence-quality problem that makes the classification unreliable.
+
+
+TRIAGE-RULE-001
+Insufficient Evidence for Reliable Triage
+
+Classification:
+INSUFFICIENT_DATA
+
+Conditions:
+
+- The originating alert record is processable.
+- Material expected context needed for reliable triage is missing or unreliable.
+- The evidence-quality problem prevents a reliable known/common or unusual determination.
+
+Expected confidence:
+HIGH
+
+Matched rule ID:
+TRIAGE-RULE-001
+
+Classification reason:
+
+The available alert record is processable, but material evidence needed for reliable triage is missing or unreliable.
+
+Investigation required:
+true
+
+Human review required:
+false by default
+
+Next stage:
+INVESTIGATION
+
+Important:
+
+If additional evidence cannot reasonably be gathered automatically, a later investigation component may route the case to HUMAN_REVIEW.
+
+
+TRIAGE-RULE-002
+Known Windows Application Error Pattern
+
+Classification:
+KNOWN_COMMON
+
+Conditions:
+
+- event_type matches:
+  Windows application error event.
+- source_rule_id matches:
+  60602
+- The record contains sufficient validated context.
+- No material validation warning prevents reliable pattern matching.
+
+Expected confidence:
+HIGH
+
+Matched rule ID:
+TRIAGE-RULE-002
+
+Classification reason:
+
+The event matches the documented Lab 16 Windows application error pattern using validated event and rule context.
+
+Investigation required:
+false
+
+Human review required:
+false
+
+Next stage:
+POLICY_EVALUATION
+
+Important:
+
+KNOWN_COMMON means the condition matches a supported deterministic pattern.
+
+It does not mean the event is benign, resolved, or automatically authorized for remediation.
+
+
+TRIAGE-RULE-003
+Known Repeated Authentication Failure Pattern
+
+Classification:
+KNOWN_COMMON
+
+Conditions:
+
+- event_type matches:
+  Repeated failed authentication activity.
+- source_rule_id matches:
+  61002
+- The record contains sufficient validated context.
+- No material validation warning prevents reliable pattern matching.
+
+Expected confidence:
+HIGH
+
+Matched rule ID:
+TRIAGE-RULE-003
+
+Classification reason:
+
+The event matches the documented Lab 16 repeated authentication failure pattern using validated event and rule context.
+
+Investigation required:
+false
+
+Human review required:
+false
+
+Next stage:
+POLICY_EVALUATION
+
+Important:
+
+HIGH technical severity does not cause this classification.
+
+The documented deterministic pattern match causes the classification.
+
+
+TRIAGE-RULE-004
+Controlled Unusual Configuration-Change Pattern
+
+Classification:
+UNUSUAL
+
+Conditions:
+
+- event_type matches:
+  Controlled unusual configuration-change event.
+- source_rule_id matches:
+  64004
+- The alert record contains sufficient usable and validated context.
+- No supported KNOWN_COMMON rule applies.
+- No material evidence-quality warning prevents reliable triage.
+
+Expected confidence:
+MEDIUM
+
+Matched rule ID:
+TRIAGE-RULE-004
+
+Classification reason:
+
+The event matches the documented Lab 16 controlled unusual configuration-change pattern and falls outside the currently supported known/common response catalog.
+
+Investigation required:
+true
+
+Human review required:
+false
+
+Next stage:
+INVESTIGATION
+
+Important:
+
+UNUSUAL means the condition matches a supported triage pattern that requires investigation rather than a known/common response path.
+
+It does not automatically mean malicious.
+
+TRIAGE-RULE-005
+Uncertain Condition Fallback
+
+Classification:
+UNKNOWN
+
+Conditions:
+
+- Usable event evidence exists.
+- Evidence quality is sufficient to avoid INSUFFICIENT_DATA.
+- No supported KNOWN_COMMON rule applies.
+- Available evidence does not satisfy the controlled UNUSUAL rule strongly enough for that classification.
+
+Expected confidence:
+LOW
+
+Matched rule ID:
+TRIAGE-RULE-005
+
+Classification reason:
+
+Usable evidence exists, but the currently supported deterministic rules cannot establish a more reliable triage classification.
+
+Investigation required:
+true
+
+Human review required:
+false
+
+Next stage:
+INVESTIGATION
+
+Important:
+
+UNKNOWN must remain explicit until additional evidence supports a more reliable determination.
+
+
+No Direct Execution Rule
+
+No Lab 16 triage rule may:
+
+- Execute a defensive action.
+- Mark an alert resolved.
+- Treat a classification as authorization.
+- Convert alert or log text into executable instructions.
+- Skip later policy or authorization controls.
+
+A KNOWN_COMMON result may identify a condition that has a supported response path, but POLICY_EVALUATION must occur before any defensive action can be authorized.
+
+Controlled Validation Test Set
+
+Lab 16 will use five sanitized Lab 15-style processable alert records.
+
+The controlled records will use fixed public-safe AR identifiers so expected traceability can be verified consistently.
+
+Test 1 - Known Windows Application Error
+
+Purpose:
+
+Validate TRIAGE-RULE-002.
+
+Input characteristics:
+
+record_id:
+AR-00000000-0000-4000-8000-000000000001
+
+validation_status:
+Processed Normally
+
+event_type:
+Windows application error event.
+
+source_rule_id:
+60602
+
+normalized_severity:
+MEDIUM
+
+missing_fields:
+None
+
+validation_notes:
+None
+
+Expected result:
+
+triage_classification:
+KNOWN_COMMON
+
+triage_confidence:
+HIGH
+
+matched_rule_id:
+TRIAGE-RULE-002
+
+investigation_required:
+false
+
+human_review_required:
+false
+
+next_stage:
+POLICY_EVALUATION
+
+
+Test 2 - Known Repeated Authentication Failure
+
+Purpose:
+
+Validate TRIAGE-RULE-003 and prove that HIGH technical severity does not independently determine classification.
+
+Input characteristics:
+
+record_id:
+AR-00000000-0000-4000-8000-000000000002
+
+validation_status:
+Processed Normally
+
+event_type:
+Repeated failed authentication activity.
+
+source_rule_id:
+61002
+
+normalized_severity:
+HIGH
+
+missing_fields:
+None
+
+validation_notes:
+None
+
+Expected result:
+
+triage_classification:
+KNOWN_COMMON
+
+triage_confidence:
+HIGH
+
+matched_rule_id:
+TRIAGE-RULE-003
+
+investigation_required:
+false
+
+human_review_required:
+false
+
+next_stage:
+POLICY_EVALUATION
+
+
+Test 3 - Insufficient Data
+
+Purpose:
+
+Validate TRIAGE-RULE-001 and prove that evidence-quality problems take priority over pattern matching.
+
+Input characteristics:
+
+record_id:
+AR-00000000-0000-4000-8000-000000000003
+
+validation_status:
+Processed With Warnings
+
+event_type:
+Windows application error event.
+
+source_rule_id:
+60602
+
+normalized_severity:
+MEDIUM
+
+missing_fields:
+endpoint_ip
+event_provider
+
+validation_notes:
+None
+
+Expected result:
+
+triage_classification:
+INSUFFICIENT_DATA
+
+triage_confidence:
+HIGH
+
+matched_rule_id:
+TRIAGE-RULE-001
+
+investigation_required:
+true
+
+human_review_required:
+false
+
+next_stage:
+INVESTIGATION
+
+Important:
+
+Although the event_type and source_rule_id resemble TRIAGE-RULE-002, the evidence-quality rule must take priority.
+
+
+Test 4 - Controlled Unusual Configuration Change
+
+Purpose:
+
+Validate TRIAGE-RULE-004.
+
+Input characteristics:
+
+record_id:
+AR-00000000-0000-4000-8000-000000000004
+
+validation_status:
+Processed Normally
+
+event_type:
+Controlled unusual configuration-change event.
+
+source_rule_id:
+64004
+
+normalized_severity:
+MEDIUM
+
+missing_fields:
+None
+
+validation_notes:
+None
+
+Expected result:
+
+triage_classification:
+UNUSUAL
+
+triage_confidence:
+MEDIUM
+
+matched_rule_id:
+TRIAGE-RULE-004
+
+investigation_required:
+true
+
+human_review_required:
+false
+
+next_stage:
+INVESTIGATION
+
+
+Test 5 - Unknown Condition
+
+Purpose:
+
+Validate TRIAGE-RULE-005.
+
+Input characteristics:
+
+record_id:
+AR-00000000-0000-4000-8000-000000000005
+
+validation_status:
+Processed Normally
+
+event_type:
+Controlled unclassified security event.
+
+source_rule_id:
+65005
+
+normalized_severity:
+LOW
+
+missing_fields:
+None
+
+validation_notes:
+None
+
+Expected result:
+
+triage_classification:
+UNKNOWN
+
+triage_confidence:
+LOW
+
+matched_rule_id:
+TRIAGE-RULE-005
+
+investigation_required:
+true
+
+human_review_required:
+false
+
+next_stage:
+INVESTIGATION
+
+Important:
+
+LOW technical severity must not cause the condition to be treated as known, benign, or safe.
+
+
+Traceability Expectations
+
+Each processable input record must:
+
+- Retain its original AR record_id.
+- Receive a separate unique TR triage_id.
+- Preserve source validation status.
+- Preserve normalized technical severity.
+- Preserve missing-field information.
+- Preserve validation notes.
+- Record the deterministic rule used.
+- Record the classification reason.
+- Record the next-stage decision.
+- Maintain chronological triage history.
+
+No triage decision may replace the original AR identifier.
+
+
+Expected Batch Result
+
+Total Processable Alert Records Discovered: 5
+
+KNOWN_COMMON: 2
+INSUFFICIENT_DATA: 1
+UNUSUAL: 1
+UNKNOWN: 1
+
+POLICY_EVALUATION: 2
+INVESTIGATION: 3
+HUMAN_REVIEW: 0
+NO_ACTION_YET: 0
+
+Triage Decision Records Created: 5
+Batch Summaries Created: 1
+
+All five processable alert records must receive separate TR identifiers.
+
+No defensive action may be executed during Lab 16.
+
+
+Repeat-Processing Expectation
+
+The same five controlled records will be processed a second time.
+
+Expected second-run result:
+
+KNOWN_COMMON: 2
+INSUFFICIENT_DATA: 1
+UNUSUAL: 1
+UNKNOWN: 1
+
+POLICY_EVALUATION: 2
+INVESTIGATION: 3
+
+Triage Decision Records Created: 5
+Batch Summaries Created: 1
+
+The second run must:
+
+- Preserve the original AR identifiers.
+- Create new TR identifiers for the new triage decisions.
+- Leave first-run triage records intact.
+- Leave first-run batch summary intact.
+- Not modify the source alert records.
+
+Safety Requirements
+
+Lab 16 must not:
+
+- Modify the originating Lab 15 alert record.
+- Replace or regenerate the original AR record_id.
+- Classify an event as benign or malicious solely from technical severity.
+- Treat LOW severity as proof that a condition is safe.
+- Treat HIGH or CRITICAL severity as proof of malicious activity.
+- Allow a known/common match to override material evidence-quality problems.
+- Invent missing evidence.
+- Silently correct malformed source information.
+- Convert alert, log, message, or external content into executable instructions.
+- Execute remediation or another defensive action.
+- Treat POLICY_EVALUATION as authorization.
+- Mark an alert or triage decision resolved.
+- Skip future policy, approval, verification, or audit controls.
+- Reproduce proprietary Business Guardian investigation, correlation, policy, approval, or action-selection logic.
+
+A triage classification describes the current decision state based on available evidence and supported deterministic rules. It is not a final security conclusion.
+
+Public / Private Boundary
+
+Public Project Athenaeum Lab 16 may demonstrate:
+
+- Vendor-neutral triage records.
+- Stable AR-to-TR traceability.
+- Sanitized deterministic triage rules.
+- Known/common classification.
+- Insufficient-data handling.
+- Controlled unusual-event classification.
+- Unknown-condition handling.
+- Confidence values.
+- Investigation and review flags.
+- Next-stage routing.
+- Chronological triage history.
+- Sanitized JSON input and output.
+- Batch processing and validation evidence.
+
+Private Business Guardian retains:
+
+- Real evidence-driven triage heuristics.
+- Proprietary event and condition catalogs.
+- Cross-source correlation logic.
+- Investigation workflows.
+- Evidence-collection orchestration.
+- Business-risk scoring logic.
+- Policy and approval logic.
+- Action-selection logic.
+- Defensive execution workflows.
+- Verification logic.
+- Product audit mechanisms.
+- Sensitive runtime configuration and customer-specific logic.
+
+Nothing gets built twice.
+
+
+Completion Criteria
+
+Lab 16 will be considered technically complete when controlled validation demonstrates:
+
+- Five Lab 15-style processable alert records are discovered.
+- Every input retains its original AR identifier.
+- Every triage decision receives a separate unique TR identifier.
+- Two records classify as KNOWN_COMMON.
+- One record classifies as INSUFFICIENT_DATA.
+- One record classifies as UNUSUAL.
+- One record classifies as UNKNOWN.
+- Two records route to POLICY_EVALUATION.
+- Three records route to INVESTIGATION.
+- No record routes to HUMAN_REVIEW during the controlled test.
+- No record routes to NO_ACTION_YET during the controlled test.
+- Evidence-quality rules take priority over known-pattern matching.
+- HIGH severity does not independently cause a triage classification.
+- LOW severity does not cause a condition to be treated as benign or safe.
+- Missing-field and validation-note information is preserved.
+- Classification reasons identify observed evidence and deterministic rule behavior.
+- Triage history remains chronological.
+- No defensive action is executed.
+- Source alert records remain unchanged.
+- A second run reproduces the expected classifications and routing.
+- A second run creates new TR identifiers without replacing the AR identifiers.
+- Previously generated triage records and batch summaries are not overwritten.
+- Expected and observed results are documented and compared.
