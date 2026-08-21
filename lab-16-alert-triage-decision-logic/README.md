@@ -255,6 +255,64 @@ Nothing gets built twice.
 **Failure Count:** 0  
 **Defensive Actions Executed:** 0
 
+## Selected Validation Evidence
+
+The screenshots below show the strongest portfolio-safe evidence from the controlled Lab 16 implementation and validation.
+
+### Deterministic Rule Design and Evaluation Order
+
+![Lab 16 deterministic triage rule design](Screenshots/2026-08-21_Lab16_AlertTriage_12_deterministic-rule-design-and-order.png)
+
+The public triage rules use an explicit evaluation order that gives evidence-quality problems priority before known-pattern, unusual-pattern, and unknown fallback decisions.
+
+### Safety Requirements
+
+![Lab 16 safety requirements](Screenshots/2026-08-21_Lab16_AlertTriage_26_safety-requirements.png)
+
+The design explicitly prevents technical severity from becoming a security verdict, prohibits invented evidence, keeps `POLICY_EVALUATION` separate from authorization, and prevents the triage layer from performing remediation or marking alerts resolved.
+
+### Single-Record Triage Workflow
+
+![Lab 16 single-record triage workflow](Screenshots/2026-08-21_Lab16_AlertTriage_53_single-record-triage-workflow.png)
+
+Each Lab 15-style alert record is validated for triage, retains its original `AR-...` identity, receives a separate `TR-...` decision identity, and passes through the frozen deterministic rule sequence independently.
+
+### First Controlled Execution
+
+![Lab 16 first controlled execution](Screenshots/2026-08-21_Lab16_AlertTriage_67_first-controlled-execution-results.png)
+
+The first controlled run processed all five records with zero failures and exactly matched the predetermined classification and routing totals.
+
+### Insufficient-Data Rule Priority
+
+![Lab 16 insufficient-data priority validation](Screenshots/2026-08-21_Lab16_AlertTriage_71_insufficient-data-rule-priority-validation.png)
+
+Materially missing evidence produced `INSUFFICIENT_DATA` and routed the record to `INVESTIGATION`, demonstrating that evidence quality takes priority over otherwise recognizable patterns.
+
+### HIGH-Severity Safety Validation
+
+![Lab 16 high-severity triage validation](Screenshots/2026-08-21_Lab16_AlertTriage_72_high-severity-pattern-based-triage-validation.png)
+
+A HIGH-severity alert received `KNOWN_COMMON` because validated event and rule context matched a documented deterministic pattern. HIGH severity alone did not determine the classification.
+
+### LOW-Severity Uncertainty Validation
+
+![Lab 16 low-severity unknown validation](Screenshots/2026-08-21_Lab16_AlertTriage_73_low-severity-unknown-safety-validation.png)
+
+A LOW-severity condition remained `UNKNOWN` and routed to `INVESTIGATION` because the supported rules could not establish a stronger conclusion. LOW severity was not treated as proof that the condition was safe.
+
+### Repeat Processing and Overwrite Protection
+
+![Lab 16 repeat-processing overwrite protection](Screenshots/2026-08-21_Lab16_AlertTriage_75_repeat-processing-overwrite-protection.png)
+
+Two complete sets of triage outputs and batch summaries remained preserved simultaneously, demonstrating unique decision identifiers and overwrite protection.
+
+### Final Validation Result
+
+![Lab 16 final validation PASS](Screenshots/2026-08-21_Lab16_AlertTriage_82_repeat-processing-and-final-pass.png)
+
+The second controlled run reproduced the expected classifications and routing decisions, preserved the original `AR-...` identities, generated new `TR-...` identities, retained previous output, and completed with a final validation result of `PASS`.
+
 ## Skills Demonstrated
 
 - Python
