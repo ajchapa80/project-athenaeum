@@ -235,27 +235,29 @@ Project Athenaeum will continue to publish sanitized technical milestones and po
 
 ## Next Project Phase
 
-With the multiple-alert processing foundation validated, the next Project Athenaeum phase will focus on determining the appropriate next technical layer before implementation begins.
+With the Lab 16 alert-triage and decision-routing layer validated, the next Project Athenaeum phase will be selected from the remaining Business Guardian lifecycle rather than by adding unrelated features.
 
-Future work will build on the Lab 14 baseline rather than modifying it retroactively.
+The validated public progression now includes:
 
-The next development stage is expected to move beyond organizing and explaining alerts toward stronger investigation and decision-support capabilities, including areas such as:
+`Alert → Normalize / Validate → Alert Record / Traceability → Triage Classification → Next-Stage Routing`
 
-- Additional alert-type validation
-- Improved security-data quality checks
-- Structured processing and audit records
-- Multiple-alert correlation
-- Context-aware investigation guidance
-- Evidence collection
-- Security-control and configuration review
-- Reusable report components
-- Additional security-platform adapters
-- Human-reviewed workflow decisions
-- Structured incident reporting
+Future work will build from the Lab 16 baseline rather than modifying Labs 13–16 retroactively.
 
-The exact scope of the next lab will be defined and documented before implementation begins.
+The next technical layer will be selected after reviewing the current roadmap and private Business Guardian implementation to ensure that completed functionality is not duplicated. Candidate areas include:
 
-Business Guardian product-level remediation, policy enforcement, approval workflows, tenant logic, proprietary investigation architecture, and commercial functionality remain outside the public Project Athenaeum repository.
+- Investigation and evidence handling
+- Policy and approval decision records
+- Business-risk and impact representation
+- Audit-oriented workflow records
+- Controlled defensive-action planning
+- Verification and outcome tracking
+- Customer-facing incident and resolution reporting
+
+The exact next lab will be defined and documented before implementation begins.
+
+Public Project Athenaeum work will continue to demonstrate sanitized, vendor-neutral architecture and validation evidence. Proprietary Business Guardian investigation logic, production triage heuristics, evidence orchestration, policy and approval engines, defensive execution, verification mechanisms, tenant logic, and commercial functionality remain in the private repository.
+
+**Nothing gets built twice.**
 
 ## Development Principles
 
