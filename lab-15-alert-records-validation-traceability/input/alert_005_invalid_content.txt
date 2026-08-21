@@ -1,0 +1,5 @@
+This sanitized file intentionally contains no recognized alert fields.
+
+It is used to validate safe failure handling.
+
+The processor should not create an alert record from this content.
