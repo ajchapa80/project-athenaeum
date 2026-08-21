@@ -1,0 +1,9 @@
+source_alert_id=LAB15-ALERT-004
+source_platform=Sanitized Security Source
+source_timestamp=2026-08-21T14:15:00Z
+endpoint_name=LAB-WIN11-03
+endpoint_ip=192.0.2.30
+event_provider=Endpoint Security
+source_severity=invalid
+event_type=Security Alert
+message=Sanitized alert containing a deliberately malformed source severity for validation testing.
