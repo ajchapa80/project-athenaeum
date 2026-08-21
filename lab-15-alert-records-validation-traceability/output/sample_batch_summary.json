@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "summary_type": "LAB15_BATCH_SUMMARY",
+  "sample_type": "SANITIZED_PORTFOLIO_EXAMPLE",
+  "total_supported_alert_files_discovered": 5,
+  "processed_normally": 2,
+  "processed_with_warnings": 2,
+  "failed_validation": 1,
+  "processable_alert_records_created": 4,
+  "batch_summaries_created": 1,
+  "validation_result": "PASS",
+  "expected_compact_result": "5 / 2 / 2 / 1 / 4",
+  "observed_compact_result": "5 / 2 / 2 / 1 / 4",
+  "results": [
+    {
+      "source_file": "alert_001_windows_application_error.txt",
+      "validation_outcome": "Processed Normally",
+      "processable_record_created": true
+    },
+    {
+      "source_file": "alert_002_authentication_event.txt",
+      "validation_outcome": "Processed Normally",
+      "processable_record_created": true
+    },
+    {
+      "source_file": "alert_003_missing_fields.txt",
+      "validation_outcome": "Processed With Warnings",
+      "processable_record_created": true,
+      "notes": [
+        "endpoint_ip was unavailable.",
+        "event_provider was unavailable."
+      ]
+    },
+    {
+      "source_file": "alert_004_invalid_severity.txt",
+      "validation_outcome": "Processed With Warnings",
+      "processable_record_created": true,
+      "notes": [
+        "Malformed source severity was preserved.",
+        "Normalized severity became UNKNOWN."
+      ]
+    },
+    {
+      "source_file": "alert_005_invalid_content.txt",
+      "validation_outcome": "Failed Validation",
+      "processable_record_created": false,
+      "notes": [
+        "Unsupported content failed safely.",
+        "No alert record identifier or JSON alert record was created."
+      ]
+    }
+  ]
+}
