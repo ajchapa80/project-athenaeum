@@ -1,0 +1,295 @@
+Project Athenaeum
+Lab 15 — Alert Records, Validation, and Traceability
+Requirements and Validation Plan
+
+Purpose
+
+Lab 15 establishes a vendor-neutral alert-record and traceability layer for Project Athenaeum.
+
+The lab extends the multiple-alert processing foundation from Lab 14. It does not recreate proprietary Business Guardian connector, investigation, policy, approval, remediation, verification, or action logic.
+
+The objective is to create structured records that future processing stages can reference consistently from initial alert ingestion through later audit activity.
+
+----------------------------------------------------------------------
+1. RECORD REQUIREMENTS
+----------------------------------------------------------------------
+
+Each processable alert record must:
+
+1. Use schema version 1.0.
+
+2. Receive a unique alert record identifier using the format:
+
+   AR-<UUID>
+
+3. Ensure the generated alert record identifier contains no source-derived
+   information such as:
+
+   - Endpoint name
+   - IP address
+   - Username
+   - Source filename
+   - Source alert identifier
+
+4. Preserve the original source alert identifier when available.
+
+5. Preserve the original source event timestamp when available.
+
+6. Record a separate ISO 8601 UTC ingestion timestamp.
+
+7. Preserve the original source severity value.
+
+8. Normalize supported severity values into a vendor-neutral category.
+
+9. Normalize malformed or unsupported severity values to UNKNOWN rather
+   than inventing a replacement.
+
+10. Record missing information explicitly.
+
+11. Preserve supported raw source data.
+
+12. Record an explicit validation outcome.
+
+13. Maintain ordered processing-history entries containing:
+
+    - Stage
+    - Timestamp
+    - Outcome
+    - Notes
+
+14. Preserve source-file traceability.
+
+15. Produce structured JSON output for each processable alert.
+
+----------------------------------------------------------------------
+2. VALIDATION OUTCOMES
+----------------------------------------------------------------------
+
+Supported processing outcomes:
+
+Processed Normally
+Processed With Warnings
+Failed Validation
+
+Processed Normally:
+
+The alert contains the expected information and can be converted into a
+processable alert record without validation warnings.
+
+Processed With Warnings:
+
+The alert can still be processed, but missing or malformed information is
+recorded explicitly.
+
+Failed Validation:
+
+The input does not contain enough recognized alert information to create a
+processable alert record safely.
+
+Failed input must not receive an alert record identifier or JSON alert
+record.
+
+----------------------------------------------------------------------
+3. CONTROLLED VALIDATION SET
+----------------------------------------------------------------------
+
+Five sanitized alert files are used.
+
+Alert 001 — Complete Windows Application Error
+
+Purpose:
+Validate normal record creation using a complete supported alert.
+
+Expected outcome:
+Processed Normally
+
+Alert 002 — Complete Authentication Event
+
+Purpose:
+Validate normal record creation using a second supported event type.
+
+Expected outcome:
+Processed Normally
+
+Alert 003 — Missing Fields
+
+Purpose:
+Validate explicit missing-data handling.
+
+Intentionally missing:
+
+endpoint_ip
+event_provider
+
+Expected outcome:
+Processed With Warnings
+
+Expected behavior:
+
+- Missing fields are recorded explicitly.
+- Missing values are represented as unavailable/null.
+- No replacement information is fabricated.
+
+Alert 004 — Malformed Source Severity
+
+Purpose:
+Validate malformed-data handling.
+
+Source severity:
+
+invalid
+
+Expected outcome:
+Processed With Warnings
+
+Expected behavior:
+
+- Original malformed source severity remains preserved.
+- Normalized severity becomes UNKNOWN.
+- A validation note records the malformed condition.
+- No replacement severity is guessed.
+
+Alert 005 — Unsupported / Invalid Content
+
+Purpose:
+Validate safe failure isolation.
+
+Expected outcome:
+Failed Validation
+
+Expected behavior:
+
+- No processable alert record is created.
+- No AR- identifier is assigned.
+- No JSON alert record is generated.
+- Alerts 001–004 continue processing normally.
+
+----------------------------------------------------------------------
+4. FROZEN EXPECTED BATCH RESULT
+----------------------------------------------------------------------
+
+Total Supported Alert Files Discovered: 5
+Processed Normally: 2
+Processed With Warnings: 2
+Failed Validation: 1
+Processable Alert Records Created: 4
+Batch Summaries Created: 1
+
+Expected compact result:
+
+5 / 2 / 2 / 1 / 4
+
+The expected result is frozen before final validation so observed results
+can be compared without changing the success criteria afterward.
+
+----------------------------------------------------------------------
+5. TRACEABILITY VALIDATION
+----------------------------------------------------------------------
+
+Validation must confirm that:
+
+- Separate processable alerts receive different AR- identifiers.
+- Generated record identifiers contain no source-derived identifying data.
+- Source alert identifiers remain preserved.
+- Original source timestamps remain preserved.
+- Ingestion timestamps remain separate from source timestamps.
+- Source filenames remain traceable.
+- Processing-history entries remain ordered.
+- Supported raw source data remains preserved.
+- Validation outcomes are recorded in structured form.
+
+----------------------------------------------------------------------
+6. FAILURE-HANDLING VALIDATION
+----------------------------------------------------------------------
+
+Validation must confirm that:
+
+- Missing fields do not cause unrelated alerts to fail.
+- Malformed severity does not cause the batch to stop.
+- Unsupported input fails safely.
+- Failed input does not receive a processable record.
+- One failed alert does not prevent remaining alerts from completing.
+- Batch totals reflect actual processing results.
+
+----------------------------------------------------------------------
+7. NON-DESTRUCTIVE PROCESSING VALIDATION
+----------------------------------------------------------------------
+
+Validation must confirm that:
+
+- Input files remain unchanged after processing.
+- Generated output is written separately from source files.
+- A second complete execution does not overwrite first-run output.
+- Each run receives its own output directory.
+- Repeat processing produces the same processing totals for the controlled
+  validation set.
+
+----------------------------------------------------------------------
+8. SECURITY AND RELIABILITY REQUIREMENTS
+----------------------------------------------------------------------
+
+Security alert, log, and external source data must be treated as untrusted
+input.
+
+Source content must never be interpreted as executable instructions.
+
+The implementation must:
+
+- Avoid fabricating missing values.
+- Preserve malformed values when safe.
+- Fail visibly when unsupported content cannot be processed.
+- Isolate failures by alert.
+- Preserve source evidence without modifying it.
+- Generate deterministic batch totals from actual results.
+- Maintain vendor-neutral record structures.
+
+----------------------------------------------------------------------
+9. PUBLIC / PRIVATE REPOSITORY BOUNDARY
+----------------------------------------------------------------------
+
+This public Project Athenaeum lab may contain:
+
+- Vendor-neutral alert-record logic
+- Sanitized alert samples
+- Structured validation examples
+- Sanitized JSON output
+- Batch summaries
+- Validation documentation
+- Portfolio-safe screenshots
+
+This public lab must not contain:
+
+- Private Business Guardian connector source
+- Live Wazuh API or Indexer implementation details
+- Runtime credentials or tokens
+- Private deploy-key information
+- Proprietary investigation workflows
+- Policy or approval logic
+- Defensive-action implementation
+- Verification-engine implementation
+- Sensitive backend or tenant architecture
+
+Nothing gets built twice.
+
+----------------------------------------------------------------------
+10. PASS CRITERIA
+----------------------------------------------------------------------
+
+Lab 15 passes when:
+
+- All five controlled inputs are discovered.
+- Two alerts process normally.
+- Two alerts process with warnings.
+- One alert fails validation safely.
+- Four processable JSON alert records are created.
+- One batch summary is generated.
+- Expected and observed results match exactly.
+- Missing and malformed data are handled without fabrication.
+- Source identifiers and timestamps remain traceable.
+- Input files remain unchanged.
+- Repeat processing does not overwrite previous output.
+- A second run reproduces the same 5 / 2 / 2 / 1 / 4 result.
+
+Final expected validation status:
+
+PASS
