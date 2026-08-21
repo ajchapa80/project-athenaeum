@@ -1,0 +1,9 @@
+source_alert_id=LAB15-ALERT-002
+source_platform=Sanitized Security Source
+source_timestamp=2026-08-21T14:05:00Z
+endpoint_name=LAB-WIN11-01
+endpoint_ip=192.0.2.10
+event_provider=Security Authentication
+source_severity=11
+event_type=Authentication Event
+message=Sanitized authentication event recorded during controlled lab validation.
