@@ -1,151 +1,135 @@
-# Lab 11: AI Alert Explainer MVP
+# Lab 11 — AI Alert Explainer MVP
 
-## Overview
+## Can Python Make a Security Alert Easier to Understand?
 
-This lab documents the development of the first functional alert-explanation tool in Project Athenaeum.
+Lab 10 proved that the Windows workstation could generate an event, Wazuh could detect it, and the resulting security data could be reviewed and sanitized.
 
-The Python-based MVP uses the sanitized Wazuh alert data prepared during Lab 10. It reads selected structured alert fields from a sanitized text sample and converts them into a beginner-friendly security report.
+That left a practical problem:
 
-The generated report includes:
+**Security alerts can contain a lot of technical information. How do you turn that data into something an analyst can quickly understand?**
 
-- An alert summary
-- Windows event context
-- Wazuh rule context
-- A severity explanation
-- Analyst context
-- Recommended review steps
-- A final assessment
+Lab 11 builds the first functional security-analysis tool in Project Athenaeum.
 
-This first version uses Python-based rules and formatted explanations rather than an external artificial intelligence model or API. It establishes the working foundation for later AI-assisted alert analysis.
+Using Python and the sanitized Wazuh alert prepared in Lab 10, the MVP extracts selected security fields, interprets the available context, and produces a structured plain-language report.
 
-## Objective
+The progression becomes:
 
-Build and test a beginner-friendly Python tool that reads a sanitized Wazuh alert sample, extracts important security fields, and produces a clear explanation that supports human alert review.
+```text
+Windows Event
+     ↓
+Wazuh Detection
+     ↓
+Sanitized Alert Data
+     ↓
+Python Processing
+     ↓
+Plain-Language Security Report
+     ↓
+Human Review
+```
 
-## Skills Demonstrated
+This is the first point in Project Athenaeum where monitored security data becomes input for a custom security tool.
 
-- Python fundamentals
-- Structured text and key-value parsing
-- Security-data processing
-- Wazuh alert interpretation
-- Windows event analysis
-- Alert-field extraction
-- Conditional logic
+---
+
+# A Note About the "AI" in AI Alert Explainer
+
+The project is called the **AI Alert Explainer**, but this first MVP does not use an external AI model, machine-learning system, or API.
+
+Its explanations are generated through:
+
+- Structured field extraction
 - Python functions
-- File input and output
-- Error handling
-- Severity interpretation
-- Plain-language technical communication
-- Analyst workflow development
-- Human-in-the-loop decision support
-- Testing and troubleshooting
-- Technical documentation
-- Privacy-conscious data handling
+- Conditional logic
+- Predefined severity rules
+- Formatted analyst guidance
 
-## Environment and Tools
+That is intentional.
 
-- Windows 11 host computer
-- Python
-- Windows Terminal
-- Windows File Explorer
-- Local text editor
-- Sanitized Wazuh alert sample from Lab 10
-- Project Athenaeum documentation system
-- GitHub
+Before adding AI-assisted capabilities later, I wanted a deterministic processing foundation whose behavior could be understood and tested.
 
-No additional virtual machines were required because the Wazuh alert had already been generated, reviewed, and sanitized during Lab 10.
+So Lab 11 is best understood as:
 
-## Project Relationship
+> **The working alert-processing foundation that later AI-assisted capabilities can build on.**
 
-Lab 11 builds directly on the alert-review and data-collection work completed during Lab 10.
+---
+
+# What the MVP Does
+
+The Lab 11 processor:
+
+- Locates the sanitized alert-data file
+- Confirms that the input exists
+- Confirms that the file contains data
+- Reads selected `key: value` fields
+- Ignores unsupported content
+- Extracts endpoint information
+- Extracts Windows event information
+- Extracts Wazuh rule information
+- Interprets the Wazuh rule level
+- Builds a structured explanation
+- Writes the result to an output file
+- Recommends analyst review steps
+- Requires human review before any security decision
+
+The goal is not to automate the analyst out of the workflow.
+
+The goal is to make the alert easier to understand.
+
+---
+
+# From Lab 10 Data to a Python Tool
+
+Lab 10 produced the sanitized alert sample used here.
+
+The relationship is:
 
 ```text
 Lab 10
-Controlled Windows event generated
-          |
-          v
-Wazuh alert detected and reviewed
-          |
-          v
-Important alert fields sanitized
-          |
-          v
+Controlled Windows Event
+        ↓
+Wazuh Alert
+        ↓
+Alert Reviewed
+        ↓
+Selected Fields Sanitized
+        ↓
 Lab 11
-Python reads the alert sample
-          |
-          v
-Expected fields are extracted
-          |
-          v
-Severity and context are interpreted
-          |
-          v
-Plain-language report is generated
-          |
-          v
-Human analyst reviews the result
+Python Reads the Data
+        ↓
+Security Context Extracted
+        ↓
+Explanation Generated
 ```
 
-## Project Files
+The original Wazuh server does not need to remain connected for this MVP.
 
-The functional MVP files are published with this lab:
+Lab 11 works from the sanitized alert evidence already collected and reviewed.
 
-- [Python alert-explainer script](Lab11_AI_Alert_Explainer_MVP.py)
-- [Sanitized Wazuh alert-data sample](Lab11_AI_Data_Sample_01_Windows_Application_Error_Event.txt)
-- [Generated alert-explanation output](Lab11_Alert_Explanation_Output.txt)
+<p align="center">
+  <img
+    src="screenshots/2026-07-29_Lab11_AIAlertExplainer_05_data-sample-copied-to-ai-folder.png"
+    alt="Sanitized Lab 10 Wazuh alert sample prepared for Lab 11"
+    width="850">
+</p>
 
-The script, input sample, and generated output are stored together so the GitHub project matches the tested local configuration.
+<p align="center">
+  <em>The sanitized Wazuh sample from Lab 10 becomes the input for the first Python alert-processing workflow.</em>
+</p>
 
-## Project Structure
+---
+
+# The Input
+
+The MVP reads a sanitized text file containing selected Wazuh fields in a consistent:
 
 ```text
-lab-11-ai-alert-explainer-mvp/
-├── README.md
-├── Lab11_AI_Alert_Explainer_MVP.py
-├── Lab11_AI_Data_Sample_01_Windows_Application_Error_Event.txt
-├── Lab11_Alert_Explanation_Output.txt
-└── screenshots/
-    ├── README.md
-    └── supporting evidence images
+key: value
 ```
 
-## How to Run
+format.
 
-Python must be installed before running the tool.
-
-Download or clone the Lab 11 folder and keep these three files together:
-
-```text
-Lab11_AI_Alert_Explainer_MVP.py
-Lab11_AI_Data_Sample_01_Windows_Application_Error_Event.txt
-Lab11_Alert_Explanation_Output.txt
-```
-
-Open Windows Terminal in the Lab 11 folder and run:
-
-```powershell
-python Lab11_AI_Alert_Explainer_MVP.py
-```
-
-When the script completes successfully, the terminal displays:
-
-```text
-AI Alert Explainer MVP completed successfully.
-Input file: Lab11_AI_Data_Sample_01_Windows_Application_Error_Event.txt
-Output file: Lab11_Alert_Explanation_Output.txt
-```
-
-The generated report is written to:
-
-```text
-Lab11_Alert_Explanation_Output.txt
-```
-
-## Input Data
-
-The tool uses a sanitized text sample containing selected Wazuh alert fields in a consistent `key: value` format.
-
-The current script recognizes the following fields:
+The current version recognizes:
 
 ```text
 agent.name
@@ -163,412 +147,463 @@ decoder.name
 location
 ```
 
-The script reads only the fields included in its expected-field list.
+Anything outside the expected field list is ignored.
 
-The following content is ignored:
+That includes:
 
 - Blank lines
 - Lines without a colon
-- Unsupported field names
-- Unnecessary alert data
+- Unsupported fields
+- Unnecessary alert information
 
-Passwords, credentials, personal information, production data, and unrelated system details were excluded before the sample was published.
+This keeps the MVP focused on the information needed for the explanation instead of copying an entire alert into the report.
 
-## Core Features
+---
 
-The MVP performs the following functions:
+# What the Tool Extracts
 
-- Locates the sanitized alert-data text file
-- Confirms that the input file exists
-- Confirms that the input file is not empty
-- Reads selected `key: value` alert fields
-- Ignores unsupported or improperly formatted lines
-- Extracts endpoint information
-- Extracts Windows event information
-- Extracts Wazuh rule information
-- Interprets the Wazuh rule level
-- Generates a structured plain-language report
-- Writes the report to an output file
-- Provides recommended analyst review steps
-- Preserves human review before any decision or response
+The selected fields are organized into several types of analyst context.
 
-## Alert-Processing Workflow
+## Endpoint Context
 
-The tool follows this workflow:
+The report identifies:
 
-```text
-1. Locate the sanitized alert-data sample
-2. Confirm that the file exists and is not empty
-3. Parse the expected key-value fields
-4. Store the selected alert information
-5. Extract endpoint and event details
-6. Interpret the Wazuh rule level
-7. Build the alert explanation
-8. Write the explanation to the output file
-9. Display a completion or error message
-10. Require human review of the result
-```
+- Monitored workstation
+- Endpoint IP address
+- Wazuh manager
 
-## Work Completed
+## Windows Event Context
 
-During this lab, I:
+It extracts:
 
-- Created the Lab 11 documentation structure
-- Created the AI Alert Explainer development folder
-- Checked whether Python was installed
-- Installed Python on the Windows host
-- Added Python to the Windows system path
-- Verified the installed Python version
-- Copied the sanitized Lab 10 alert sample into the Lab 11 folder
-- Identified the alert fields needed by the tool
-- Created the Python alert-explainer script
-- Created the generated-output file
-- Added input-file validation
-- Added empty-file validation
-- Added expected-field filtering
-- Added structured key-value parsing
-- Extracted the agent name
-- Extracted the agent IP address
-- Extracted the Wazuh manager name
-- Extracted the Windows event ID
-- Extracted the Windows event provider
-- Extracted the Windows severity value
-- Extracted the Windows event message
-- Extracted the Wazuh rule description
-- Extracted the Wazuh rule ID
-- Extracted the Wazuh rule level
-- Extracted the Wazuh rule groups
-- Extracted decoder and location information
-- Added severity-explanation logic
-- Added a structured alert summary
-- Added Windows event context
-- Added Wazuh rule context
-- Added analyst context
-- Added recommended review steps
-- Added a final assessment
-- Tested the script with the sanitized alert sample
-- Confirmed successful script execution
-- Confirmed that the output report was created
-- Opened and manually reviewed the generated report
-- Collected sanitized technical screenshots
-- Completed the Lab 11 technical notes
-- Completed the screenshot log
-- Prepared the project for GitHub publication
+- Event ID
+- Event provider
+- Windows severity
+- Event message
 
-## Screenshots and Evidence
+## Wazuh Rule Context
 
-### Lab Folder Created
+It includes:
 
-The Lab 11 folder was added to the Project Athenaeum AI for Cybersecurity workspace.
+- Rule description
+- Rule ID
+- Rule level
+- Rule groups
+- Decoder
+- Event location
 
-![Lab 11 folder added](screenshots/2026-07-28_Lab11_AIAlertExplainer_01_lab-folder-added.png)
+The purpose is to turn scattered alert fields into a more readable security narrative.
 
-### Python Installation Check
+---
 
-An initial command-line check confirmed that Python was not yet available on the Windows host.
+# The Processing Workflow
 
-![Python not installed check](screenshots/2026-07-28_Lab11_AIAlertExplainer_02_python-not-installed-check.png)
-
-### Python Installer Configuration
-
-The Python installer was configured to add Python to the Windows system path.
-
-![Python installer path selected](screenshots/2026-07-28_Lab11_AIAlertExplainer_03_python-installer-path-selected.png)
-
-### Python Installation Verified
-
-The installed Python version was verified from the Windows command line.
-
-![Python installed version check](screenshots/2026-07-28_Lab11_AIAlertExplainer_04_python-installed-version-check.png)
-
-### Sanitized Alert Sample Prepared
-
-The sanitized Wazuh alert sample from Lab 10 was copied into the Lab 11 development folder.
-
-![Alert data sample copied to AI folder](screenshots/2026-07-29_Lab11_AIAlertExplainer_05_data-sample-copied-to-ai-folder.png)
-
-### Working Project Files Created
-
-The Python script, sanitized input sample, and explanation-output file were organized together for development and testing.
-
-![AI project files created](screenshots/2026-07-29_Lab11_AIAlertExplainer_06_ai-project-files-created.png)
-
-### Script Executed Successfully
-
-The Python script completed successfully and displayed the input and output filenames.
-
-![AI Alert Explainer script ran successfully](screenshots/2026-07-29_Lab11_AIAlertExplainer_07_script-ran-successfully.png)
-
-### Output File Created
-
-Successful execution generated the alert-explanation output file.
-
-![Alert explanation output file created](screenshots/2026-07-29_Lab11_AIAlertExplainer_08_output-file-created.png)
-
-### Generated Report Reviewed
-
-The final report was opened and reviewed to confirm that the explanation matched the available alert evidence.
-
-![Generated alert explanation report reviewed](screenshots/2026-07-29_Lab11_AIAlertExplainer_09_output-report-viewed.png)
-
-## Generated Report Sections
-
-The completed report contains the following sections:
-
-### Alert Summary
-
-Identifies:
-
-- The monitored Windows workstation
-- The endpoint IP address
-- The Wazuh manager
-- The matched Wazuh rule description
-
-### Windows Event Context
-
-Identifies:
-
-- The Windows event ID
-- The event provider
-- The Windows severity value
-- The event message
-
-### Wazuh Rule Context
-
-Identifies:
-
-- The Wazuh rule ID
-- The Wazuh rule level
-- The rule groups
-- The decoder
-- The event location
-
-### Severity Explanation
-
-Converts the Wazuh rule level into a basic explanation that is easier for a beginning analyst to understand.
-
-### Analyst Context
-
-Explains that the current event was intentionally generated as a safe simulation inside the authorized Project Athenaeum environment.
-
-### Recommended Review Steps
-
-Provides practical review steps before the alert is closed or escalated.
-
-### Final Assessment
-
-Documents that the current Lab 11 alert is benign because it originated from a controlled test event.
-
-## Severity Logic
-
-The current version interprets Wazuh rule levels using the following logic:
+The MVP follows a straightforward sequence:
 
 ```text
-Level 10 or higher:
-High-severity alert that should be reviewed quickly
-
-Level 7 through 9:
-Notable alert that should be reviewed by an analyst
-
-Level 4 through 6:
-Medium-level alert that may require review depending on context
-
-Level 0 through 3:
-Low-level alert that may represent normal system activity
+1. Locate the sanitized alert file
+2. Confirm the file exists
+3. Confirm the file contains data
+4. Read expected key-value fields
+5. Store selected alert information
+6. Extract endpoint and event context
+7. Interpret the Wazuh rule level
+8. Build the explanation
+9. Write the report
+10. Display completion or error status
+11. Require human review
 ```
 
-If the rule level cannot be converted into a number, the tool explains that the severity requires manual review.
+The code is divided into smaller functions so file handling, severity interpretation, explanation generation, and program execution have clear responsibilities.
 
-Severity alone is not treated as proof that an event is malicious.
+---
 
-An analyst must also consider:
+# Running the MVP
+
+The public Lab 11 project contains:
+
+- [`Lab11_AI_Alert_Explainer_MVP.py`](Lab11_AI_Alert_Explainer_MVP.py)
+- [`Lab11_AI_Data_Sample_01_Windows_Application_Error_Event.txt`](Lab11_AI_Data_Sample_01_Windows_Application_Error_Event.txt)
+- [`Lab11_Alert_Explanation_Output.txt`](Lab11_Alert_Explanation_Output.txt)
+
+Keep the files together and run:
+
+```powershell
+python Lab11_AI_Alert_Explainer_MVP.py
+```
+
+A successful execution displays:
+
+```text
+AI Alert Explainer MVP completed successfully.
+Input file: Lab11_AI_Data_Sample_01_Windows_Application_Error_Event.txt
+Output file: Lab11_Alert_Explanation_Output.txt
+```
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-29_Lab11_AIAlertExplainer_07_script-ran-successfully.png"
+    alt="Lab 11 AI Alert Explainer successful Python execution"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The first complete execution successfully read the sanitized alert sample and created the expected report.</em>
+</p>
+
+---
+
+# Turning Alert Data Into a Report
+
+Successful execution generates:
+
+```text
+Lab11_Alert_Explanation_Output.txt
+```
+
+The report contains:
+
+- Alert summary
+- Windows event context
+- Wazuh rule context
+- Severity explanation
+- Analyst context
+- Recommended review steps
+- Final assessment
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-29_Lab11_AIAlertExplainer_08_output-file-created.png"
+    alt="Lab 11 generated alert explanation output file"
+    width="850">
+</p>
+
+<p align="center">
+  <em>The Python processor creates a separate explanation file from the sanitized source alert.</em>
+</p>
+
+---
+
+# What the Generated Report Looks Like
+
+The report is designed to answer several basic analyst questions.
+
+## What Happened?
+
+The alert summary identifies the monitored endpoint and the Wazuh rule that matched.
+
+## What Windows Event Was Involved?
+
+The event section provides the Windows event ID, provider, severity value, and message.
+
+## Why Did Wazuh Care?
+
+The Wazuh section presents the rule ID, rule level, groups, decoder, and location.
+
+## How Important Might It Be?
+
+The severity section converts the Wazuh rule level into simpler analyst-facing language.
+
+## What Should Be Reviewed Next?
+
+The report provides practical investigation steps rather than automatically taking action.
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-29_Lab11_AIAlertExplainer_09_output-report-viewed.png"
+    alt="Lab 11 generated alert explanation report"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The final report reorganizes selected alert evidence into a more readable analyst-oriented explanation.</em>
+</p>
+
+---
+
+# First Severity Logic
+
+The original MVP interprets Wazuh rule levels using simple deterministic ranges:
+
+```text
+Level 10 or higher
+→ High-severity alert that should be reviewed quickly
+
+Level 7 through 9
+→ Notable alert that should be reviewed by an analyst
+
+Level 4 through 6
+→ Medium-level alert that may require review depending on context
+
+Level 0 through 3
+→ Low-level alert that may represent normal system activity
+```
+
+If the rule level cannot be converted into a number, the tool does not invent one.
+
+Instead, severity requires manual review.
+
+This early severity system is intentionally simple.
+
+Later labs improve the architecture by separating Wazuh's source severity from a vendor-neutral normalized severity model.
+
+---
+
+# Severity Is Not Proof
+
+Even in this first MVP, severity alone is not treated as proof that an event is malicious.
+
+An analyst may also need to consider:
 
 - The affected endpoint
-- The event provider
-- The Windows event ID
-- The event message
+- Event provider
+- Windows event ID
+- Event message
 - Related alerts
 - Expected system activity
-- User and process information
-- Available business context
+- User activity
+- Process information
+- Business context
 
-## Recommended Review Steps
+That distinction becomes increasingly important as Project Athenaeum develops into later triage and investigation workflows.
 
-The generated report recommends that the analyst:
+---
 
-1. Confirm whether the event was expected or unexpected
-2. Check whether the same event repeats over time
-3. Review the provider, event ID, and endpoint involved
+# Recommended Review Steps
+
+The generated report recommends that an analyst:
+
+1. Confirm whether the event was expected
+2. Check whether the same event repeats
+3. Review the provider, event ID, and endpoint
 4. Look for related alerts before deciding whether escalation is needed
 
-These are investigative recommendations rather than automatic response actions.
+These are investigation suggestions.
 
-## Human Review Requirement
+They are not automated response actions.
+
+---
+
+# The Human Still Makes the Decision
 
 The MVP does not automatically:
 
-- Block accounts
-- Isolate endpoints
-- Terminate processes
-- Delete files
+- Block an account
+- Isolate an endpoint
+- Terminate a process
+- Delete a file
 - Change firewall rules
-- Close alerts
-- Escalate incidents
-- Make final security decisions
+- Close an alert
+- Escalate an incident
+- Make a final security decision
 
-All generated output must be reviewed by a person before action is taken.
+The design rule is:
 
 ```text
 The tool supports the analyst.
 It does not replace the analyst.
 ```
 
-This requirement is important because alert data may be incomplete, misleading, or missing important business context.
+That boundary matters because security alerts can be incomplete, misleading, or missing important context that software does not have.
 
-## Error Handling
+---
 
-The tool includes checks for several common problems:
+# Error Handling
 
-- The input file does not exist
-- The input file is empty
-- No expected alert fields are found
-- The rule level cannot be converted into a number
-- An unexpected error occurs during processing
-- An error occurs while writing the output file
+The first MVP also includes basic protections for common input problems.
 
-Lines that are blank, do not contain a colon, or do not match the expected field list are ignored.
+It checks for:
 
-Readable console messages identify whether the program completed successfully or encountered an error.
+- Missing input files
+- Empty input files
+- No recognized alert fields
+- Rule levels that cannot be converted to numbers
+- Unexpected processing errors
+- Output-writing errors
 
-## Testing and Validation
+Readable console messages indicate whether execution succeeded or explain what went wrong.
 
-The completed script was tested using the sanitized alert sample created from the Lab 10 Wazuh event.
+This error handling becomes the focus of more deliberate testing in Lab 12.
 
-Validation confirmed that the tool could:
+---
 
-- Locate the structured alert-data text file
+# Initial Validation
+
+The completed MVP was tested using the sanitized Lab 10 Wazuh alert.
+
+Validation confirmed that it could:
+
+- Locate the expected alert-data file
 - Confirm that the file contained data
-- Read the expected key-value fields
+- Parse the selected key-value fields
 - Extract endpoint information
 - Extract Windows event information
 - Extract Wazuh rule information
-- Interpret the Wazuh rule level
-- Produce a structured plain-language explanation
+- Interpret the rule level
+- Generate a structured explanation
 - Write the explanation to an output file
-- Display recommended investigation steps
-- Preserve the requirement for human review
+- Provide recommended review steps
+- Preserve human review
 
-The generated report was manually compared with the source alert sample to confirm that the explanation remained consistent with the available evidence.
+The generated report was manually compared against the source alert sample to confirm that the explanation remained consistent with the available evidence.
 
-## Security and Privacy
+## Initial Validation Status
 
-This lab followed these rules:
+| Validation Area | Result |
+| --- | --- |
+| Python execution | **PASS** |
+| Input file located | **PASS** |
+| Expected fields parsed | **PASS** |
+| Endpoint context extracted | **PASS** |
+| Windows event context extracted | **PASS** |
+| Wazuh rule context extracted | **PASS** |
+| Severity explanation generated | **PASS** |
+| Output file created | **PASS** |
+| Human review preserved | **PASS** |
 
-- Only sanitized alert data was used
-- No Wazuh administrator credentials were included
-- No passwords were stored in the project
-- No API keys or access tokens were used
-- No external AI service received the alert data
-- No real customer or financial information was used
-- No City, employer, school, or production data was included
-- Internal lab data was reviewed before publication
-- The tool does not perform automatic containment or remediation
-- Human approval remains required
-- Screenshots were reviewed before publication
-- Source files were checked for personal and sensitive paths
-- All activity occurred on personally owned and authorized systems
+Lab 12 later expands this testing to abnormal and failure conditions.
 
-## Limitations
+---
 
-This MVP has several intentional limitations:
+# What This MVP Does Not Do
 
-- It processes one prepared alert sample at a time
-- It uses a structured text file rather than a live Wazuh connection
-- It does not directly parse a full Wazuh JSON record
-- It does not use a machine-learning model or external AI API
-- Its explanations are created through predefined Python logic
-- It depends on the fields available in the input sample
-- It does not independently determine whether activity is malicious
-- It does not correlate multiple alerts
-- It does not validate users, processes, or network activity
-- It does not take automatic response actions
-- It requires manual review of the generated explanation
-- It requires testing with additional alert types
+Lab 11 is intentionally limited.
 
-These limitations prevent the MVP from being presented as more capable than it currently is.
+It:
 
-## Importance
+- Processes one prepared alert at a time
+- Reads structured text rather than a full Wazuh JSON record
+- Does not connect directly to live Wazuh
+- Does not use an external AI model
+- Does not use a machine-learning model
+- Uses predefined Python explanation logic
+- Depends on the fields available in the input sample
+- Does not correlate multiple alerts
+- Does not independently determine malicious intent
+- Does not validate related users, processes, or network activity
+- Does not execute response actions
+- Requires human review
 
-Security platforms can produce alerts containing large amounts of technical information.
+Those limitations are not hidden.
 
-A beginning analyst must be able to identify:
+They define the starting point from which later labs grow.
 
-- What happened
-- Which endpoint was involved
-- Which detection rule matched
-- How serious the alert may be
-- What evidence supports the alert
-- What should be reviewed next
+---
 
-This project demonstrates how Python can transform selected security fields into a clearer explanation while preserving human judgment and approval.
+# Security and Privacy
 
-The lab connects several Project Athenaeum skills:
+The MVP was built entirely with authorized, sanitized lab data.
+
+The public project contains:
+
+- No Wazuh administrator credentials
+- No passwords
+- No API keys
+- No access tokens
+- No customer information
+- No financial information
+- No employer or production security data
+- No external AI processing of the alert sample
+
+All activity occurred on personally owned and authorized systems.
+
+The input and screenshots were reviewed before publication.
+
+---
+
+# What Lab 11 Proves
+
+Lab 11 demonstrates that Python can take selected security-alert fields and reorganize them into a clearer analyst-facing report.
+
+It combines:
 
 - Wazuh monitoring
 - Windows telemetry
-- Alert review
-- Structured data processing
+- Structured data parsing
 - Python programming
-- Security severity interpretation
+- Severity interpretation
 - Technical communication
-- Analyst decision support
-- Documentation and verification
+- Security review guidance
 
-## Lessons Learned
+But the most important accomplishment is not the report itself.
 
-This lab demonstrated that the quality of an alert explanation depends on the quality and consistency of the input data.
+It is the transition:
 
-Using a smaller set of selected fields made the final report easier to understand than displaying an entire alert record without filtering.
+```text
+Security Data
+     ↓
+Programmatic Processing
+     ↓
+Human-Readable Context
+```
 
-The project also reinforced the value of separating the program into smaller functions. File loading, severity interpretation, explanation generation, and program execution each serve a clear purpose.
+Project Athenaeum is no longer only collecting security evidence.
 
-Error handling made the tool easier to troubleshoot by providing readable messages when an input problem occurred.
+It is starting to build tools that can work with that evidence.
 
-Most importantly, the project demonstrated that security-analysis tools should support human reasoning rather than replace it. Clear limitations, verification steps, and human approval remain necessary when software influences security decisions.
+---
 
-## Documentation Created
+# Skills Demonstrated
 
-The following Lab 11 documentation was completed and retained locally:
+- Python fundamentals
+- Functions
+- Conditional logic
+- File input and output
+- Structured text parsing
+- Security-data processing
+- Wazuh alert interpretation
+- Windows event analysis
+- Field extraction
+- Error handling
+- Severity interpretation
+- Plain-language technical communication
+- Analyst workflow design
+- Human-in-the-loop decision support
+- Testing and troubleshooting
+- Privacy-conscious data handling
+- Technical documentation
 
-- `AJ_Chapa_Lab_11_AI_Alert_Explainer_MVP_Notes_v1.0.docx`
-- Lab 11 screenshot log
-- Sanitized Wazuh alert-data sample
-- Python alert-explainer script
-- Generated alert-explanation output
-- Nine sanitized supporting screenshots
-- Final portfolio writeup
-- GitHub project documentation
+---
 
-## Future Development
+# Where the Project Goes From Here
 
-Later versions may include:
+Lab 10 answered:
 
-- Processing additional Wazuh alert types
-- Accepting multiple alert files
-- Parsing full JSON alert records
-- Comparing related alerts
-- Creating reusable severity mappings
-- Exporting explanations in multiple formats
-- Generating incident-summary templates
-- Adding a graphical interface
-- Connecting to a local or approved AI model
-- Adding validation rules for generated explanations
-- Adding analyst feedback and correction controls
-- Measuring explanation accuracy
-- Correlating multiple security events
-- Building a simplified Business Guardian dashboard
-- Preserving human approval before any response action
+**Can the lab generate, detect, inspect, and sanitize real security-event data?**
 
-## Status
+Lab 11 answered:
 
-**Completed and portfolio ready**
+**Can I write a Python tool that turns selected alert data into a clearer analyst report?**
+
+The answer was yes.
+
+But one successful execution creates another question:
+
+**What happens when the input is not perfect?**
+
+What if:
+
+- The file is missing?
+- The file is empty?
+- An expected field disappears?
+- Severity changes?
+
+[Lab 12 — AI Alert Explainer Testing and Validation](../lab-12-ai-alert-explainer-testing-validation/README.md) takes the working Lab 11 MVP, preserves it as a stable baseline, and deliberately tests those failure conditions.
+
+The progression becomes:
+
+```text
+Wazuh Alert
+     ↓
+Python Alert Explainer
+     ↓
+Working MVP
+     ↓
+Controlled Failure Testing
+     ↓
+Validated Baseline
+```
+
+Lab 11 is where Project Athenaeum makes an important transition:
+
+**from reviewing security data to building software that can help explain it.**
