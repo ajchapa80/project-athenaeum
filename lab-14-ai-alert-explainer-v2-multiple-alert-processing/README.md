@@ -1,267 +1,144 @@
-# Lab 14: AI Alert Explainer v2 Multiple Alert Processing
+# Lab 14 — AI Alert Explainer v2: Multiple Alert Processing
 
-## Overview
+## What Happens When Five Alerts Arrive at Once?
 
-Lab 14 implements the requirements and technical design established during Lab 13 and extends the validated AI Alert Explainer foundation created in Labs 11 and 12.
+The original AI Alert Explainer could process one sanitized Wazuh alert at a time.
 
-The original MVP processed one sanitized Wazuh alert at a time. Lab 14 moves the project to a controlled multiple-alert processing workflow capable of discovering several supported alert files during one execution, translating source-specific information into a normalized alert structure, validating each alert independently, generating individual analyst reports, and producing a batch-level summary.
+That worked.
 
-The implementation preserves the previously validated MVP rather than replacing it. Labs 11 and 12 remain the historical baseline, while Lab 14 establishes the first validated multiple-alert processing baseline.
+But a real security workflow cannot depend on someone manually feeding it one perfect alert after another.
 
-Lab 14 also continues the vendor-neutral design direction established in Lab 13. Wazuh remains the first supported alert source, but source-specific fields are translated into a common internal structure rather than becoming the permanent architecture of the application.
+Some alerts will be complete.
 
-Core parsing, normalization, validation, severity translation, report generation, and processing decisions remain deterministic and testable.
+Some will be missing information.
 
-## Objective
+Some will contain malformed values.
 
-The objective of Lab 14 was to implement and validate the first version of the AI Alert Explainer v2 multiple-alert processing architecture.
+Some may not even contain enough recognizable security data to process safely.
 
-The implementation needed to:
+Lab 14 asks:
 
-* Process multiple supported alert files during one execution
-* Preserve source alert files without modification
-* Translate supported Wazuh data into a normalized internal alert structure
-* Apply platform-neutral severity categories
-* Detect missing or malformed information
-* Distinguish normal processing, warning conditions, and failed validation
-* Continue processing when an individual alert fails
-* Generate unique reports for processable alerts
-* Create one batch summary for each processing run
-* Preserve traceability between source alerts and generated reports
-* Prevent previous output from being overwritten
-* Require human review rather than automatically declaring alerts benign, malicious, confirmed, or resolved
-* Match the deterministic validation target established before implementation in Lab 13
+**Can the system process all of them during one controlled run without one bad alert breaking everything else?**
 
-## Project Progression
+This lab implements the architecture designed in [Lab 13 — AI Alert Explainer v2 Requirements and Design](../lab-13-ai-alert-explainer-v2-requirements-design/README.md).
 
-Project Athenaeum preserves validated work and extends it rather than rebuilding completed components.
-
-The AI Alert Explainer progression is:
-
-* **Lab 10:** Collected and sanitized structured Wazuh alert data
-* **Lab 11:** Built the single-alert AI Alert Explainer MVP
-* **Lab 12:** Tested and validated the MVP
-* **Lab 13:** Designed AI Alert Explainer v2 before additional coding
-* **Lab 14:** Implemented and validated multiple-alert processing
-
-Labs 11 and 12 remain preserved as the validated MVP baseline.
-
-Lab 14 implements the controlled scope frozen during Lab 13 rather than retroactively changing earlier labs.
-
-## Environment and Tools
-
-Lab 14 was completed in the existing Project Athenaeum development environment using:
-
-* Windows 11
-* Python
-* Visual Studio Code
-* Windows File Explorer
-* PowerShell
-* Sanitized Wazuh alert data
-* Synthetic security-alert test data
-* Existing Lab 11 parsing and file-handling concepts
-* Lab 13 v2 requirements and design documentation
-
-All alert samples used for the lab were sanitized or synthetic.
-
-No production systems, customer systems, employer systems, or unauthorized security data were used.
-
-## Project Files
-
-The public Lab 14 implementation includes the working Python application, complete controlled validation input set, selected generated output, validation results, and sanitized portfolio evidence.
-
-### Application
-
-* [Lab 14 Python Application](Lab14_AI_Alert_Explainer_v2.py)
-* [Lab 14 Validation Results](Lab14_AI_Alert_Explainer_v2_Validation_Results.txt)
-
-### Validation Inputs
-
-The complete five-alert controlled validation set is available in the [`input`](input/) folder.
-
-* [Input Folder Documentation](input/README.md)
-* [Alert 001 — Windows Application Error](input/alert_001_windows_application_error.txt)
-* [Alert 002 — Higher-Severity Alert](input/alert_002_high_severity.txt)
-* [Alert 003 — Missing Fields](input/alert_003_missing_fields.txt)
-* [Alert 004 — Invalid Severity](input/alert_004_invalid_severity.txt)
-* [Alert 005 — Invalid Content](input/alert_005_invalid_content.txt)
-
-### Representative Generated Output
-
-Selected output from the validated processing workflow is available in the [`output`](output/) folder.
-
-* [Output Folder Documentation](output/README.md)
-* [Validated Batch Summary](output/batch_summary_20260817_105319.txt)
-* [Missing-Fields Report](output/alert_003_missing_fields_report_20260817_124241.txt)
-* [Malformed-Severity Report](output/alert_004_invalid_severity_report_20260817_124241.txt)
-
-The complete local output set is intentionally not published. These representative artifacts demonstrate the validated processing behavior without unnecessarily duplicating every generated report.
-
-### Portfolio Evidence
-
-* [Screenshot Evidence Folder](screenshots/)
-* [Screenshot Documentation](screenshots/README.md)
-
-Six selected sanitized screenshots are published from the complete 54-screenshot internal documentation record.
-
-## Workspace Structure
-
-Lab 14 introduced separate input and output locations for the v2 processing workflow.
-
-The public project structure is:
+The workflow moves from:
 
 ```text
-lab-14-ai-alert-explainer-v2-multiple-alert-processing/
-├── README.md
-├── Lab14_AI_Alert_Explainer_v2.py
-├── Lab14_AI_Alert_Explainer_v2_Validation_Results.txt
-├── input/
-│   ├── README.md
-│   ├── alert_001_windows_application_error.txt
-│   ├── alert_002_high_severity.txt
-│   ├── alert_003_missing_fields.txt
-│   ├── alert_004_invalid_severity.txt
-│   └── alert_005_invalid_content.txt
-├── output/
-│   ├── README.md
-│   ├── batch_summary_20260817_105319.txt
-│   ├── alert_003_missing_fields_report_20260817_124241.txt
-│   └── alert_004_invalid_severity_report_20260817_124241.txt
-└── screenshots/
-    ├── README.md
-    └── six selected sanitized screenshots
+One Alert
+   ↓
+One Report
 ```
 
-This structure separates source input, generated output, application code, validation evidence, and portfolio screenshots.
-
-## Multiple-Alert Discovery
-
-The v2 workflow discovers multiple supported `.txt` alert files from the designated input location.
-
-Supported files are processed in predictable filename order.
-
-This allows several alerts to be evaluated during one controlled execution rather than requiring the program to be run manually for every alert.
-
-Source alert files are not modified during processing.
-
-## Wazuh Source Handling
-
-Wazuh is the first supported security-data source for the v2 architecture.
-
-Lab 14 introduces an initial Wazuh source-handling layer that reads supported source fields and translates them into the common normalized alert model.
-
-This prevents shared downstream processing from permanently depending on Wazuh-specific field names.
-
-The goal is not to remove Wazuh support. The design allows additional security platforms to eventually provide data to the same normalized processing workflow through their own source-specific translation layers.
-
-## Normalized Alert Model
-
-Supported source data is translated into a common normalized alert structure.
-
-The normalized model provides consistent internal representations for information such as:
-
-* Alert source
-* Endpoint identity
-* Endpoint IP address
-* Event identifiers
-* Event provider
-* Event message
-* Source rule information
-* Original source severity
-* Normalized severity
-* Missing fields
-* Validation notes
-* Processing outcome
-* Review status
-* Source traceability
-
-Recognized source information is retained so the normalized representation does not eliminate traceability back to the original data.
-
-## Normalized Severity
-
-Lab 14 uses platform-neutral severity categories instead of treating Wazuh numeric rule levels as the permanent internal severity model.
-
-Supported normalized categories are:
-
-* `INFORMATIONAL`
-* `LOW`
-* `MEDIUM`
-* `HIGH`
-* `CRITICAL`
-* `UNKNOWN`
-
-A malformed, missing, or unsupported source severity is not guessed.
-
-When valid translation cannot be completed, the normalized severity becomes:
+to:
 
 ```text
+Multiple Alerts
+      ↓
+Discover
+      ↓
+Parse
+      ↓
+Normalize
+      ↓
+Validate Independently
+      ↓
+Generate Reports
+      ↓
+Create Batch Summary
+```
+
+Labs 11 and 12 remain preserved as the validated single-alert MVP baseline.
+
+Lab 14 extends that foundation instead of replacing it.
+
+**Nothing gets built twice.**
+
+---
+
+# What Lab 14 Adds
+
+The v2 processor can discover several supported alert files during one execution and handle each one independently.
+
+The implementation adds:
+
+- Multiple-alert discovery
+- Predictable processing order
+- Vendor-neutral normalized alert data
+- Initial Wazuh source translation
+- Platform-neutral severity
+- Missing-field detection
+- Malformed-value handling
+- Explicit validation outcomes
+- Per-alert failure isolation
+- Individual analyst reports
+- Batch-level summaries
+- Source-to-report traceability
+- Unique output filenames
+- Overwrite protection
+- Repeatable validation
+
+The result is no longer just a script that explains one alert.
+
+It is the beginning of a reusable security-data processing pipeline.
+
+---
+
+# From Wazuh Data to a Common Alert Model
+
+Wazuh is the first supported source in Project Athenaeum, but Lab 14 does not allow Wazuh-specific field names to become the permanent architecture.
+
+Instead:
+
+```text
+Wazuh Alert
+     ↓
+Source Translation
+     ↓
+Normalized Alert
+     ↓
+Shared Processing Logic
+```
+
+Supported information is translated into a common internal structure containing data such as:
+
+- Alert source
+- Endpoint identity
+- Endpoint IP
+- Event identifiers
+- Event provider
+- Event message
+- Source rule information
+- Original source severity
+- Normalized severity
+- Missing fields
+- Validation notes
+- Processing outcome
+- Review status
+- Source traceability
+
+The original source information remains available where needed for traceability.
+
+The point is not to remove Wazuh.
+
+The point is to avoid designing the entire system so that it can only understand Wazuh.
+
+---
+
+# Severity Without Guessing
+
+Wazuh rule levels are translated into platform-neutral categories:
+
+```text
+INFORMATIONAL
+LOW
+MEDIUM
+HIGH
+CRITICAL
 UNKNOWN
 ```
 
-The original source value remains preserved for traceability.
-
-Severity determines review priority. It does not automatically determine whether an alert is benign, malicious, confirmed, or resolved.
-
-## Validation Outcomes
-
-Every discovered alert is evaluated independently.
-
-Lab 14 supports three validation outcomes.
-
-### Processed Normally
-
-The alert contains the supported information required for normal processing and an individual analyst report can be generated.
-
-### Processed With Warnings
-
-The alert contains enough supported information to produce a report, but missing, malformed, or uncertain information requires additional analyst attention.
-
-An individual report is generated and the validation issue is documented.
-
-### Failed Validation
-
-The input does not contain enough recognized supported alert information to safely generate an individual analyst report.
-
-The failure is recorded in the batch results, but no individual analyst report is created.
-
-A failed alert does not stop the remaining alerts from being processed.
-
-## Review Status
-
-All processable alerts default to:
-
-```text
-Requires Review
-```
-
-The application does not automatically mark an alert as:
-
-* Benign
-* Malicious
-* Confirmed
-* Resolved
-
-Those conclusions require sufficient evidence and human judgment.
-
-This prevents the processing layer from presenting unsupported security conclusions as facts.
-
-## Missing-Field Handling
-
-Missing supported information is explicitly reported.
-
-For example, if a source alert does not contain a supported endpoint IP address or event provider, those normalized fields are recorded as unavailable rather than receiving fabricated replacement values.
-
-Missing expected information may cause an alert to receive:
-
-```text
-Processed With Warnings
-```
-
-when enough other supported information remains available for meaningful processing.
-
-## Malformed-Value Handling
-
-Malformed information is handled separately from missing information.
+A malformed or unsupported source severity is not guessed.
 
 For example:
 
@@ -269,200 +146,262 @@ For example:
 rule.level: invalid
 ```
 
-is not treated as though the severity field were absent.
+does not become an arbitrary numeric value.
 
-The original malformed value remains preserved, the normalized severity becomes:
-
-```text
-UNKNOWN
-```
-
-and a validation note records that the source value could not be interpreted reliably.
-
-This preserves the distinction between:
-
-* Information that is missing
-* Information that exists but cannot be safely interpreted
-
-## Per-Alert Failure Isolation
-
-Lab 14 isolates alert-processing failures.
-
-If one alert fails validation, the application records that failure and continues processing the remaining supported files.
-
-This prevents one malformed or unsupported alert from stopping the complete batch.
-
-Failure isolation is an important reliability improvement over an all-or-nothing processing workflow.
-
-## Individual Reports
-
-Every processable alert receives its own analyst report.
-
-Individual reports provide:
-
-* Processing run information
-* Original source filename
-* Validation status
-* Review status
-* Alert summary
-* Endpoint context
-* Event context
-* Source security context
-* Original source severity
-* Normalized severity
-* Severity explanation
-* Missing-field information
-* Validation notes
-* Analyst review guidance
-* Safe assessment language
-* Source traceability
-
-Failed-validation inputs do not receive individual analyst reports.
-
-## Batch Summary
-
-Each complete processing execution creates one batch summary.
-
-The batch summary records:
-
-* Processing run identifier
-* Input and output locations
-* Total supported alert files discovered
-* Successfully processed alerts
-* Alerts processed with warnings
-* Failed alerts
-* Individual reports created
-* Per-alert processing results
-* Validation status
-* Normalized severity
-* Report creation status
-* Failure reason when applicable
-* Batch-completion status
-
-Batch totals are calculated from the actual collected results.
-
-They are not hard-coded to match the expected test result.
-
-## Overwrite Protection
-
-Lab 14 includes overwrite protection for:
-
-* Individual alert reports
-* Batch-summary reports
-
-Generated filenames use the processing-run timestamp.
-
-If a filename collision still occurs, a numeric suffix is added rather than overwriting an existing file.
-
-A second complete validation execution created a new set of output files while preserving the first-run results.
-
-## Controlled Validation Set
-
-Five sanitized or synthetic alert samples were used to validate the Lab 14 architecture.
-
-### Test 1 — Baseline Windows Application Error
-
-File:
-
-[`alert_001_windows_application_error.txt`](input/alert_001_windows_application_error.txt)
-
-Purpose:
-
-* Reuse the sanitized alert sample from the validated Lab 11 workflow
-* Confirm compatibility with the v2 architecture
-
-Source severity:
+Instead:
 
 ```text
-9
+Original source value: invalid
+Normalized severity: UNKNOWN
 ```
 
-Normalized severity:
+The malformed source value remains preserved, and a validation note explains why translation could not be completed safely.
+
+This keeps two important ideas separate:
 
 ```text
-MEDIUM
+What the source actually said
+            ≠
+What the system can safely normalize
 ```
 
-Expected outcome:
+---
+
+# Three Possible Processing Outcomes
+
+Every discovered alert is evaluated independently.
+
+Lab 14 uses three outcomes.
+
+## `Processed Normally`
+
+The alert contains enough supported information for normal processing and an individual analyst report can be generated.
+
+## `Processed With Warnings`
+
+The alert is still usable, but missing, malformed, or uncertain information requires additional attention.
+
+A report is still created, and the problem is documented.
+
+## `Failed Validation`
+
+The input does not contain enough recognized information to safely produce an analyst report.
+
+The failure is recorded.
+
+The rest of the batch continues.
+
+That last part is important:
+
+> **One bad alert should not stop four good ones from being processed.**
+
+---
+
+# Human Review Remains the Default
+
+Every processable alert begins with:
 
 ```text
-Processed Normally
+Requires Review
 ```
 
-### Test 2 — Higher-Severity Alert
+The processor does not automatically declare an alert:
 
-File:
+- Benign
+- Malicious
+- Confirmed
+- Resolved
 
-[`alert_002_high_severity.txt`](input/alert_002_high_severity.txt)
+Lab 14 organizes and validates the available evidence.
 
-Purpose:
+It does not pretend that formatting an alert into a report is the same thing as completing an investigation.
 
-* Test a synthetic higher-severity authentication alert
-* Validate higher-severity translation
+---
 
-Source severity:
+# Missing Data Stays Missing
 
-```text
-11
-```
-
-Normalized severity:
-
-```text
-HIGH
-```
-
-Expected outcome:
-
-```text
-Processed Normally
-```
-
-### Test 3 — Missing Fields
-
-File:
-
-[`alert_003_missing_fields.txt`](input/alert_003_missing_fields.txt)
-
-The alert deliberately omits supported information corresponding to:
+One controlled alert intentionally omits:
 
 ```text
 endpoint_ip
 event_provider
 ```
 
-Source severity:
+The system does not invent replacements.
 
-```text
-5
-```
-
-Normalized severity:
-
-```text
-LOW
-```
-
-Expected outcome:
+Instead, those values are recorded as unavailable and the alert receives:
 
 ```text
 Processed With Warnings
 ```
 
-Purpose:
+because enough other supported information remains to continue safely.
 
-* Confirm that missing information is reported rather than fabricated
-* Confirm that an incomplete but still processable alert can generate an analyst report
+<p align="center">
+  <img
+    src="screenshots/2026-08-17_Lab14_AIAlertExplainerV2_50_report3-missing-fields-validation.png"
+    alt="Lab 14 missing-field validation"
+    width="900">
+</p>
 
-Representative generated output:
+<p align="center">
+  <em>Missing endpoint and provider information is reported explicitly rather than filled with fabricated values.</em>
+</p>
 
-[Missing-Fields Report](output/alert_003_missing_fields_report_20260817_124241.txt)
+---
 
-### Test 4 — Malformed Severity
+# Malformed Data Is Different From Missing Data
+
+Lab 14 also tests data that exists but cannot be interpreted safely.
+
+The malformed-severity test contains:
+
+```text
+rule.level: invalid
+```
+
+The processor preserves that original value while setting the normalized severity to:
+
+```text
+UNKNOWN
+```
+
+and recording the problem in validation notes.
+
+That distinction matters:
+
+```text
+Missing
+   ≠
+Malformed
+```
+
+A reliable security workflow should know the difference.
+
+<p align="center">
+  <img
+    src="screenshots/2026-08-17_Lab14_AIAlertExplainerV2_51_report4-malformed-severity-validation.png"
+    alt="Lab 14 malformed severity validation"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The malformed source severity remains preserved while normalization safely falls back to UNKNOWN.</em>
+</p>
+
+---
+
+# Processing the Whole Batch
+
+Lab 14 discovers supported `.txt` alert files from the designated input folder and processes them in predictable filename order.
+
+Conceptually:
+
+```text
+Find Alert Files
+      ↓
+Alert 001 → Process
+Alert 002 → Process
+Alert 003 → Process With Warnings
+Alert 004 → Process With Warnings
+Alert 005 → Fail Safely
+      ↓
+Build Batch Summary
+```
+
+Each alert is isolated from the others.
+
+A failure in one record does not stop the batch.
+
+<p align="center">
+  <img
+    src="screenshots/2026-08-17_Lab14_AIAlertExplainerV2_29_multiple-alert-batch-processing.png"
+    alt="Lab 14 multiple-alert batch processing"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The v2 workflow moves Project Athenaeum from single-alert processing into controlled batch processing.</em>
+</p>
+
+---
+
+# Controlled Validation Set
+
+Five sanitized or synthetic alerts were prepared before implementation was considered complete.
+
+## Test 1 — Baseline Windows Application Error
 
 File:
 
-[`alert_004_invalid_severity.txt`](input/alert_004_invalid_severity.txt)
+[`input/alert_001_windows_application_error.txt`](input/alert_001_windows_application_error.txt)
+
+Purpose:
+
+- Reuse the validated Lab 11 sample
+- Confirm compatibility with the new v2 architecture
+
+Expected:
+
+```text
+Source severity: 9
+Normalized severity: MEDIUM
+Outcome: Processed Normally
+```
+
+---
+
+## Test 2 — Higher-Severity Alert
+
+File:
+
+[`input/alert_002_high_severity.txt`](input/alert_002_high_severity.txt)
+
+Purpose:
+
+- Exercise a synthetic higher-severity authentication condition
+- Validate higher-severity translation
+
+Expected:
+
+```text
+Source severity: 11
+Normalized severity: HIGH
+Outcome: Processed Normally
+```
+
+---
+
+## Test 3 — Missing Fields
+
+File:
+
+[`input/alert_003_missing_fields.txt`](input/alert_003_missing_fields.txt)
+
+Intentionally missing:
+
+```text
+endpoint_ip
+event_provider
+```
+
+Expected:
+
+```text
+Source severity: 5
+Normalized severity: LOW
+Outcome: Processed With Warnings
+```
+
+The alert should still produce a report because enough supported information remains available.
+
+---
+
+## Test 4 — Malformed Severity
+
+File:
+
+[`input/alert_004_invalid_severity.txt`](input/alert_004_invalid_severity.txt)
 
 Source value:
 
@@ -470,56 +409,43 @@ Source value:
 rule.level: invalid
 ```
 
-Normalized severity:
+Expected:
 
 ```text
-UNKNOWN
+Normalized severity: UNKNOWN
+Outcome: Processed With Warnings
 ```
 
-Expected outcome:
+The original malformed value must remain preserved.
 
-```text
-Processed With Warnings
-```
+---
 
-Purpose:
-
-* Preserve the malformed source value
-* Avoid guessing a replacement severity
-* Record the issue in validation notes
-* Distinguish malformed information from missing information
-
-Representative generated output:
-
-[Malformed-Severity Report](output/alert_004_invalid_severity_report_20260817_124241.txt)
-
-### Test 5 — Unsupported / Invalid Content
+## Test 5 — Unsupported Content
 
 File:
 
-[`alert_005_invalid_content.txt`](input/alert_005_invalid_content.txt)
+[`input/alert_005_invalid_content.txt`](input/alert_005_invalid_content.txt)
 
 Purpose:
 
-* Test input containing no recognized supported Wazuh alert fields
-* Confirm safe failure behavior
-* Confirm that remaining alerts continue processing
+- Provide input containing no recognized supported Wazuh alert fields
+- Confirm safe validation failure
+- Confirm that the remaining alerts continue processing
 
-Expected outcome:
-
-```text
-Failed Validation
-```
-
-Expected individual analyst report:
+Expected:
 
 ```text
-None
+Outcome: Failed Validation
+Individual report: None
 ```
 
-## Lab 13 Validation Target
+---
 
-Before Lab 14 implementation began, Lab 13 established the following deterministic acceptance criteria:
+# The Target Was Frozen Before Coding
+
+Lab 13 defined the acceptance criteria before Lab 14 implementation began.
+
+The expected result was:
 
 ```text
 Total Supported Alert Files Discovered: 5
@@ -530,9 +456,13 @@ Individual Reports Created: 4
 Batch Summaries Created: 1
 ```
 
-The expected result was frozen before implementation so Lab 14 could be tested against a predetermined target rather than adjusting expectations after coding.
+That matters because the result was not chosen after seeing what the program happened to produce.
 
-## Observed Lab 14 Results
+The code had to meet the target.
+
+---
+
+# First Controlled Execution
 
 The first validated processing run was:
 
@@ -540,7 +470,7 @@ The first validated processing run was:
 20260817_105319
 ```
 
-Observed result:
+Observed:
 
 ```text
 Total Supported Alert Files Discovered: 5
@@ -551,21 +481,131 @@ Individual Reports Created: 4
 Batch Summaries Created: 1
 ```
 
-This was an exact match with the acceptance criteria established during Lab 13.
+The observed result matched the frozen Lab 13 acceptance criteria exactly.
 
-The published batch record is available here:
+**Expected vs. observed: Exact match — PASS**
 
-[Validated Batch Summary](output/batch_summary_20260817_105319.txt)
+<p align="center">
+  <img
+    src="screenshots/2026-08-17_Lab14_AIAlertExplainerV2_45_first-batch-execution-success.png"
+    alt="Lab 14 first successful batch execution"
+    width="900">
+</p>
 
-## Second Validation Run
+<p align="center">
+  <em>The first complete five-alert execution matched the predetermined 5 / 2 / 2 / 1 / 4 target.</em>
+</p>
 
-A second complete processing run was performed to validate repeatability and overwrite protection:
+---
+
+# Batch-Level Reporting
+
+Every complete execution creates one batch summary.
+
+The batch summary records information such as:
+
+- Processing run identifier
+- Input and output locations
+- Total supported files discovered
+- Normally processed alerts
+- Warning conditions
+- Failed alerts
+- Reports created
+- Per-alert processing results
+- Validation status
+- Normalized severity
+- Report creation status
+- Failure reason when applicable
+- Batch completion status
+
+The totals are calculated from the actual collected results.
+
+They are not hard-coded to match the expected test case.
+
+<p align="center">
+  <img
+    src="screenshots/2026-08-17_Lab14_AIAlertExplainerV2_47_validated-batch-summary.png"
+    alt="Lab 14 validated batch summary"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The batch summary records the outcome of every alert and derives its totals from the actual processing run.</em>
+</p>
+
+---
+
+# Individual Analyst Reports
+
+Each processable alert receives its own report.
+
+A report can include:
+
+- Processing-run information
+- Original source filename
+- Validation status
+- Review status
+- Alert summary
+- Endpoint context
+- Event context
+- Source security context
+- Original source severity
+- Normalized severity
+- Severity explanation
+- Missing-field information
+- Validation notes
+- Analyst review guidance
+- Safe assessment language
+- Source traceability
+
+Inputs that fail validation do not receive analyst reports.
+
+That prevents unsupported content from being turned into something that looks authoritative simply because the program was able to open the file.
+
+---
+
+# Published Inputs and Outputs
+
+The public lab contains enough material to inspect the complete workflow.
+
+## Application
+
+- [`Lab14_AI_Alert_Explainer_v2.py`](Lab14_AI_Alert_Explainer_v2.py)
+- [`Lab14_AI_Alert_Explainer_v2_Validation_Results.txt`](Lab14_AI_Alert_Explainer_v2_Validation_Results.txt)
+
+## Input
+
+The [`input/`](input/) folder contains the complete five-alert controlled validation set.
+
+- [`alert_001_windows_application_error.txt`](input/alert_001_windows_application_error.txt)
+- [`alert_002_high_severity.txt`](input/alert_002_high_severity.txt)
+- [`alert_003_missing_fields.txt`](input/alert_003_missing_fields.txt)
+- [`alert_004_invalid_severity.txt`](input/alert_004_invalid_severity.txt)
+- [`alert_005_invalid_content.txt`](input/alert_005_invalid_content.txt)
+
+## Representative Output
+
+The [`output/`](output/) folder contains selected validated output:
+
+- [`batch_summary_20260817_105319.txt`](output/batch_summary_20260817_105319.txt)
+- [`alert_003_missing_fields_report_20260817_124241.txt`](output/alert_003_missing_fields_report_20260817_124241.txt)
+- [`alert_004_invalid_severity_report_20260817_124241.txt`](output/alert_004_invalid_severity_report_20260817_124241.txt)
+
+The complete local output set is intentionally not published.
+
+These representative files are enough to demonstrate the behavior without filling the public repository with redundant generated reports.
+
+---
+
+# Repeatability and Overwrite Protection
+
+A second complete validation run was performed:
 
 ```text
 20260817_110753
 ```
 
-The second run produced the same processing result:
+It produced the same result:
 
 ```text
 5 alerts discovered
@@ -576,234 +616,226 @@ The second run produced the same processing result:
 1 batch summary
 ```
 
-The first-run output files remained intact after the second execution.
+The first-run output remained intact.
 
-## Validation Results
+Lab 14 uses processing-run timestamps in generated filenames.
 
-Lab 14 successfully validated the following behaviors:
+If a collision still occurs, a numeric suffix is added instead of overwriting an existing file.
 
-* Five supported alert files were discovered
-* Two alerts were processed normally
-* Two alerts were processed with warnings
-* One alert failed validation
-* Four individual analyst reports were created
-* One batch summary was created per run
-* One failed alert did not stop the remaining alerts
-* Missing information was reported instead of fabricated
-* Malformed severity was preserved rather than guessed
-* Malformed severity normalized to `UNKNOWN`
-* Malformed information was recorded in validation notes
-* Missing and malformed information were treated differently
-* Failed validation generated no individual analyst report
-* Source alert files remained unchanged
-* Source traceability was preserved
-* All processable alerts received unique reports
-* Batch summaries received unique filenames
-* Batch totals were calculated from actual processing results
-* A second execution created a separate set of outputs
-* First-run output remained intact
-* The reused Lab 11 alert remained compatible with the v2 architecture
-* All processable alerts retained the default `Requires Review` status
+<p align="center">
+  <img
+    src="screenshots/2026-08-17_Lab14_AIAlertExplainerV2_54_overwrite-protection-validation.png"
+    alt="Lab 14 overwrite-protection validation"
+    width="900">
+</p>
 
-The complete public validation record is available here:
+<p align="center">
+  <em>The repeat run reproduced the expected result while preserving the first run's reports and batch summary.</em>
+</p>
 
-[Lab14_AI_Alert_Explainer_v2_Validation_Results.txt](Lab14_AI_Alert_Explainer_v2_Validation_Results.txt)
+---
 
-## Portfolio Evidence
+# Why Failure Isolation Matters
 
-Only a selected subset of the complete Lab 14 screenshot record is published publicly.
+The fifth controlled alert was deliberately unsupported.
 
-The internal Lab 14 Screenshot Log contains all 54 screenshots captured during development, testing, and validation.
+It failed.
 
-The public repository uses six selected sanitized screenshots that demonstrate the strongest technical evidence.
+The batch did not.
 
-### Multiple-Alert Batch Processing
+That difference is one of the most important improvements introduced in Lab 14.
 
-![Multiple-alert batch processing](screenshots/2026-08-17_Lab14_AIAlertExplainerV2_29_multiple-alert-batch-processing.png)
+A fragile workflow might behave like this:
 
-Demonstrates the core multiple-alert batch-processing implementation and the transition from the validated single-alert MVP to the v2 workflow.
+```text
+Alert 1 → Good
+Alert 2 → Good
+Alert 3 → Warning
+Alert 4 → Warning
+Alert 5 → Error
+             ↓
+        Entire Job Stops
+```
 
-### First Successful Batch Execution
+Lab 14 instead behaves like:
 
-![First successful batch execution](screenshots/2026-08-17_Lab14_AIAlertExplainerV2_45_first-batch-execution-success.png)
+```text
+Alert 1 → Process
+Alert 2 → Process
+Alert 3 → Process With Warnings
+Alert 4 → Process With Warnings
+Alert 5 → Fail Safely
+             ↓
+      Batch Still Completes
+```
 
-Shows the first successful complete execution of the five-alert validation set and the expected `5 / 2 / 2 / 1 / 4` result.
+That makes the processing layer much more useful as a foundation for later security workflows.
 
-### Validated Batch Summary
+---
 
-![Validated batch summary](screenshots/2026-08-17_Lab14_AIAlertExplainerV2_47_validated-batch-summary.png)
+# Final Validation
 
-Shows the batch-level processing record and the outcome of each controlled alert sample.
+Lab 14 validated that:
 
-### Missing-Field Validation
+- Five supported alert files were discovered
+- Two alerts processed normally
+- Two alerts processed with warnings
+- One alert failed validation
+- Four individual reports were created
+- One batch summary was created per run
+- One failed alert did not stop the rest of the batch
+- Missing information was reported instead of fabricated
+- Malformed severity remained preserved
+- Malformed severity normalized to `UNKNOWN`
+- Missing and malformed data were handled differently
+- Failed validation produced no individual analyst report
+- Source files remained unchanged
+- Source traceability remained preserved
+- Batch totals came from actual results
+- Repeat execution created separate output
+- Previous output remained intact
+- The Lab 11 sample remained compatible with v2
+- All processable alerts remained `Requires Review`
 
-![Missing-field validation](screenshots/2026-08-17_Lab14_AIAlertExplainerV2_50_report3-missing-fields-validation.png)
+## Validation Status
 
-Demonstrates safe processing of an incomplete alert, including explicit missing-field reporting without fabricated information.
+| Validation Area | Result |
+| --- | --- |
+| Technical implementation | **COMPLETE** |
+| Controlled validation | **PASS** |
+| Expected result | **MATCHED** |
+| Repeatability validation | **PASS** |
+| Overwrite protection | **PASS** |
+| Multiple-alert processing baseline | **ESTABLISHED** |
+| Public portfolio publication | **COMPLETE** |
 
-### Malformed-Severity Validation
+---
 
-![Malformed-severity validation](screenshots/2026-08-17_Lab14_AIAlertExplainerV2_51_report4-malformed-severity-validation.png)
+# What Lab 14 Proves
 
-Demonstrates preservation of malformed source severity, normalization to `UNKNOWN`, and explicit validation reporting.
+Lab 14 demonstrates that reliable batch processing requires much more than putting a loop around the original single-alert program.
 
-### Overwrite-Protection Validation
+A safe multi-alert workflow needs:
 
-![Overwrite-protection validation](screenshots/2026-08-17_Lab14_AIAlertExplainerV2_54_overwrite-protection-validation.png)
+- Clear source boundaries
+- Predictable file discovery
+- Normalized internal data
+- Independent validation
+- Warning conditions
+- Failure isolation
+- Preserved source evidence
+- Traceability
+- Unique output
+- Repeatable testing
 
-Demonstrates repeatable execution and preservation of previous reports through unique output filenames.
+Most importantly:
 
-## Key Improvements Over the MVP
+> **A bad alert can fail without taking the rest of the batch down with it.**
 
-Lab 14 extends the validated single-alert MVP with:
+And when data is incomplete or malformed, the system reports the problem instead of hiding it.
 
-* Multiple-alert processing
-* Separate input and output locations
-* Predictable file discovery
-* Vendor-neutral normalized alert data
-* Initial Wazuh source translation
-* Platform-neutral severity
-* Missing-field detection
-* Malformed-value validation
-* Explicit processing outcomes
-* Per-alert failure isolation
-* Default human-review status
-* Modular report generation
-* Unique report filenames
-* Batch-level reporting
-* Actual-result-derived totals
-* Non-destructive input handling
-* Source traceability
-* Overwrite protection
-* Repeatable validation
+---
 
-These improvements were added without modifying or replacing the validated Lab 11 and Lab 12 baseline.
-
-## Development Principles Demonstrated
-
-Lab 14 follows the broader Project Athenaeum development approach:
-
-* Preserve validated work rather than rebuilding it unnecessarily
-* Extend existing components when practical
-* Define acceptance criteria before implementation
-* Keep source-specific information separate from reusable processing logic
-* Use deterministic logic for core parsing, validation, normalization, severity handling, and control decisions
-* Report missing information rather than inventing values
-* Preserve malformed information for traceability
-* Isolate individual failures
-* Preserve source evidence
-* Protect previous output
-* Test before publication
-* Require human review for consequential security conclusions
-
-## Security and Reliability Considerations
-
-Lab 14 intentionally avoids unsupported security conclusions.
-
-The application does not assume that:
-
-* A high-severity alert is malicious
-* A low-severity alert is safe
-* Missing data can be safely guessed
-* A malformed value should be silently replaced
-* A generated report means an incident is resolved
-
-Instead, the processing layer organizes and validates available information and identifies conditions requiring additional review.
-
-The architecture is intended to support later investigation and controlled-response capabilities without embedding those future capabilities into the Lab 14 baseline.
-
-## Public Repository Boundary
+# Public / Private Boundary
 
 Lab 14 is published as a sanitized Project Athenaeum portfolio project.
 
-The public repository demonstrates:
+Public material demonstrates:
 
-* Python programming
-* Multiple-file processing
-* Security-data normalization
-* Source-specific translation
-* Validation logic
-* Safe error handling
-* Deterministic testing
-* Report generation
-* Batch processing
-* Failure isolation
-* Traceability
-* Repeatability
-* Overwrite protection
-* Human-review requirements
+- Python programming
+- Multiple-file processing
+- Vendor-neutral normalization
+- Initial Wazuh source translation
+- Validation logic
+- Missing-data handling
+- Malformed-data handling
+- Failure isolation
+- Analyst report generation
+- Batch summaries
+- Traceability
+- Repeatability
+- Overwrite protection
+- Human-review requirements
 
-Business Guardian product-level implementation remains private.
+Business Guardian product-level functionality remains private.
 
-The public Lab 14 project does not expose proprietary:
+That includes areas such as:
 
-* Remediation logic
-* Investigation workflows
-* Policy engines
-* Approval mechanisms
-* Advanced backend architecture
-* Customer or tenant logic
-* Sensitive security data
-* Secrets-related configuration
-* Commercial workflows
-* Production infrastructure
-* Product-specific automation
+- Production connectors
+- Evidence orchestration
+- Investigation workflows
+- Production triage logic
+- Policy engines
+- Approval mechanisms
+- Defensive-action logic
+- Verification systems
+- Advanced backend architecture
+- Customer and tenant logic
+- Sensitive security data
+- Secrets-related configuration
+- Commercial workflows
+- Production infrastructure
 
-## Lessons Learned
+The public lab demonstrates the engineering foundation without exposing proprietary product implementation.
 
-Lab 14 demonstrated that reliable multiple-alert processing requires more than placing a loop around the original single-alert program.
+---
 
-Safe batch processing requires:
+# Skills Demonstrated
 
-* Clear source boundaries
-* Normalized internal data
-* Independent validation
-* Failure isolation
-* Explicit warning conditions
-* Traceability
-* Unique output handling
-* Repeatable testing
-* Preserved source evidence
+- Python
+- Multiple-file processing
+- Security-data normalization
+- Vendor-neutral architecture
+- Wazuh data handling
+- Severity normalization
+- Missing-data validation
+- Malformed-data handling
+- Error handling
+- Failure isolation
+- Batch processing
+- Report generation
+- Source traceability
+- Non-destructive processing
+- Overwrite protection
+- Deterministic testing
+- Repeatability testing
+- Defensive programming
+- Technical documentation
 
-The lab also reinforced the importance of defining acceptance criteria before implementation.
+---
 
-Because the expected `5 / 2 / 2 / 1 / 4` result was established during Lab 13, Lab 14 could be evaluated against a measurable target rather than relying on subjective observations after development was complete.
+# Where the Project Goes From Here
 
-## Future Development
+Lab 13 answered:
 
-Lab 14 establishes the validated multiple-alert processing baseline.
+**What should the next alert-processing architecture look like before I write it?**
 
-Future Project Athenaeum work may extend this foundation with portfolio-safe capabilities such as:
+Lab 14 answered:
 
-* Additional controlled alert types
-* Expanded normalized source fields
-* Complete JSON parsing
-* Additional security-platform adapters
-* Improved data-quality validation
-* Structured processing records
-* Multiple-alert correlation
-* Reusable report components
-* Context-aware investigation guidance
-* Evidence-collection workflows
-* Structured incident reporting
-* Human-approved security workflows
-* Browser-based dashboard development
-* AI-assisted explanation and enrichment
+**Can that architecture reliably process multiple imperfect alerts during one run?**
 
-Future capabilities will be built as separate controlled development stages rather than retroactively added to Lab 14.
+The answer was yes.
 
-## Status
+But processing an alert still does not give it a durable identity.
 
-**Technical Implementation: COMPLETE**
+That becomes the next problem.
 
-**Controlled Validation: PASS**
+[Lab 15 — Alert Records, Validation, and Traceability](../lab-15-alert-records-validation-traceability/README.md) extends the Lab 14 baseline by turning processable alerts into structured security records with persistent `AR-...` identities, timestamps, validation history, and source traceability.
 
-**Expected Result: MATCHED**
+The progression becomes:
 
-**Repeatability Validation: PASS**
+```text
+Single Alert MVP
+      ↓
+Validated MVP
+      ↓
+Designed v2 Architecture
+      ↓
+Multiple-Alert Processing
+      ↓
+Persistent Alert Records
+      ↓
+Traceability
+```
 
-**Overwrite Protection: PASS**
-
-**Multiple-Alert Processing Baseline: ESTABLISHED**
-
-**Public Portfolio Publication: COMPLETE**
+Lab 14 is the point where Project Athenaeum stops thinking in terms of **one alert at a time** and starts behaving like a real processing pipeline.
