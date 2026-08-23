@@ -1,0 +1,44 @@
+{
+    "triage_id": "TR-70818151-6acf-4ade-8651-0d3a06f79298",
+    "triage_version": "1.0",
+    "record_id": "AR-00000000-0000-4000-8000-000000000001",
+    "triage_timestamp": "2026-08-21T21:19:17Z",
+    "source_validation_status": "Processed Normally",
+    "source_normalized_severity": "MEDIUM",
+    "source_missing_fields": [],
+    "source_validation_notes": [],
+    "triage_classification": "KNOWN_COMMON",
+    "triage_confidence": "HIGH",
+    "matched_rule_id": "TRIAGE-RULE-002",
+    "classification_reason": "The event matches the documented Lab 16 Windows application error pattern using validated event and rule context.",
+    "investigation_required": false,
+    "human_review_required": false,
+    "next_stage": "POLICY_EVALUATION",
+    "decision_notes": "KNOWN_COMMON identifies a supported deterministic pattern. It does not mean the condition is benign, resolved, or authorized for remediation.",
+    "triage_history": [
+        {
+            "stage": "Triage Record Created",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Created",
+            "notes": "Vendor-neutral Lab 16 triage record created and linked to the originating alert record."
+        },
+        {
+            "stage": "Triage Rule Evaluation Started",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Started",
+            "notes": "Deterministic triage rules are evaluated in the frozen Lab 16 priority order."
+        },
+        {
+            "stage": "Triage Decision Assigned",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "KNOWN_COMMON",
+            "notes": "TRIAGE-RULE-002 assigned KNOWN_COMMON and routed the record to POLICY_EVALUATION."
+        },
+        {
+            "stage": "Triage Output Prepared",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Prepared",
+            "notes": "Structured Lab 16 triage decision prepared for JSON output."
+        }
+    ]
+}

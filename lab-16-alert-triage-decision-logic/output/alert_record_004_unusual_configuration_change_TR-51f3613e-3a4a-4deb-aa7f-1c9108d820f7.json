@@ -1,0 +1,44 @@
+{
+    "triage_id": "TR-51f3613e-3a4a-4deb-aa7f-1c9108d820f7",
+    "triage_version": "1.0",
+    "record_id": "AR-00000000-0000-4000-8000-000000000004",
+    "triage_timestamp": "2026-08-21T21:07:47Z",
+    "source_validation_status": "Processed Normally",
+    "source_normalized_severity": "MEDIUM",
+    "source_missing_fields": [],
+    "source_validation_notes": [],
+    "triage_classification": "UNUSUAL",
+    "triage_confidence": "MEDIUM",
+    "matched_rule_id": "TRIAGE-RULE-004",
+    "classification_reason": "The event matches the documented Lab 16 controlled unusual configuration-change pattern and falls outside the currently supported known/common response catalog.",
+    "investigation_required": true,
+    "human_review_required": false,
+    "next_stage": "INVESTIGATION",
+    "decision_notes": "UNUSUAL identifies a supported triage pattern requiring investigation. It does not automatically mean malicious activity.",
+    "triage_history": [
+        {
+            "stage": "Triage Record Created",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "Created",
+            "notes": "Vendor-neutral Lab 16 triage record created and linked to the originating alert record."
+        },
+        {
+            "stage": "Triage Rule Evaluation Started",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "Started",
+            "notes": "Deterministic triage rules are evaluated in the frozen Lab 16 priority order."
+        },
+        {
+            "stage": "Triage Decision Assigned",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "UNUSUAL",
+            "notes": "TRIAGE-RULE-004 assigned UNUSUAL and routed the record to INVESTIGATION."
+        },
+        {
+            "stage": "Triage Output Prepared",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "Prepared",
+            "notes": "Structured Lab 16 triage decision prepared for JSON output."
+        }
+    ]
+}

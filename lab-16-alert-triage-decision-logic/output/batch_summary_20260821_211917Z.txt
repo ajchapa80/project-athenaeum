@@ -1,0 +1,90 @@
+Lab 16 - Alert Triage and Decision Logic
+Batch Summary
+
+Processing Run: 2026-08-21T21:19:17Z
+Input Location: input
+Output Location: output
+
+Processing Totals
+Total Processable Alert Records Discovered: 5
+KNOWN_COMMON: 2
+INSUFFICIENT_DATA: 1
+UNUSUAL: 1
+UNKNOWN: 1
+
+Next-Stage Routing Totals
+POLICY_EVALUATION: 2
+INVESTIGATION: 3
+HUMAN_REVIEW: 0
+NO_ACTION_YET: 0
+
+Output Totals
+Triage Decision Records Created: 5
+Failed: 0
+
+Per-Record AR-to-TR Traceability
+Source File: alert_record_001_known_application_error.json
+Processing Result: Triaged Successfully
+Alert Record ID: AR-00000000-0000-4000-8000-000000000001
+Triage Decision ID: TR-70818151-6acf-4ade-8651-0d3a06f79298
+Triage Classification: KNOWN_COMMON
+Triage Confidence: HIGH
+Matched Rule ID: TRIAGE-RULE-002
+Investigation Required: false
+Human Review Required: false
+Next Stage: POLICY_EVALUATION
+Triage Record File: alert_record_001_known_application_error_TR-70818151-6acf-4ade-8651-0d3a06f79298.json
+
+Source File: alert_record_002_known_authentication_failure.json
+Processing Result: Triaged Successfully
+Alert Record ID: AR-00000000-0000-4000-8000-000000000002
+Triage Decision ID: TR-5e487f42-20fb-4a2c-aa3e-c03cd2fc6632
+Triage Classification: KNOWN_COMMON
+Triage Confidence: HIGH
+Matched Rule ID: TRIAGE-RULE-003
+Investigation Required: false
+Human Review Required: false
+Next Stage: POLICY_EVALUATION
+Triage Record File: alert_record_002_known_authentication_failure_TR-5e487f42-20fb-4a2c-aa3e-c03cd2fc6632.json
+
+Source File: alert_record_003_insufficient_data.json
+Processing Result: Triaged Successfully
+Alert Record ID: AR-00000000-0000-4000-8000-000000000003
+Triage Decision ID: TR-92ace691-0562-4881-aae0-42350cd93c6b
+Triage Classification: INSUFFICIENT_DATA
+Triage Confidence: HIGH
+Matched Rule ID: TRIAGE-RULE-001
+Investigation Required: true
+Human Review Required: false
+Next Stage: INVESTIGATION
+Triage Record File: alert_record_003_insufficient_data_TR-92ace691-0562-4881-aae0-42350cd93c6b.json
+
+Source File: alert_record_004_unusual_configuration_change.json
+Processing Result: Triaged Successfully
+Alert Record ID: AR-00000000-0000-4000-8000-000000000004
+Triage Decision ID: TR-fa441a32-852c-47d8-b6b6-83d08790ef31
+Triage Classification: UNUSUAL
+Triage Confidence: MEDIUM
+Matched Rule ID: TRIAGE-RULE-004
+Investigation Required: true
+Human Review Required: false
+Next Stage: INVESTIGATION
+Triage Record File: alert_record_004_unusual_configuration_change_TR-fa441a32-852c-47d8-b6b6-83d08790ef31.json
+
+Source File: alert_record_005_unknown_condition.json
+Processing Result: Triaged Successfully
+Alert Record ID: AR-00000000-0000-4000-8000-000000000005
+Triage Decision ID: TR-501c6658-6ae3-4a67-b52a-509faa39d456
+Triage Classification: UNKNOWN
+Triage Confidence: LOW
+Matched Rule ID: TRIAGE-RULE-005
+Investigation Required: true
+Human Review Required: false
+Next Stage: INVESTIGATION
+Triage Record File: alert_record_005_unknown_condition_TR-501c6658-6ae3-4a67-b52a-509faa39d456.json
+
+Batch Completion
+All discovered supported alert records were attempted.
+
+Safety Statement
+Lab 16 classified and routed alert records only. No defensive action was authorized or executed.

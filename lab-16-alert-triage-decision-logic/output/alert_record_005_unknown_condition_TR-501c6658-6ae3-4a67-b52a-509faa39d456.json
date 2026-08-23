@@ -1,0 +1,44 @@
+{
+    "triage_id": "TR-501c6658-6ae3-4a67-b52a-509faa39d456",
+    "triage_version": "1.0",
+    "record_id": "AR-00000000-0000-4000-8000-000000000005",
+    "triage_timestamp": "2026-08-21T21:19:17Z",
+    "source_validation_status": "Processed Normally",
+    "source_normalized_severity": "LOW",
+    "source_missing_fields": [],
+    "source_validation_notes": [],
+    "triage_classification": "UNKNOWN",
+    "triage_confidence": "LOW",
+    "matched_rule_id": "TRIAGE-RULE-005",
+    "classification_reason": "Usable evidence exists, but the currently supported deterministic rules cannot establish a more reliable triage classification.",
+    "investigation_required": true,
+    "human_review_required": false,
+    "next_stage": "INVESTIGATION",
+    "decision_notes": "UNKNOWN preserves uncertainty until additional evidence supports a more reliable determination. Technical severity does not convert the condition into a known or safe state.",
+    "triage_history": [
+        {
+            "stage": "Triage Record Created",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Created",
+            "notes": "Vendor-neutral Lab 16 triage record created and linked to the originating alert record."
+        },
+        {
+            "stage": "Triage Rule Evaluation Started",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Started",
+            "notes": "Deterministic triage rules are evaluated in the frozen Lab 16 priority order."
+        },
+        {
+            "stage": "Triage Decision Assigned",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "UNKNOWN",
+            "notes": "TRIAGE-RULE-005 assigned UNKNOWN and routed the record to INVESTIGATION."
+        },
+        {
+            "stage": "Triage Output Prepared",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Prepared",
+            "notes": "Structured Lab 16 triage decision prepared for JSON output."
+        }
+    ]
+}

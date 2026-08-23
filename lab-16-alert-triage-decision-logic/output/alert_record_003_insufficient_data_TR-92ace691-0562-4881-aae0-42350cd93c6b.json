@@ -1,0 +1,47 @@
+{
+    "triage_id": "TR-92ace691-0562-4881-aae0-42350cd93c6b",
+    "triage_version": "1.0",
+    "record_id": "AR-00000000-0000-4000-8000-000000000003",
+    "triage_timestamp": "2026-08-21T21:19:17Z",
+    "source_validation_status": "Processed With Warnings",
+    "source_normalized_severity": "MEDIUM",
+    "source_missing_fields": [
+        "endpoint_ip",
+        "event_provider"
+    ],
+    "source_validation_notes": [],
+    "triage_classification": "INSUFFICIENT_DATA",
+    "triage_confidence": "HIGH",
+    "matched_rule_id": "TRIAGE-RULE-001",
+    "classification_reason": "The available alert record is processable, but material evidence needed for reliable triage is missing or unreliable.",
+    "investigation_required": true,
+    "human_review_required": false,
+    "next_stage": "INVESTIGATION",
+    "decision_notes": "Material missing fields: endpoint_ip, event_provider. Evidence-quality problems take priority over known-pattern matching.",
+    "triage_history": [
+        {
+            "stage": "Triage Record Created",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Created",
+            "notes": "Vendor-neutral Lab 16 triage record created and linked to the originating alert record."
+        },
+        {
+            "stage": "Triage Rule Evaluation Started",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Started",
+            "notes": "Deterministic triage rules are evaluated in the frozen Lab 16 priority order."
+        },
+        {
+            "stage": "Triage Decision Assigned",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "INSUFFICIENT_DATA",
+            "notes": "TRIAGE-RULE-001 assigned INSUFFICIENT_DATA and routed the record to INVESTIGATION."
+        },
+        {
+            "stage": "Triage Output Prepared",
+            "timestamp": "2026-08-21T21:19:17Z",
+            "outcome": "Prepared",
+            "notes": "Structured Lab 16 triage decision prepared for JSON output."
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "triage_id": "TR-4a0cab77-fb42-4400-8b6a-123e4edaf887",
+    "triage_version": "1.0",
+    "record_id": "AR-00000000-0000-4000-8000-000000000002",
+    "triage_timestamp": "2026-08-21T21:07:47Z",
+    "source_validation_status": "Processed Normally",
+    "source_normalized_severity": "HIGH",
+    "source_missing_fields": [],
+    "source_validation_notes": [],
+    "triage_classification": "KNOWN_COMMON",
+    "triage_confidence": "HIGH",
+    "matched_rule_id": "TRIAGE-RULE-003",
+    "classification_reason": "The event matches the documented Lab 16 repeated authentication failure pattern using validated event and rule context.",
+    "investigation_required": false,
+    "human_review_required": false,
+    "next_stage": "POLICY_EVALUATION",
+    "decision_notes": "The deterministic event and rule pattern caused this classification. HIGH technical severity did not independently determine the result.",
+    "triage_history": [
+        {
+            "stage": "Triage Record Created",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "Created",
+            "notes": "Vendor-neutral Lab 16 triage record created and linked to the originating alert record."
+        },
+        {
+            "stage": "Triage Rule Evaluation Started",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "Started",
+            "notes": "Deterministic triage rules are evaluated in the frozen Lab 16 priority order."
+        },
+        {
+            "stage": "Triage Decision Assigned",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "KNOWN_COMMON",
+            "notes": "TRIAGE-RULE-003 assigned KNOWN_COMMON and routed the record to POLICY_EVALUATION."
+        },
+        {
+            "stage": "Triage Output Prepared",
+            "timestamp": "2026-08-21T21:07:47Z",
+            "outcome": "Prepared",
+            "notes": "Structured Lab 16 triage decision prepared for JSON output."
+        }
+    ]
+}
