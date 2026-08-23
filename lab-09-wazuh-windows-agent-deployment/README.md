@@ -1,413 +1,590 @@
-# Lab 09: Wazuh Windows Agent Deployment
+# Lab 09 — Wazuh Windows Agent Deployment
 
-## Overview
+## Installing the Agent Was the Easy Part
 
-This lab documents the installation, configuration, troubleshooting, and validation of the Wazuh Windows agent on the isolated `BusinessGuardian-Win11-Workstation`.
+Lab 08 established the centralized Wazuh monitoring server.
 
-The Windows workstation was connected to the Wazuh monitoring server created in Lab 08. After correcting an agent configuration issue, the workstation successfully registered with the Wazuh manager and appeared as an active endpoint in the Wazuh dashboard.
+The next step was to connect a Windows endpoint to it.
 
-The completed deployment established centralized endpoint monitoring for the Project Athenaeum Business Guardian environment.
+At first, the deployment looked successful. The Wazuh Windows agent installed, the files were present, and the service existed.
 
-## Objective
+But the workstation still was not reporting correctly.
 
-Install and configure the Wazuh Windows agent, connect the workstation to the Wazuh monitoring server at `192.168.70.20`, confirm active endpoint reporting, restore network isolation, and preserve clean recovery snapshots.
+That turned Lab 09 into more than an installation exercise.
 
-## Skills Demonstrated
+The real question became:
 
-- Windows endpoint administration
-- Wazuh agent deployment
-- SIEM endpoint integration
-- Agent-manager communication
-- Windows service management
-- Configuration-file review
-- XML configuration editing
-- Network connectivity testing
-- Troubleshooting
-- Static IPv4 networking
-- VirtualBox network isolation
-- Dashboard validation
-- Snapshot management
-- Technical documentation
-- Privacy-conscious evidence handling
+**Why can software be installed correctly and still fail to communicate?**
 
-## Environment and Tools
+The answer was hidden in the agent configuration.
 
-- Windows 11 host computer
-- Oracle VirtualBox
-- BusinessGuardian Windows 11 workstation
-- Ubuntu-based Wazuh monitoring server
-- Wazuh Windows agent
-- Wazuh dashboard
-- Windows Services
-- Windows Command Prompt
-- Windows File Explorer
-- Text editor with administrator privileges
-- VirtualBox NAT networking
-- VirtualBox Internal Network named `BusinessGuardianLab`
+After troubleshooting the network, service, and configuration layers separately, an incorrect manager address was identified, corrected, and validated.
 
-## Lab Systems
+The final result was an active Windows 11 endpoint reporting to Wazuh while remaining isolated from the public internet.
 
-### Windows Workstation
+```text
+Windows Workstation
+        ↓
+Wazuh Agent
+        ↓
+Internal Lab Network
+        ↓
+Wazuh Manager
+        ↓
+Wazuh Dashboard
+```
 
-The monitored endpoint is:
+This established centralized endpoint monitoring for the Business Guardian lab.
+
+---
+
+# Lab Environment
+
+## Windows Workstation
 
 ```text
 BusinessGuardian-Win11-Workstation
-```
-
-Static internal address:
-
-```text
 192.168.70.10/24
 ```
 
-### Wazuh Monitoring Server
-
-The Wazuh manager uses:
+## Wazuh Monitoring Server
 
 ```text
 192.168.70.20/24
 ```
 
-### Internal Network
-
-Both systems communicate through:
+## Internal Network
 
 ```text
 BusinessGuardianLab
-```
-
-Network:
-
-```text
 192.168.70.0/24
 ```
 
-## Network Architecture
+The architecture is:
 
 ```text
 Windows 11 Host
-        |
- Oracle VirtualBox
-        |
- BusinessGuardianLab
- 192.168.70.0/24
-        |
-        +-----------------------------+
-        |                             |
+      |
+Oracle VirtualBox
+      |
+BusinessGuardianLab
+192.168.70.0/24
+      |
+      +-----------------------------+
+      |                             |
 Windows Workstation              Wazuh Server
 192.168.70.10                    192.168.70.20
-Wazuh Windows Agent              Wazuh Manager
+Wazuh Agent                      Wazuh Manager
 ```
 
-Temporary NAT connectivity was used only when required for the authorized agent installation process. NAT was disabled after installation, and the workstation was returned to the isolated `BusinessGuardianLab` network.
+Temporary NAT connectivity was used only when required for the authorized installation.
 
 No Bridged Adapter was used.
 
-## Work Completed
+---
 
-During this lab, I:
+# Before Deployment
 
-- Started the Wazuh monitoring server
-- Started the Business Guardian Windows 11 workstation
-- Verified communication between the Windows workstation and Wazuh server
-- Temporarily enabled controlled NAT connectivity for agent installation
-- Accessed the Wazuh dashboard from the host computer
-- Opened the Wazuh agent deployment interface
-- Selected Windows as the endpoint operating system
-- Entered the Wazuh manager address `192.168.70.20`
-- Downloaded and installed the Wazuh Windows agent
-- Verified that the agent files were installed
-- Reviewed the Wazuh agent configuration file
-- Identified an incorrect manager address of `0.0.0.0`
-- Corrected the manager address to `192.168.70.20`
-- Saved the corrected configuration with administrator privileges
-- Restarted the Wazuh agent service
-- Verified that the Wazuh agent service was running
-- Confirmed that the Windows workstation appeared in the Wazuh dashboard
-- Verified that the endpoint status was active
-- Confirmed that the dashboard displayed the Windows 11 agent at `192.168.70.10`
-- Disabled temporary NAT connectivity
-- Restored the workstation to the isolated `BusinessGuardianLab` network
-- Confirmed successful communication with the Wazuh server
-- Confirmed that public internet connectivity was unavailable
-- Created post-agent recovery snapshots
-- Completed the screenshot log, technical notes, and final portfolio writeup
+The Wazuh dashboard was reviewed before enrolling the endpoint.
 
-## Screenshots and Evidence
+This established the starting condition:
 
-### Lab Documentation Setup
+```text
+No active Windows endpoint enrolled
+```
 
-The Lab 09 documentation structure was prepared to organize technical notes, screenshot evidence, troubleshooting results, and the final portfolio writeup.
+That gave the deployment a clear before-and-after state.
 
-![Lab 09 folder setup](screenshots/2026-07-23_Lab09_WazuhAgent_01_folder-setup.png)
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_02_dashboard-before-agent-deployment.png"
+    alt="Wazuh dashboard before Windows agent deployment"
+    width="900">
+</p>
 
-### Dashboard Before Agent Deployment
+<p align="center">
+  <em>The dashboard provided a clean starting point before the Windows workstation was enrolled.</em>
+</p>
 
-The Wazuh dashboard was reviewed before deployment to establish that no Windows endpoint was actively enrolled.
+---
 
-![Wazuh dashboard before agent deployment](screenshots/2026-07-23_Lab09_WazuhAgent_02_dashboard-before-agent-deployment.png)
+# Temporary Installation Connectivity
 
-### Temporary NAT Enabled
+The Windows workstation normally operates inside the isolated `BusinessGuardianLab` network.
 
-Temporary NAT connectivity was enabled on the Windows workstation to support the authorized agent download and installation process.
+Temporary NAT connectivity was enabled only to support the authorized Wazuh agent download and installation.
 
-![Windows workstation temporary NAT enabled](screenshots/2026-07-23_Lab09_WazuhAgent_03_workstation-temporary-nat-enabled.png)
+Before continuing, connectivity was checked in two directions:
 
-### Installation Connectivity Verified
+```text
+Windows Workstation → Internet
+Windows Workstation → Wazuh Server
+```
 
-The workstation was tested for internet access and communication with the Wazuh monitoring server before the agent installation.
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_04_workstation-internet-and-server-connectivity.png"
+    alt="Windows workstation connectivity before Wazuh agent installation"
+    width="900">
+</p>
 
-![Windows workstation internet and server connectivity](screenshots/2026-07-23_Lab09_WazuhAgent_04_workstation-internet-and-server-connectivity.png)
+<p align="center">
+  <em>Temporary installation connectivity was validated before the agent deployment began.</em>
+</p>
 
-### Wazuh Agent Installer Downloaded
+---
 
-The official Wazuh Windows agent installer was downloaded to the authorized business workstation.
+# Installing the Wazuh Agent
 
-![Wazuh Windows agent installer downloaded](screenshots/2026-07-23_Lab09_WazuhAgent_05_wazuh-agent-installer-downloaded.png)
+The Wazuh deployment interface was used to prepare the Windows installation.
 
-### Wazuh Agent Service Running
-
-Windows Services confirmed that the Wazuh agent service was installed and running after configuration troubleshooting was completed.
-
-![Wazuh agent service running](screenshots/2026-07-23_Lab09_WazuhAgent_06_wazuh-agent-service-running.png)
-
-### Agent Visible in Dashboard
-
-The Windows workstation appeared in the Wazuh dashboard after successful agent-manager communication was established.
-
-![Windows agent visible in Wazuh dashboard](screenshots/2026-07-23_Lab09_WazuhAgent_07_agent-visible-in-dashboard.png)
-
-### Active Agent Details
-
-The agent-details page confirmed that the Windows 11 workstation was active and reporting from its internal address.
-
-![Wazuh agent details showing active status](screenshots/2026-07-23_Lab09_WazuhAgent_08_agent-details-active.png)
-
-### Temporary NAT Disabled
-
-Temporary NAT connectivity was disabled after the agent installation and dashboard validation were complete.
-
-![Windows workstation temporary NAT disabled](screenshots/2026-07-23_Lab09_WazuhAgent_09_workstation-temporary-nat-disabled.png)
-
-### Workstation Isolation Restored
-
-Connectivity testing confirmed that the workstation could reach the Wazuh server while remaining isolated from the public internet.
-
-![Windows workstation isolated after agent installation](screenshots/2026-07-23_Lab09_WazuhAgent_10_workstation-isolated-after-agent-install.png)
-
-### Agent Active After Isolation
-
-The Wazuh dashboard confirmed that the Windows agent remained active after temporary NAT connectivity was removed.
-
-![Wazuh agent active after workstation isolation](screenshots/2026-07-23_Lab09_WazuhAgent_11_agent-active-after-isolation.png)
-
-### Wazuh Server Recovery Snapshot
-
-A post-deployment snapshot preserved the Wazuh server after successful Windows agent enrollment.
-
-![Wazuh server agent-enrolled snapshot](screenshots/2026-07-23_Lab09_WazuhAgent_12a_wazuh-server-agent-enrolled-snapshot.png)
-
-### Windows Workstation Recovery Snapshot
-
-A post-deployment snapshot preserved the Windows workstation with the Wazuh agent installed, active, and operating on the isolated network.
-
-![Windows workstation agent-installed isolated snapshot](screenshots/2026-07-23_Lab09_WazuhAgent_12b_windows-workstation-agent-installed-isolated-snapshot.png)
-
-## Agent Deployment
-
-The Wazuh dashboard deployment interface was used to generate the Windows agent installation instructions.
-
-The Wazuh manager address was configured as:
+The intended manager address was:
 
 ```text
 192.168.70.20
 ```
 
-The agent was installed on the authorized Windows 11 workstation.
+The official Windows agent was downloaded and installed on the authorized workstation.
 
-After installation, the Wazuh agent service and configuration were reviewed to confirm that the endpoint was prepared to communicate with the monitoring server.
+At this point, the installation itself appeared successful.
 
-## Configuration Troubleshooting
+But the endpoint did not report correctly.
 
-The Windows agent initially failed to report correctly to the Wazuh manager.
+That was the first sign that:
 
-The agent configuration file was reviewed at the Wazuh installation location. The manager address was found to contain:
+> **Installed does not automatically mean configured correctly.**
+
+---
+
+# Troubleshooting the Failed Connection
+
+The problem was approached one layer at a time.
+
+The troubleshooting sequence was:
+
+```text
+1. Confirm the Wazuh server is running
+2. Check the Windows network configuration
+3. Test connectivity to 192.168.70.20
+4. Confirm the Wazuh agent is installed
+5. Check the Windows agent service
+6. Inspect the agent configuration
+7. Identify the incorrect manager address
+8. Correct the configuration
+9. Restart the service
+10. Validate the endpoint in Wazuh
+```
+
+The key discovery was inside the agent configuration.
+
+The manager address had been set to:
 
 ```text
 0.0.0.0
 ```
 
-This address did not identify the actual Wazuh monitoring server and prevented proper agent-manager communication.
+That does not identify the actual Wazuh monitoring server.
 
-The configuration was corrected to:
+It was corrected to:
 
 ```text
 192.168.70.20
 ```
 
-The file was saved with administrator privileges, and the Wazuh agent service was restarted.
+The configuration was saved with administrator privileges and the Wazuh agent service was restarted.
 
-After the correction, the endpoint successfully connected to the Wazuh manager.
+After that correction, communication succeeded.
 
-## Agent Service Validation
+---
 
-Windows Services was used to confirm that the Wazuh agent service was installed and running.
+# Why This Troubleshooting Matters
 
-A running agent service is necessary for the workstation to:
+The agent files existed.
 
-- Collect local endpoint information
-- Monitor configured Windows events
-- Communicate with the Wazuh manager
-- Receive configuration updates
-- Forward security telemetry
-- Support centralized alerting and investigation
+The service existed.
 
-## Dashboard Validation
+The network was reachable.
 
-The Wazuh dashboard confirmed that the Windows endpoint was successfully registered.
+But one incorrect configuration value prevented the complete workflow from functioning.
 
-The dashboard displayed:
+That is a useful troubleshooting lesson:
+
+```text
+Installation
+    ≠
+Service Running
+    ≠
+Correct Configuration
+    ≠
+Successful Communication
+```
+
+Each layer has to be checked independently.
+
+---
+
+# Validating the Windows Service
+
+After correcting the manager configuration, Windows Services confirmed that the Wazuh agent service was running.
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_06_wazuh-agent-service-running.png"
+    alt="Wazuh Windows agent service running"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The agent service was confirmed running after the configuration problem was corrected.</em>
+</p>
+
+A running Wazuh agent supports functions such as:
+
+- Endpoint information collection
+- Windows event monitoring
+- Manager communication
+- Security telemetry forwarding
+- Configuration updates
+- Centralized alerting
+- Later investigation workflows
+
+---
+
+# The Endpoint Appears in Wazuh
+
+After the configuration correction and service restart, the Windows workstation appeared in the Wazuh dashboard.
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_07_agent-visible-in-dashboard.png"
+    alt="Windows workstation visible in Wazuh dashboard"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The Windows workstation successfully registered with the Wazuh manager.</em>
+</p>
+
+The dashboard reported:
 
 ```text
 Active agents: 1
 ```
 
-The monitored endpoint was identified as a Windows 11 system using the internal address:
+The endpoint was identified as the Windows 11 workstation using:
 
 ```text
 192.168.70.10
 ```
 
-This confirmed that:
+---
 
-- The Wazuh agent was installed
-- The agent service was running
-- The manager address was correct
-- The workstation could communicate with the server
-- The Wazuh manager accepted the endpoint
-- The dashboard received updated agent information
+# Active Agent Validation
 
-## Network Isolation Validation
+The agent-details view provided additional confirmation that the deployment was functioning correctly.
 
-After the Wazuh agent installation and validation were complete, temporary NAT connectivity was disabled.
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_08_agent-details-active.png"
+    alt="Wazuh Windows agent active status"
+    width="900">
+</p>
 
-The Windows workstation was returned to the isolated VirtualBox Internal Network named:
+<p align="center">
+  <em>The monitored Windows workstation was active and reporting from its isolated internal address.</em>
+</p>
+
+At this stage, the following had all been confirmed:
+
+- Agent installed
+- Agent service running
+- Correct manager configured
+- Internal communication working
+- Endpoint accepted by Wazuh
+- Dashboard receiving agent information
+
+---
+
+# Restoring Network Isolation
+
+The temporary internet connection was not intended to remain part of the final lab design.
+
+After installation and validation, NAT was disabled.
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_09_workstation-temporary-nat-disabled.png"
+    alt="Temporary NAT disabled on Windows workstation"
+    width="850">
+</p>
+
+The workstation was returned to:
 
 ```text
 BusinessGuardianLab
 ```
 
-Connectivity testing confirmed that the workstation could still reach the Wazuh server:
+The final network goal was:
+
+```text
+Can reach Wazuh server
+        +
+Cannot reach public internet
+```
+
+---
+
+# Proving Isolation Did Not Break Monitoring
+
+Connectivity to the Wazuh server was tested:
 
 ```powershell
 ping 192.168.70.20
 ```
 
-A public internet connectivity test failed as expected:
+That communication remained available.
+
+A public internet connectivity test was also performed:
 
 ```powershell
 ping 8.8.8.8
 ```
 
-These results confirmed that the endpoint could communicate with the monitoring server while remaining isolated from the public internet.
+That failed as expected.
 
-## Snapshots and Recovery
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_10_workstation-isolated-after-agent-install.png"
+    alt="Windows workstation isolated while retaining Wazuh server communication"
+    width="900">
+</p>
 
-Post-agent snapshots were created after the following conditions were verified:
+<p align="center">
+  <em>The workstation retained communication with the Wazuh server while public internet access remained unavailable.</em>
+</p>
+
+---
+
+# Monitoring Still Works After Isolation
+
+Removing NAT would not be useful if doing so caused the agent to disconnect.
+
+The Wazuh dashboard was checked again after isolation was restored.
+
+The endpoint remained active.
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_11_agent-active-after-isolation.png"
+    alt="Wazuh agent active after restoring network isolation"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The Wazuh agent remained active after temporary internet connectivity was removed.</em>
+</p>
+
+That confirmed the intended final architecture:
+
+```text
+Windows Endpoint
+      ↓
+Isolated Internal Network
+      ↓
+Wazuh Monitoring Server
+
+No public internet required for normal monitoring
+```
+
+---
+
+# Preserving the Known-Good State
+
+Once deployment, communication, and isolation were validated, recovery snapshots were created.
+
+## Wazuh Server Snapshot
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_12a_wazuh-server-agent-enrolled-snapshot.png"
+    alt="Wazuh server snapshot after Windows agent enrollment"
+    width="850">
+</p>
+
+## Windows Workstation Snapshot
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-23_Lab09_WazuhAgent_12b_windows-workstation-agent-installed-isolated-snapshot.png"
+    alt="Windows workstation snapshot with Wazuh agent installed"
+    width="850">
+</p>
+
+These snapshots preserve the environment after confirming:
 
 - Wazuh agent installed
 - Manager address corrected
 - Agent service running
-- Endpoint active in the dashboard
-- Temporary NAT disabled
-- Internal communication successful
-- Public internet connectivity unavailable
+- Endpoint active
+- NAT disabled
+- Internal communication available
+- Public internet unavailable
 
-The snapshots provide known-good recovery points before controlled alert generation, telemetry review, or additional Business Guardian development.
+That created a known-good baseline before alert-generation work began.
 
-## Troubleshooting Process
+---
 
-The troubleshooting process followed a layered approach:
+# Final Validation
 
-1. Confirm the Wazuh server was running
-2. Verify the Windows workstation network configuration
-3. Test communication with `192.168.70.20`
-4. Confirm that the Windows agent was installed
-5. Review the agent service
-6. Inspect the agent configuration file
-7. Identify the incorrect manager address
-8. Correct the address to `192.168.70.20`
-9. Restart the agent service
-10. Verify active status in the Wazuh dashboard
-11. Remove temporary NAT connectivity
-12. Revalidate network isolation
+Lab 09 successfully demonstrated:
 
-This process demonstrated the importance of validating networking, services, configuration files, and dashboard status separately.
+```text
+Install Agent
+     ↓
+Troubleshoot Configuration
+     ↓
+Correct Manager Address
+     ↓
+Restart Service
+     ↓
+Endpoint Registers
+     ↓
+Dashboard Shows Active Agent
+     ↓
+Remove Temporary NAT
+     ↓
+Internal Monitoring Continues
+     ↓
+Public Internet Remains Unavailable
+```
 
-## Security and Safety Boundaries
+## Validation Status
 
-This lab followed these safety rules:
+| Validation Area | Result |
+| --- | --- |
+| Windows agent installation | **PASS** |
+| Agent service validation | **PASS** |
+| Manager configuration | **PASS after correction** |
+| Agent-to-manager communication | **PASS** |
+| Dashboard registration | **PASS** |
+| Active endpoint status | **PASS** |
+| Internal server connectivity | **PASS** |
+| Temporary NAT removal | **PASS** |
+| Public internet isolation | **PASS** |
+| Agent active after isolation | **PASS** |
+| Recovery snapshots | **COMPLETE** |
 
-- All systems were personally owned and explicitly authorized
-- The Windows workstation and Wazuh server used the isolated `BusinessGuardianLab` network
-- NAT connectivity was temporary and limited to authorized installation needs
-- No Bridged Adapter was enabled
-- No real customer, financial, employer, City, or production data was used
-- Monitoring was limited to Project Athenaeum virtual systems
-- Credentials and sensitive configuration details were excluded from public evidence
+---
+
+# Security and Safety Boundaries
+
+All work was performed on personally owned and authorized systems.
+
+The lab followed these controls:
+
+- Windows and Wazuh systems remained on `BusinessGuardianLab`
+- NAT was temporary and limited to installation needs
+- No Bridged Adapter was used
+- No production environment was involved
+- No employer or City systems were tested
+- No customer systems were tested
+- No real financial data was used
+- Credentials were excluded from public evidence
+- Sensitive configuration details were sanitized
 - Screenshots were reviewed before publication
-- Recovery snapshots were created before future testing
-- Controlled events will be generated only inside the authorized lab
+- Recovery snapshots were created before later testing
 
-## Importance
+---
 
-Endpoint agents provide visibility that cannot be obtained through network scanning alone.
+# What Lab 09 Proves
 
-The Wazuh Windows agent allows the monitoring server to receive endpoint information and security telemetry directly from the workstation. This creates the foundation for centralized monitoring, alert generation, file-integrity monitoring, authentication review, system-event analysis, and incident investigation.
+Lab 09 demonstrates more than successful Wazuh installation.
 
-Successfully integrating the Windows workstation moved the Business Guardian environment from basic infrastructure into an operational monitoring lab.
+It shows how to troubleshoot an endpoint-monitoring integration when the software appears installed but the complete system still does not work.
 
-## Lessons Learned
+The lab required checking:
 
-This lab demonstrated that successful software installation does not automatically guarantee successful communication.
+- Networking
+- Service state
+- Configuration
+- Manager addressing
+- Endpoint registration
+- Dashboard status
+- Network isolation
 
-The Wazuh agent was present on the workstation, but an incorrect manager address prevented it from reporting properly. Reviewing the configuration file and correcting the address resolved the issue.
+Most importantly:
 
-The lab also reinforced the value of checking each technical layer separately. Network connectivity, service status, configuration settings, dashboard registration, and isolation controls all required individual validation.
+> **Successful installation did not end the troubleshooting process. Successful communication did.**
 
-Finally, the lab demonstrated that temporary internet access can be removed after installation while preserving communication between authorized systems on an isolated internal network.
+The final result moved the Business Guardian environment from infrastructure into actual endpoint monitoring.
 
-## Documentation Created
+---
 
-The following Lab 09 documentation was completed and retained locally:
+# Skills Demonstrated
 
-- Lab 09 screenshot log
-- Detailed Lab 09 technical notes
-- Lab 09 final portfolio writeup
-- Agent installation evidence
-- Configuration troubleshooting evidence
-- Windows service evidence
-- Wazuh dashboard evidence
-- Network-isolation evidence
-- Post-agent snapshot evidence
-- Sanitized public screenshots
+- Windows endpoint administration
+- Wazuh agent deployment
+- SIEM endpoint integration
+- Windows service management
+- XML configuration review
+- Configuration troubleshooting
+- Static IPv4 networking
+- Connectivity testing
+- VirtualBox network isolation
+- Dashboard validation
+- Layered troubleshooting
+- Snapshot management
+- Security evidence handling
+- Technical documentation
 
-## Future Development
+---
 
-The next Business Guardian phase may include:
+# Where the Project Goes From Here
 
-- Reviewing Windows endpoint inventory
-- Examining Windows system and security telemetry
-- Generating controlled authentication events
-- Creating controlled file-integrity events
-- Reviewing Wazuh alerts and rule details
-- Documenting alert severity and supporting evidence
-- Developing Python-based event correlation
-- Adding AI-assisted alert explanations
-- Building response recommendations
-- Creating incident reports and investigation timelines
+Lab 08 answered:
 
-## Status
+**Can I build a centralized Wazuh monitoring server inside the isolated Business Guardian environment?**
 
-**Completed and portfolio ready**
+Lab 09 answered:
+
+**Can I connect a Windows endpoint to it and keep that endpoint monitored after internet access is removed?**
+
+The answer was yes.
+
+Now the environment has:
+
+```text
+Windows Endpoint
+      ↓
+Active Wazuh Agent
+      ↓
+Wazuh Monitoring Server
+```
+
+But an active agent alone does not prove that security events are actually making it through the full detection pipeline.
+
+That becomes the next question:
+
+**Can I create a controlled Windows event and follow it all the way into a Wazuh alert?**
+
+[Lab 10 — Wazuh Alert Review and Security Data Collection](../lab-10-wazuh-alert-review-ai-data-collection/README.md) answers that question.
+
+The progression becomes:
+
+```text
+Monitoring Server
+      ↓
+Endpoint Agent
+      ↓
+Active Telemetry
+      ↓
+Controlled Event
+      ↓
+Wazuh Detection
+      ↓
+Security Evidence
+```
+
+Lab 09 is where BusinessGuardianLab becomes more than an isolated network.
+
+**It becomes a monitored endpoint environment.**
