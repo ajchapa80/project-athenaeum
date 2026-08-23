@@ -1,417 +1,613 @@
 # Project Athenaeum
 
-Project Athenaeum is my cybersecurity and information technology portfolio. This repository documents hands-on labs, security investigations, system administration exercises, Python security automation, and technical projects developed to demonstrate practical SOC and IT skills.
+## Building Cybersecurity Skills Into a Working Security Platform
 
-The project follows a structured progression from foundational system administration and isolated cybersecurity labs into endpoint monitoring, alert investigation, Python-based security tooling, software validation, and requirements-driven security-tool design.
+Project Athenaeum started as a place to document hands-on cybersecurity and IT labs.
 
-## About This Project
+It has grown into something much more interesting.
 
-The purpose of Project Athenaeum is to demonstrate practical technical ability through clearly documented, repeatable work.
+What began with VirtualBox, Linux, Windows administration, networking, and basic security testing has progressed into endpoint monitoring, Wazuh alert collection, Python-based security tooling, structured alert records, traceability, and deterministic cybersecurity triage.
 
-Each lab documents relevant elements such as:
+The project now follows a clear technical progression:
 
-* Objective and scope
-* Environment and tools
-* Procedures performed
-* Technical evidence
-* Testing and validation
-* Troubleshooting
-* Findings
-* Security relevance
-* Lessons learned
-* Sanitized portfolio evidence
+```text
+Build the Environment
+        ↓
+Monitor the Endpoint
+        ↓
+Generate Security Events
+        ↓
+Collect and Normalize Alerts
+        ↓
+Validate the Data
+        ↓
+Preserve Identity and Traceability
+        ↓
+Triage the Condition
+        ↓
+Decide What Should Happen Next
+```
 
-Completed work is preserved as historical evidence. Later improvements extend validated work rather than rewriting earlier labs simply because a newer version becomes available.
+Every major step is built, tested, documented, and preserved before the next layer is added.
 
-## Focus Areas
+**Nothing gets built twice.**
 
-* Security operations and alert investigation
-* SIEM, endpoint telemetry, and log analysis
-* Windows and Linux administration
-* Networking and traffic analysis
-* Vulnerability assessment
-* Incident investigation and response
-* Python security automation
-* Python-based alert explanation
-* AI-assisted security-tool design
-* Security-data normalization and validation
-* Software testing and error handling
-* Human-in-the-loop security decision support
-* IT troubleshooting and support
-* Technical documentation
-* Secure tool and dashboard development
+---
 
-## Repository Structure
+## What This Project Demonstrates
 
-This repository includes:
+Project Athenaeum is my hands-on cybersecurity and information technology portfolio.
 
-* Lab documentation
-* Sanitized screenshots
-* Security investigation exercises
-* Network and architecture diagrams
-* Command references
-* Python scripts and technical exercises
-* Testing and validation evidence
-* Portfolio-safe design documentation
-* Final portfolio writeups and summaries
+The goal is not simply to complete labs. The goal is to demonstrate how I approach technical problems:
+
+- Build controlled environments
+- Understand what the systems are actually doing
+- Troubleshoot failures
+- Work with real security data
+- Write tools to process that data
+- Define expected behavior before trusting the result
+- Test normal and failure conditions
+- Preserve evidence and traceability
+- Document what worked, what failed, and what changed
+- Extend validated work instead of constantly starting over
+
+The repository includes working scripts, sanitized security data, screenshots, validation evidence, design documentation, technical writeups, and the history of the project as it has become more advanced.
 
 Only sanitized, portfolio-appropriate material is published here.
 
-## Completed Labs
+---
 
-### [Lab 01: Documentation Setup](lab-01-documentation-setup/README.md)
+## Current Focus
 
-Established the folder structure, screenshot naming system, documentation templates, and portfolio workflow used throughout Project Athenaeum.
+The project currently sits at the intersection of security operations, software development, and practical defensive cybersecurity.
 
-### [Lab 02: VirtualBox CyberLab](lab-02-virtualbox-cyberlab/README.md)
+Current areas include:
 
-Built and validated an isolated VirtualBox cybersecurity lab using Kali Linux and Metasploitable 2. Both virtual machines use persistent static IP addresses on the private `CyberLab` internal network, with successful bidirectional connectivity testing and 0% packet loss.
+- Security operations and alert investigation
+- SIEM and endpoint telemetry
+- Wazuh monitoring
+- Windows and Linux administration
+- Networking and vulnerability assessment
+- Python security automation
+- Vendor-neutral security-data processing
+- Missing and malformed-data handling
+- Multiple-alert processing
+- Structured alert records
+- Source-to-record traceability
+- Deterministic cybersecurity triage
+- Evidence-quality-first decision logic
+- Investigation and policy-evaluation routing
+- Testing, repeatability, and failure isolation
+- Human-controlled consequential security decisions
 
-### [Lab 03: Linux Fundamentals](lab-03-linux-fundamentals/README.md)
+---
 
-Practiced and documented essential Linux command-line skills, including navigation, file management, searching, permissions, process monitoring, background process control, file removal, and troubleshooting package updates on an isolated network.
+# Completed Labs
 
-### [Lab 04: Windows Fundamentals](lab-04-windows-fundamentals/README.md)
+## Foundation
 
-Reviewed core Windows 11 administration and security tools, including System Information, Task Manager, Event Viewer, Windows Security, PowerShell, network configuration, firewall settings, device health, and Windows Update. The lab includes 18 sanitized evidence screenshots.
+### [Lab 01: Documentation Setup](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-01-documentation-setup/README.md)
 
-### [Lab 05: DVWA Web Security](lab-05-dvwa-web-security/README.md)
+Before building technical labs, I created the documentation system that would support everything afterward.
 
-Performed authorized web application security testing against DVWA inside the isolated `CyberLab` environment. The lab documents command injection and SQL injection testing, comparisons between Low and High security settings, defensive recommendations, and 12 sanitized evidence screenshots.
+Lab 01 established the folder structure, screenshot naming system, documentation templates, and portfolio workflow used throughout Project Athenaeum.
 
-### [Lab 06: Nmap Networking Basics](lab-06-nmap-networking-basics/README.md)
+---
 
-Performed authorized Nmap scanning against Metasploitable 2 inside the isolated `CyberLab` environment. The lab documents basic scanning, service and version detection, targeted web, database, and remote-access port scans, operating-system detection, aggressive scanning, saved scan results, and 13 sanitized evidence screenshots.
+### [Lab 02: VirtualBox CyberLab](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-02-virtualbox-cyberlab/README.md)
 
-### [Lab 07: BusinessGuardianLab Network Setup](lab-07-businessguardianlab-network-setup/README.md)
+Built the first isolated cybersecurity environment using Kali Linux and Metasploitable 2.
 
-Created and validated an isolated Windows 11 small-business lab environment using the VirtualBox Internal Network `BusinessGuardianLab`. The workstation was isolated from the internet, assigned the persistent static address `192.168.70.10/24`, preserved with a clean recovery snapshot, and documented with 18 sanitized evidence screenshots.
+Both systems were configured with persistent addresses on the private `CyberLab` network and validated with successful bidirectional connectivity.
 
-### [Lab 08: Wazuh Monitoring Server Setup](lab-08-wazuh-monitoring-server-setup/README.md)
+This became the safe environment for later networking and security testing.
 
-Deployed and configured a centralized Wazuh monitoring server for the isolated `BusinessGuardianLab` environment. The server uses separate NAT and internal-network adapters, the persistent internal address `192.168.70.20/24`, local dashboard access through VirtualBox port forwarding, validated Wazuh services, and 23 sanitized public evidence screenshots.
+---
 
-### [Lab 09: Wazuh Windows Agent Deployment](lab-09-wazuh-windows-agent-deployment/README.md)
+### [Lab 03: Linux Fundamentals](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-03-linux-fundamentals/README.md)
 
-Installed, configured, troubleshot, and validated the Wazuh Windows agent on the isolated Business Guardian workstation. The endpoint successfully registered with the Wazuh server at `192.168.70.20`, remained active after temporary NAT was removed, and was documented with 13 sanitized evidence screenshots.
+Worked through practical Linux administration from the command line.
 
-### [Lab 10: Wazuh Alert Review and AI Data Collection](lab-10-wazuh-alert-review-ai-data-collection/README.md)
+The lab covered navigation, file management, permissions, searching, process monitoring, background processes, file removal, and troubleshooting package updates inside the isolated environment.
 
-Generated safe Windows events, validated end-to-end Wazuh alert detection, reviewed alert details and structured JSON fields, and created a sanitized data sample for later Python-based alert processing. The lab includes 11 cropped evidence screenshots documenting the event-to-alert workflow.
+---
 
-### [Lab 11: AI Alert Explainer MVP](lab-11-ai-alert-explainer-mvp/README.md)
+### [Lab 04: Windows Fundamentals](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-04-windows-fundamentals/README.md)
 
-Built a functional Python-based alert explanation MVP using sanitized Wazuh data prepared during Lab 10. The tool extracts selected endpoint, Windows event, and Wazuh rule fields; interprets alert severity using deterministic logic; generates analyst context and review steps; and preserves human verification before any security decision.
+Moved the project into Windows administration and troubleshooting.
 
-The published lab includes the working Python script, sanitized input sample, generated output, and nine evidence screenshots.
+The lab explored System Information, Task Manager, Event Viewer, Windows Security, PowerShell, networking, firewall configuration, device health, and Windows Update.
 
-### [Lab 12: AI Alert Explainer Testing and Validation](lab-12-ai-alert-explainer-testing-validation/README.md)
+---
 
-Tested and validated the Lab 11 AI Alert Explainer MVP while preserving the published version as a stable baseline.
+## Security Testing and Networking
 
-Validation covered:
+### [Lab 05: DVWA Web Security](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-05-dvwa-web-security/README.md)
 
-* Normal execution
-* Output-file creation
-* Missing input-file handling
-* Empty input-file handling
-* Missing-field behavior
-* Severity-logic changes
-* Final restoration to the original baseline
+Used DVWA inside the isolated lab to perform authorized web-security testing.
 
-The published lab includes copied working files and 17 sanitized evidence screenshots.
+The lab explored command injection and SQL injection, compared different application security levels, and documented both offensive observations and defensive recommendations.
 
-### [Lab 13: AI Alert Explainer v2 Requirements and Design](lab-13-ai-alert-explainer-v2-requirements-design/README.md)
+---
 
-Designed the next version of the AI Alert Explainer before beginning implementation.
+### [Lab 06: Nmap Networking Basics](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-06-nmap-networking-basics/README.md)
 
-Lab 13 used the validated results from Labs 11 and 12 to define:
+Used Nmap to answer a basic but important security question:
 
-* A vendor-neutral normalized alert model
-* Initial Wazuh-to-normalized field mapping
-* Normalized severity
-* Validation rules
-* Missing-field and malformed-value handling
-* Multiple-alert processing
-* Per-alert failure isolation
-* Individual alert reports
-* Batch-summary reporting
-* Five deterministic test cases
-* The controlled Lab 14 implementation scope
+**What is actually reachable on the network?**
 
-Six sanitized design screenshots are published as portfolio evidence.
+The lab covered host discovery, service and version detection, targeted port scanning, operating-system detection, aggressive scanning, and saved scan results against an authorized vulnerable target.
 
-The complete internal design record and proprietary Business Guardian implementation details remain outside the public repository.
+---
 
-### [Lab 14: AI Alert Explainer v2 Multiple Alert Processing](lab-14-ai-alert-explainer-v2-multiple-alert-processing/README.md)
+# Building the Business Guardian Lab
 
-Implemented and validated the multiple-alert processing architecture designed during Lab 13. Lab 14 processes multiple supported alert files during one controlled execution, translates Wazuh-specific data into a vendor-neutral normalized alert model, applies platform-neutral severity, identifies missing and malformed information, isolates per-alert failures, generates unique analyst reports, creates batch summaries, preserves source traceability, and protects previous output from overwrite.
+### [Lab 07: BusinessGuardianLab Network Setup](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-07-businessguardianlab-network-setup/README.md)
 
-The predetermined Lab 13 validation target was matched exactly: 5 alerts discovered, 2 processed normally, 2 processed with warnings, 1 failed validation, 4 individual reports created, and 1 batch summary generated. A second validation run produced the same result without overwriting the first run.
+Created a second isolated environment designed around a small-business security scenario.
 
-### Private Business Guardian Milestone — Live Wazuh Evidence Validation
+The Windows 11 workstation was placed on the private `BusinessGuardianLab` network, isolated from the internet, given a persistent address, tested, and preserved with a recovery snapshot.
 
-Business Guardian development has progressed beyond the public portfolio labs into a separate private product repository. A live Wazuh evidence connector was validated against the Project Athenaeum lab using both server and indexed evidence paths.
+This became the foundation for the Wazuh monitoring environment.
 
-- Live read-only evidence retrieval validated against the isolated Wazuh lab
-- Both supported evidence paths returned security data successfully
+---
+
+### [Lab 08: Wazuh Monitoring Server Setup](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-08-wazuh-monitoring-server-setup/README.md)
+
+Deployed a centralized Wazuh monitoring server.
+
+The server was configured with separate NAT and isolated-network interfaces, persistent addressing, validated Wazuh services, and local dashboard access through VirtualBox port forwarding.
+
+At this point, Project Athenaeum moved from individual system exercises into an actual monitored security environment.
+
+---
+
+### [Lab 09: Wazuh Windows Agent Deployment](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-09-wazuh-windows-agent-deployment/README.md)
+
+Connected the Windows workstation to Wazuh.
+
+The agent was installed, configured, troubleshot, registered with the monitoring server, and validated after temporary internet access was removed.
+
+The result was a fully isolated Windows endpoint reporting security telemetry to a centralized monitoring server.
+
+---
+
+### [Lab 10: Wazuh Alert Review and AI Data Collection](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-10-wazuh-alert-review-ai-data-collection/README.md)
+
+The monitoring environment was working. The next question was:
+
+**What can I do with the security data it produces?**
+
+Lab 10 generated controlled Windows events, confirmed end-to-end Wazuh detection, examined alert details and structured JSON fields, and created sanitized security data for later Python processing.
+
+That data became the bridge between the monitoring labs and the software-development phase of Project Athenaeum.
+
+---
+
+# From Alerts to Security Tooling
+
+### [Lab 11: AI Alert Explainer MVP](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-11-ai-alert-explainer-mvp/README.md)
+
+Built the first working Python security tool in Project Athenaeum.
+
+The MVP reads sanitized Wazuh alert data, extracts important endpoint and rule information, interprets severity using deterministic logic, and produces analyst-oriented context and review steps.
+
+The design deliberately keeps human verification between an alert and a security conclusion.
+
+---
+
+### [Lab 12: AI Alert Explainer Testing and Validation](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-12-ai-alert-explainer-testing-validation/README.md)
+
+A tool working once was not enough.
+
+Lab 12 tested the Lab 11 MVP against:
+
+- Normal execution
+- Output-file creation
+- Missing files
+- Empty files
+- Missing fields
+- Severity changes
+- Restoration to the validated baseline
+
+This lab established a rule that continues through the project:
+
+**A feature is not treated as stable until its failure behavior is understood too.**
+
+---
+
+### [Lab 13: AI Alert Explainer v2 Requirements and Design](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-13-ai-alert-explainer-v2-requirements-design/README.md)
+
+Instead of immediately writing more code, Lab 13 stopped and designed the next version first.
+
+The design introduced:
+
+- A vendor-neutral alert model
+- Wazuh-to-normalized field mapping
+- Platform-neutral severity
+- Missing and malformed-data handling
+- Multiple-alert processing
+- Per-alert failure isolation
+- Individual reports
+- Batch summaries
+- Five deterministic acceptance cases
+
+The implementation target for Lab 14 was frozen before coding began.
+
+---
+
+### [Lab 14: AI Alert Explainer v2 Multiple Alert Processing](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-14-ai-alert-explainer-v2-multiple-alert-processing/README.md)
+
+Security tools do not get to assume that every input will be clean.
+
+Lab 14 moved from processing a single alert to handling a batch containing good data, incomplete data, malformed data, and unsupported content.
+
+The processor:
+
+- Discovered multiple alert files
+- Normalized vendor-specific data
+- Preserved source information
+- Identified missing and malformed fields
+- Isolated failures
+- Generated individual reports
+- Produced a batch summary
+- Protected previous output from overwrite
+
+The predetermined validation target was:
+
+```text
+5 discovered
+2 processed normally
+2 processed with warnings
+1 failed validation
+4 reports created
+1 batch summary
+```
+
+The implementation matched that target exactly.
+
+A second run reproduced the result without overwriting the first.
+
+**Validation: PASS**
+
+---
+
+# Private Business Guardian Milestone
+
+## Live Wazuh Evidence Validation
+
+At this stage, some Business Guardian development moved into a separate private repository.
+
+The goal was no longer just to process sanitized examples. I wanted to know whether the architecture could retrieve evidence from the actual lab.
+
+A private read-only Wazuh evidence connector was tested against both the Wazuh Server API and the indexed alert data.
+
+Results:
+
+- Both evidence paths successfully returned live lab security data
 - 257 automated tests passed
-- Final live validation returned `PASS`
-- A live compatibility issue was identified, corrected, and regression-tested
+- A real Wazuh compatibility issue was discovered during live testing
+- The issue was corrected and regression-tested
 - GitHub Actions passed after the correction
+- Final live validation returned `PASS`
 
-Proprietary connector and investigation implementation remains private. Project Athenaeum continues to publish sanitized technical milestones and validation evidence without duplicating private product functionality.
+The proprietary connector implementation, investigation system, and other product-level Business Guardian components remain private.
 
-### [Lab 15 — Alert Records, Validation, and Traceability](lab-15-alert-records-validation-traceability/README.md)
+Project Athenaeum records only the sanitized milestone.
 
-Built a vendor-neutral alert-record and traceability layer for structured security processing. Lab 15 introduced non-sensitive `AR-...` record identifiers, source and ingestion timestamp preservation, explicit validation outcomes, missing and malformed-data handling, ordered processing history, failure isolation, non-destructive source handling, and repeat-processing protection.
+---
 
-Controlled validation produced the frozen expected result:
+# Creating Persistent Security Records
 
-`5 discovered / 2 normal / 2 warnings / 1 failed / 4 records`
+### [Lab 15 — Alert Records, Validation, and Traceability](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-15-alert-records-validation-traceability/README.md)
+
+Alerts are temporary events. A security workflow needs something more durable.
+
+Lab 15 introduced structured vendor-neutral alert records that can preserve an alert's identity as it moves through later security decisions.
+
+Each processable alert receives a non-sensitive `AR-...` identity while preserving:
+
+- Original source alert ID
+- Source event timestamp
+- Separate ingestion timestamp
+- Normalized severity
+- Validation outcome
+- Missing fields
+- Validation notes
+- Processing history
+- Source traceability
+
+The same controlled five-alert validation set was used.
+
+Results:
+
+```text
+5 discovered
+2 processed normally
+2 processed with warnings
+1 failed validation
+4 alert records created
+```
+
+Missing data remained missing rather than being invented.
+
+Malformed severity remained preserved while normalized severity safely became `UNKNOWN`.
+
+Unsupported content failed without stopping the other alerts.
+
+A second run reproduced the same results while preserving the first-run output.
 
 **Final validation: PASS**
 
-### [Lab 16 — Alert Triage and Decision Logic](lab-16-alert-triage-decision-logic/README.md)
+---
 
-Extended the validated Lab 15 alert-record baseline with deterministic, vendor-neutral triage classifications and next-stage routing.
+# Deciding What Happens Next
 
-Lab 16 preserves the original `AR-...` alert-record identity, creates separate `TR-...` triage-decision identities, keeps technical severity separate from classification, gives evidence-quality problems priority, preserves uncertainty when stronger conclusions are unsupported, and records traceable routing decisions without authorizing or executing defensive action.
+### [Lab 16 — Alert Triage and Decision Logic](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-16-alert-triage-decision-logic/README.md)
 
-Controlled validation produced:
+Security alerts rarely arrive with perfect information.
 
-`5 records / 2 KNOWN_COMMON / 1 INSUFFICIENT_DATA / 1 UNUSUAL / 1 UNKNOWN / 2 POLICY_EVALUATION / 3 INVESTIGATION / 0 failures`
+Some match conditions we understand. Some are missing evidence. Some look unusual. Others simply do not support a confident conclusion yet.
 
-A second complete run reproduced the same classification and routing totals, preserved all original `AR-...` identities, generated new `TR-...` identities, and kept first-run output intact.
+Lab 16 asked:
+
+**How should a security system decide what happens next without guessing?**
+
+The lab adds a deterministic triage layer after the Lab 15 alert-record stage.
+
+It preserves the original `AR-...` alert identity and creates a separate `TR-...` triage-decision identity.
+
+Supported classifications are:
+
+- `KNOWN_COMMON`
+- `INSUFFICIENT_DATA`
+- `UNUSUAL`
+- `UNKNOWN`
+
+Supported next-stage routing includes:
+
+- `POLICY_EVALUATION`
+- `INVESTIGATION`
+- `HUMAN_REVIEW`
+- `NO_ACTION_YET`
+
+The controlled validation produced:
+
+```text
+5 records processed
+2 KNOWN_COMMON
+1 INSUFFICIENT_DATA
+1 UNUSUAL
+1 UNKNOWN
+
+2 POLICY_EVALUATION
+3 INVESTIGATION
+0 failures
+```
+
+A second complete execution reproduced the same classification and routing totals while preserving the original alert identities and generating new triage-decision identities.
 
 **Final validation: PASS**
 
-## Current Status
+One of the most important results from this lab is simple:
 
-Project Athenaeum is current through **Lab 16 — Alert Triage and Decision Logic**.
+> A HIGH-severity alert is not automatically malicious, and a LOW-severity alert is not automatically safe.
 
-The following labs are complete and published:
+Severity is evidence. It is not a verdict.
 
-- Lab 01: Documentation Setup
-- Lab 02: VirtualBox CyberLab
-- Lab 03: Linux Fundamentals
-- Lab 04: Windows Fundamentals
-- Lab 05: DVWA Web Security
-- Lab 06: Nmap Networking Basics
-- Lab 07: BusinessGuardianLab Network Setup
-- Lab 08: Wazuh Monitoring Server Setup
-- Lab 09: Wazuh Windows Agent Deployment
-- Lab 10: Wazuh Alert Review and AI Data Collection
-- Lab 11: AI Alert Explainer MVP
-- Lab 12: AI Alert Explainer Testing and Validation
-- Lab 13: AI Alert Explainer v2 Requirements and Design
-- Lab 14: AI Alert Explainer v2 Multiple Alert Processing
-- Lab 15: Alert Records, Validation, and Traceability
-- Lab 16: Alert Triage and Decision Logic
+Lab 16 intentionally stops at decision routing. It does not authorize remediation, execute defensive actions, verify fixes, or mark an alert resolved.
 
-Project Athenaeum now demonstrates a progression from foundational system administration and isolated cybersecurity lab deployment through endpoint monitoring, controlled alert generation, structured security-data analysis, Python-based alert processing, requirements-driven software design, deterministic validation, vendor-neutral alert records, source-to-processing traceability, and controlled cybersecurity triage decisions.
+---
 
-Labs 11 and 12 preserve the validated single-alert MVP baseline. Lab 13 established the next processing architecture, Lab 14 implemented validated multiple-alert processing, and Lab 15 added persistent alert identity, validation outcomes, processing history, and traceability without rebuilding the earlier work.
+# Where Project Athenaeum Stands Today
 
-Lab 16 extends that foundation with deterministic triage classifications and next-stage routing. Original `AR-...` alert-record identities remain preserved while separate `TR-...` triage-decision identities record the decision. Evidence-quality problems take priority over recognizable patterns, technical severity remains separate from classification, and uncertainty remains explicit when the available evidence does not support a stronger conclusion.
+Project Athenaeum is complete through **Lab 16 — Alert Triage and Decision Logic**.
 
-Controlled Lab 16 validation processed five alert records with zero failures:
+The technical progression now looks like this:
 
-`2 KNOWN_COMMON / 1 INSUFFICIENT_DATA / 1 UNUSUAL / 1 UNKNOWN`
+```text
+Security Event
+      ↓
+Collect Alert Data
+      ↓
+Normalize and Validate
+      ↓
+Create Persistent Alert Record
+      ↓
+Preserve Traceability
+      ↓
+Triage the Condition
+      ↓
+Route to the Next Security Stage
+```
 
-Routing produced:
+Labs 11–12 established and validated the first alert-processing MVP.
 
-`2 POLICY_EVALUATION / 3 INVESTIGATION / 0 HUMAN_REVIEW / 0 NO_ACTION_YET`
+Lab 13 designed the next architecture.
 
-A second complete execution reproduced the same classification and routing totals, preserved the original alert-record identities, created new triage-decision identities, and left previous output intact.
+Lab 14 proved deterministic multiple-alert processing.
 
-**Final Lab 16 validation: PASS**
+Lab 15 added persistent alert identity and traceability.
 
-Lab 16 is a decision-routing layer, not a remediation layer. `KNOWN_COMMON` does not mean benign or resolved, and `POLICY_EVALUATION` does not authorize defensive action. No remediation, defensive action, verification, or closure occurs in this public lab.
+Lab 16 added deterministic triage and decision routing.
 
-Private Business Guardian development continues separately. Production triage heuristics, evidence orchestration, investigation workflows, business-risk scoring, policy and approval logic, defensive execution, verification, audit mechanisms, tenant logic, and other proprietary product capabilities remain in the private repository.
+Each layer extends the previous validated baseline instead of replacing it.
 
-Project Athenaeum will continue to publish sanitized technical milestones and portfolio-safe validation evidence while preserving the public/private repository boundary and the rule that **nothing gets built twice**.
+---
 
-## Next Project Phase
+# Next Project Phase
 
-With the Lab 16 alert-triage and decision-routing layer validated, the next Project Athenaeum phase will be selected from the remaining Business Guardian lifecycle rather than by adding unrelated features.
+Lab 16 answers:
 
-The validated public progression now includes:
+**What should happen next?**
 
-`Alert → Normalize / Validate → Alert Record / Traceability → Triage Classification → Next-Stage Routing`
+The next phase will move deeper into the remaining security lifecycle.
 
-Future work will build from the Lab 16 baseline rather than modifying Labs 13–16 retroactively.
-
-The next technical layer will be selected after reviewing the current roadmap and private Business Guardian implementation to ensure that completed functionality is not duplicated. Candidate areas include:
+Potential areas include:
 
 - Investigation and evidence handling
-- Policy and approval decision records
+- Policy and approval records
 - Business-risk and impact representation
 - Audit-oriented workflow records
 - Controlled defensive-action planning
 - Verification and outcome tracking
 - Customer-facing incident and resolution reporting
 
-The exact next lab will be defined and documented before implementation begins.
+The exact next lab will be selected only after comparing the public roadmap with work already completed in the private Business Guardian repository.
 
-Public Project Athenaeum work will continue to demonstrate sanitized, vendor-neutral architecture and validation evidence. Proprietary Business Guardian investigation logic, production triage heuristics, evidence orchestration, policy and approval engines, defensive execution, verification mechanisms, tenant logic, and commercial functionality remain in the private repository.
+That prevents duplicate implementation and keeps the public portfolio aligned with the larger product architecture.
+
+```text
+Alert
+  ↓
+Normalize / Validate
+  ↓
+Record / Trace
+  ↓
+Triage
+  ↓
+Investigate when needed
+  ↓
+Policy / Approval
+  ↓
+Authorized Defensive Action
+  ↓
+Verify
+  ↓
+Audit
+```
 
 **Nothing gets built twice.**
 
-## Development Principles
+---
 
-Project Athenaeum follows a **build, validate, document, and extend** approach.
+# How I Build
 
-* Validated work is preserved rather than rebuilt unnecessarily.
-* Existing components are reused, improved, updated, or extended when practical.
-* New capabilities are designed and tested before being added to stable versions.
-* Testing is performed before portfolio publication.
-* Stable baselines are preserved before new changes are introduced.
-* Security-platform-specific data is translated into normalized internal structures where practical.
-* Core parsing, validation, normalization, severity handling, and control logic remain deterministic and testable.
-* Missing or malformed information is identified rather than replaced with fabricated values.
-* Severity helps determine review priority but does not automatically determine whether activity is malicious.
-* AI-assisted features support explanation, enrichment, and analysis rather than independently making consequential security decisions.
-* Human review remains required for security actions and final incident decisions.
-* Public repository content is sanitized and portfolio-focused.
-* Proprietary Business Guardian product implementation remains private.
+Project Athenaeum follows a simple development cycle:
 
-## Public Repository Boundary
+## Build → Test → Validate → Document → Preserve → Extend
 
-Project Athenaeum serves as the public, sanitized portfolio record of the work.
+That means:
 
-Public material may include:
+- Validated work is preserved rather than rebuilt unnecessarily.
+- Expected behavior is defined before implementation when practical.
+- Failure conditions are tested along with successful ones.
+- Stable baselines are preserved before adding new capabilities.
+- Security-platform-specific data is separated from reusable processing logic.
+- Missing information is identified rather than fabricated.
+- Alerts, logs, and external security data are treated as untrusted input.
+- Technical severity does not automatically determine maliciousness.
+- Core security decisions use deterministic, testable logic.
+- Consequential security actions remain appropriately human-controlled.
+- Nothing is treated as resolved until the result has been verified.
 
-* Completed lab summaries
-* Sanitized screenshots
-* Portfolio-safe scripts and demonstrations
-* High-level architectural concepts
-* Testing methodology
-* Validation results
-* Technical lessons learned
-* Professional-development progress
+---
 
-More advanced Business Guardian product development remains outside this public repository.
+# Public vs. Private Development
 
-Private product-level material may include:
+Project Athenaeum is the public proof-of-work repository.
 
-* Proprietary application code
-* Advanced backend and dashboard logic
-* Security-platform adapters and connectors
-* Investigation workflows
-* Policy and approval mechanisms
-* Audit mechanisms
-* Sensitive security or business logging
-* Tenant or customer logic
-* Secrets-related configuration
-* Sensitive test data
-* Proprietary architecture and workflows
-* Commercial material
+It may contain:
 
-The goal is to demonstrate technical progress publicly without publishing enough proprietary implementation detail to reproduce the commercial product.
+- Sanitized portfolio labs
+- Selected screenshots
+- Portfolio-safe Python
+- Controlled test data
+- High-level architecture
+- Testing methodology
+- Validation results
+- Technical lessons
+- Professional-development progress
 
-## Future Roadmap
+The private Business Guardian repository contains product-level development such as:
 
-Project Athenaeum will continue to expand through controlled, documented projects rather than adding features without testing.
+- Security-platform connectors
+- Production triage logic
+- Evidence orchestration
+- Investigation workflows
+- Policy and approval systems
+- Business-risk logic
+- Defensive-action selection and execution
+- Verification mechanisms
+- Audit systems
+- Tenant/customer logic
+- Sensitive configuration
+- Proprietary architecture
+- Commercial material
 
-Future portfolio-safe development may include:
+The goal is to show meaningful technical progress publicly without publishing enough proprietary implementation detail to reproduce the commercial product.
 
-* Additional controlled Wazuh alert scenarios
-* Broader alert-type testing
-* Complete JSON alert parsing
-* Improved alert normalization and validation
-* Multiple-alert correlation
-* Reusable severity mappings
-* Additional deterministic and automated testing
-* Structured processing records
-* Modular alert-report components
-* Structured incident-summary generation
-* Analyst feedback and correction workflows
-* Accuracy and consistency testing
-* Additional Windows and Linux administration exercises
-* Networking and troubleshooting projects
-* Security monitoring and incident-investigation labs
-* IT support automation
-* Additional Python security automation
-* A polished browser-based security monitoring interface
-* Security+ certification preparation and supporting technical practice
+---
 
-A future Project Athenaeum lab will also build a Windows Network Troubleshooting Toolkit using a manually created batch-file workflow, administrator elevation, safety confirmations, authorized testing, documentation, and sanitized publication.
-
-Dashboard, investigation, approval, and advanced AI capabilities will be added only after the underlying processing and validation layers are proven reliable.
-
-## Home Lab
+# Home Lab
 
 My current lab infrastructure includes:
 
-* Windows 11 host computer
-* Oracle VirtualBox
-* Kali Linux security workstation
-* Ubuntu Linux practice virtual machine
-* Metasploitable 2 vulnerable target
-* Windows 11 administration lab
-* VirtualBox Internal Network: `CyberLab`
-* CyberLab subnet: `192.168.56.0/24`
-* BusinessGuardian-Win11-Workstation: `192.168.70.10/24`
-* Wazuh Monitoring Server: `192.168.70.20/24`
-* Active Wazuh Windows endpoint agent
-* VirtualBox Internal Network: `BusinessGuardianLab`
-* BusinessGuardianLab subnet: `192.168.70.0/24`
-* NAT and isolated internal-network segmentation
-* Local Wazuh dashboard access through VirtualBox port forwarding
-* Clean recovery snapshots for major deployment stages
+- Windows 11 host computer
+- Oracle VirtualBox
+- Kali Linux security workstation
+- Ubuntu Linux practice virtual machine
+- Metasploitable 2 vulnerable target
+- Windows 11 administration workstation
+- Wazuh monitoring server
+- Active Wazuh Windows endpoint agent
+- Isolated `CyberLab` network
+- Isolated `BusinessGuardianLab` network
+- NAT and internal-network segmentation
+- Local Wazuh dashboard access
+- Clean recovery snapshots for major deployment stages
 
-### Validated Lab Capabilities
+All cybersecurity exercises are performed using personally owned or authorized systems inside controlled lab environments.
 
-- Isolated virtual-network deployment
-- Static IPv4 configuration
+---
+
+# Skills Demonstrated Across the Project
+
 - Windows and Linux administration
+- Virtual network deployment
+- Nmap network and service discovery
 - Authorized vulnerability testing
-- Nmap service and network scanning
-- End-to-end Windows-to-Wazuh monitoring
-- Controlled Windows event generation
-- Wazuh alert generation and review
-- Wazuh alert-detail, rule-field, and JSON analysis
-- Sanitized security-data preparation
-- Functional Python AI Alert Explainer MVP
-- Plain-language alert report generation
-- Missing-file and empty-file testing
-- Missing alert-field behavior testing
-- Wazuh severity-logic validation
-- Stable baseline restoration and verification
-- Vendor-neutral normalized alert processing
-- Wazuh-to-normalized field translation
-- Platform-neutral severity normalization
-- Multiple-alert batch processing
-- Missing and malformed data validation
-- Per-alert failure isolation
-- Unique individual report generation
-- Batch-summary generation
+- Wazuh endpoint monitoring
+- Windows event generation and analysis
+- Security alert review
+- JSON security-data processing
+- Python automation
+- Vendor-neutral data normalization
+- Multiple-alert processing
+- Missing and malformed-data validation
+- Failure isolation
+- Persistent alert records
 - Source traceability
-- Non-destructive source-file handling
-- Output overwrite protection
-- Deterministic acceptance testing
-- Repeatable processing validation
-- Human-reviewed security decision support
+- Deterministic cybersecurity triage
+- Evidence-quality-first decision logic
+- Severity-independent classification
+- Investigation and policy routing
+- Automated testing
+- Repeatability testing
+- Non-destructive processing
+- Technical documentation
+- Security architecture planning
 
-All cybersecurity exercises are performed using personally owned or authorized systems in isolated lab environments.
+---
 
-## Education and Development
+# Education and Development
 
-* Bachelor of Science in Cybersecurity with a concentration in Project Management Fundamentals — expected September 2026
-* InfoSec Labs Pre-Security Fundamentals Certificate
-* InfoSec Labs Alert Investigation Specialist training
-* CompTIA Security+ preparation
-* Ongoing SOC, SIEM, endpoint-monitoring, Python, networking, Windows, Linux, and IT support practice
-* Continued Project Athenaeum development focused on practical technical skills, testing, validation, documentation, and portfolio evidence
+- Bachelor of Science in Cybersecurity with a concentration in Project Management Fundamentals — degree conferral expected September 2026
+- InfoSec Labs Pre-Security Fundamentals Certificate
+- InfoSec Labs Alert Investigation Specialist training
+- CompTIA Security+ preparation
+- Continued SOC, SIEM, endpoint-monitoring, Python, networking, Windows, Linux, and IT support practice
 
-## Professional Goals
+---
 
-My immediate goal is to begin in an IT support, SOC analyst, cybersecurity support, or public-sector IT role where I can apply practical troubleshooting, documentation, endpoint monitoring, and security-analysis skills while continuing to build technical experience.
+# Professional Direction
 
-I am developing a foundation that combines IT support, cybersecurity operations, system administration, networking, Python automation, security monitoring, structured testing, and clear technical communication.
+My immediate goal is to move into an IT support, SOC analyst, cybersecurity support, or public-sector IT role where I can apply practical troubleshooting, documentation, endpoint-monitoring, and security-analysis skills while continuing to grow technically.
 
-My longer-term goal is to grow into more advanced security and systems responsibilities while continuing to use Project Athenaeum to demonstrate measurable hands-on progress.
+Longer term, I want to take on deeper security and systems responsibilities while continuing to build practical cybersecurity tooling and automation.
 
-I also want to continue developing security tools that make technical information easier to understand and investigate while preserving evidence, deterministic controls, and human judgment for consequential security decisions.
+Project Athenaeum is also helping me explore a larger goal: building cybersecurity technology that can help smaller organizations understand what is happening in their environment, investigate security conditions, and eventually perform supported defensive actions when policy and authorization permit.
+
+The system should not simply say that something was fixed.
+
+It should be able to prove it.
