@@ -1,345 +1,580 @@
-# Lab 10: Wazuh Alert Review and AI Data Collection
+# Lab 10 — Wazuh Alert Review and Security Data Collection
 
-## Overview
+## Can I Follow One Security Event From the Endpoint All the Way to the Alert?
 
-This lab documents the first complete alert-review workflow in the Project Athenaeum Business Guardian environment.
+By the end of Lab 09, the Windows workstation was connected to Wazuh and reporting telemetry successfully.
 
-A safe test event was created on the isolated Windows 11 workstation. The active Wazuh agent forwarded the event to the Wazuh monitoring server, where the resulting alert was located and reviewed through the dashboard.
+But an active agent does not prove that the entire monitoring workflow is useful.
 
-The alert’s detailed fields and JSON structure were then examined and converted into a smaller, sanitized data sample that could later be used by an AI-assisted alert-explanation tool.
+Lab 10 asks a more practical question:
 
-## Objective
+**Can I create a controlled Windows event, watch Wazuh detect it, inspect the resulting alert, and extract the evidence needed for later automation?**
 
-Generate a controlled Windows event, confirm that Wazuh detects it, review the resulting alert and JSON fields, and prepare a sanitized AI-ready data sample.
+This lab validates the first complete event-to-alert workflow in the Project Athenaeum Business Guardian environment.
 
-## Skills Demonstrated
+The progression becomes:
 
-- Windows event generation
-- Wazuh endpoint monitoring
-- SIEM alert review
-- Alert validation
-- Windows telemetry analysis
-- JSON data review
-- Security-event field identification
-- Evidence collection
-- Data sanitization
-- AI-ready dataset preparation
-- SOC-style documentation
-- Technical troubleshooting
-- Snapshot and recovery management
+```text
+Windows Test Event
+        ↓
+Windows Event Log
+        ↓
+Wazuh Agent
+        ↓
+Wazuh Manager
+        ↓
+Detection Rule
+        ↓
+Wazuh Alert
+        ↓
+Alert Review
+        ↓
+Structured JSON Evidence
+        ↓
+Sanitized Security Data Sample
+```
 
-## Environment and Tools
+This is where the monitoring environment begins producing data that can be used by custom security tooling.
 
-- Windows 11 host computer
-- Oracle VirtualBox
-- `BusinessGuardian-Win11-Workstation`
-- Wazuh Monitoring Server
-- Wazuh Windows agent
-- Wazuh dashboard
-- Windows Event Viewer
-- Windows command-line tools
-- JSON alert details
-- VirtualBox Internal Network named `BusinessGuardianLab`
+---
 
-## Lab Systems
+# What Lab 10 Proves
 
-### Windows Workstation
+A monitored endpoint is only useful if its activity can be detected and understood.
+
+Lab 10 validates that:
+
+- A controlled Windows event can be generated
+- Windows records the event
+- The Wazuh agent collects it
+- The Wazuh server processes it
+- A corresponding alert appears in the dashboard
+- The alert contains useful investigation fields
+- The underlying JSON can be examined
+- Useful fields can be separated from unnecessary data
+- A sanitized dataset can be prepared for later Python processing
+
+The important transition is:
+
+```text
+Monitoring
+    ↓
+Detection
+    ↓
+Evidence
+    ↓
+Usable Security Data
+```
+
+---
+
+# Lab Environment
+
+The workflow uses the isolated `BusinessGuardianLab` environment.
+
+## Windows Workstation
 
 ```text
 BusinessGuardian-Win11-Workstation
 192.168.70.10/24
 ```
 
-### Wazuh Monitoring Server
+## Wazuh Monitoring Server
 
 ```text
 192.168.70.20/24
 ```
 
-### Internal Network
+## Internal Network
 
 ```text
 BusinessGuardianLab
 192.168.70.0/24
 ```
 
-The workstation and monitoring server communicated through the isolated internal network without requiring public internet access.
+The workstation and monitoring server communicate through the isolated VirtualBox internal network.
 
-## Lab Workflow
+No production environment is involved.
+
+---
+
+# Starting From a Known-Good Monitoring State
+
+Before creating the test event, the Wazuh environment was checked to confirm that the Windows endpoint agent was active.
+
+That matters because if an alert fails to appear later, the troubleshooting process needs to distinguish between:
 
 ```text
-Windows test event created
-          |
-          v
-Windows event recorded
-          |
-          v
-Wazuh agent collected the event
-          |
-          v
-Wazuh server generated an alert
-          |
-          v
-Alert details reviewed
-          |
-          v
-JSON fields examined
-          |
-          v
-Sanitized AI data sample created
+Event Generation Problem
+        vs.
+Agent Communication Problem
+        vs.
+Detection Problem
 ```
 
-## Work Completed
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_02_agent-active-starting-state.png"
+    alt="Wazuh Windows agent active before Lab 10 event generation"
+    width="900">
+</p>
 
-During this lab, I:
+<p align="center">
+  <em>The Windows endpoint agent was confirmed active before controlled event generation began.</em>
+</p>
 
-- Started the Wazuh monitoring server
-- Started the isolated Windows 11 workstation
-- Confirmed that the Wazuh agent remained active
-- Verified communication between the workstation and server
-- Reviewed the Wazuh dashboard before creating the test event
-- Created a safe and controlled Windows event
-- Confirmed that the event was recorded on the workstation
-- Located the corresponding event in Wazuh
-- Opened and reviewed the Wazuh alert
-- Examined the alert description, severity, timestamp, agent, and source information
-- Opened the full alert details
-- Reviewed the event’s JSON structure
-- Identified fields useful for later automation and AI analysis
-- Removed unnecessary or sensitive information
-- Created a smaller AI-ready alert-data sample
-- Documented the event-to-alert workflow
-- Created recovery snapshots after successful validation
-- Completed the screenshot log, technical notes, and final portfolio writeup
+---
 
-## Screenshots and Evidence
+# Creating a Controlled Windows Event
 
-### Lab Documentation Setup
+A safe Windows event was created on the authorized Business Guardian workstation.
 
-The Lab 10 documentation structure was prepared to organize alert evidence, technical notes, the screenshot log, AI data samples, and the final portfolio writeup.
+The purpose was not to simulate a destructive attack.
 
-![Lab 10 folder setup](screenshots/2026-07-24_Lab10_WazuhAI_01_folder-setup.png)
+The goal was to create known activity that could be followed through the complete monitoring pipeline.
 
-### Active Agent Starting State
+The test needed to confirm:
 
-The Wazuh dashboard confirmed that the Windows workstation agent was active before controlled events were generated.
-
-![Wazuh agent active at starting state](screenshots/2026-07-24_Lab10_WazuhAI_02_agent-active-starting-state.png)
-
-### Controlled Windows Events Created
-
-Safe Windows events were created on the authorized Business Guardian workstation to test the endpoint-monitoring pipeline.
-
-![Safe Windows events created](screenshots/2026-07-24_Lab10_WazuhAI_03_safe-windows-events-created.png)
-
-### Simulated Windows Error Alert Visible
-
-The resulting simulated Windows error alert appeared in the Wazuh dashboard, confirming successful collection and detection.
-
-![Simulated Windows error alert visible in Wazuh](screenshots/2026-07-24_Lab10_WazuhAI_04_wazuh-simulated-windows-error-alert-visible.png)
-
-### Alert Details — Overview
-
-The upper section of the alert-details view displayed the alert timestamp, monitored agent, severity, description, and supporting event information.
-
-![Windows error alert details upper section](screenshots/2026-07-24_Lab10_WazuhAI_05a_windows-error-alert-details-top.png)
-
-### Alert Details — Rule Fields
-
-The rule fields were reviewed to identify the Wazuh rule, severity level, description, and information relevant to analyst triage.
-
-![Windows error alert rule fields](screenshots/2026-07-24_Lab10_WazuhAI_05b_windows-error-alert-details-rule-fields.png)
-
-### JSON Review — Event Fields
-
-The alert’s structured JSON event fields were examined to identify endpoint, timestamp, source, and Windows event information.
-
-![Windows error alert JSON event fields](screenshots/2026-07-24_Lab10_WazuhAI_06a_windows-error-alert-json-event-fields.png)
-
-### JSON Review — Rule Fields
-
-The JSON rule fields were reviewed to identify structured detection information suitable for searching, automation, and later AI analysis.
-
-![Windows error alert JSON rule fields](screenshots/2026-07-24_Lab10_WazuhAI_06b_windows-error-alert-json-rule-fields.png)
-
-### AI Data Sample Created
-
-A smaller sanitized alert-data file was created using selected fields from the Wazuh event.
-
-![AI alert data sample file created](screenshots/2026-07-24_Lab10_WazuhAI_07_ai-data-sample-file-created.png)
-
-### Wazuh Server Recovery Snapshot
-
-A recovery snapshot preserved the Wazuh server after successful alert collection, review, and data preparation.
-
-![Wazuh server alert-data snapshot](screenshots/2026-07-24_Lab10_WazuhAI_08a_wazuh-server-alert-data-snapshot.png)
-
-### Windows Workstation Recovery Snapshot
-
-A recovery snapshot preserved the Windows workstation after the controlled events were created and successfully collected.
-
-![Windows workstation events-created snapshot](screenshots/2026-07-24_Lab10_WazuhAI_08b_windows-events-created-snapshot.png)
-
-## Controlled Windows Event
-
-A safe Windows test event was generated on the authorized Business Guardian workstation.
-
-The purpose of the event was not to simulate a destructive attack. It was created to validate that:
-
-- Windows recorded the activity
-- The Wazuh agent collected the event
+- Windows recorded the event
+- The Wazuh agent collected it
 - The Wazuh manager processed it
-- An alert appeared in the dashboard
-- The alert contained useful investigation fields
+- A detection rule matched
+- The alert became visible
+- The alert contained usable investigation data
 
-This established a repeatable method for future alert-generation exercises.
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_03_safe-windows-events-created.png"
+    alt="Controlled Windows events generated during Lab 10"
+    width="900">
+</p>
 
-## Wazuh Alert Detection
+<p align="center">
+  <em>Controlled Windows activity provided a known event that could be traced through the monitoring pipeline.</em>
+</p>
 
-After the Windows event was created, the Wazuh dashboard was reviewed for new activity from:
+---
+
+# The Alert Appears in Wazuh
+
+After the event was generated, the Wazuh dashboard was reviewed for new activity from the monitored workstation.
+
+The simulated Windows error appeared successfully.
+
+That confirmed the complete path:
 
 ```text
-BusinessGuardian-Win11-Workstation
+Windows Endpoint
+      ↓
+Wazuh Agent
+      ↓
+Wazuh Manager
+      ↓
+Detection Rule
+      ↓
+Dashboard Alert
 ```
 
-The related alert confirmed that the complete monitoring path was working:
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_04_wazuh-simulated-windows-error-alert-visible.png"
+    alt="Simulated Windows error alert visible in Wazuh"
+    width="900">
+</p>
 
-```text
-Windows endpoint
-→ Wazuh agent
-→ Wazuh manager
-→ Alert rule
-→ Wazuh dashboard
-```
+<p align="center">
+  <em>The controlled Windows event successfully reached Wazuh and produced a visible security alert.</em>
+</p>
 
-This was the first validated end-to-end alert workflow in the Business Guardian environment.
+This was the first validated end-to-end alert workflow in the Business Guardian lab.
 
-## Alert Review
+---
 
-The Wazuh alert was reviewed to identify information an analyst would use during triage.
+# Reviewing the Alert Like an Analyst
 
-Important alert information included:
+Finding the alert is only the beginning.
 
-- Alert timestamp
+The next step is understanding what evidence the alert actually contains.
+
+The alert details were reviewed for information such as:
+
+- Timestamp
 - Agent name
 - Agent address
-- Rule identification
+- Rule ID
 - Rule description
-- Alert severity or level
+- Alert severity
 - Windows event information
-- Event source or channel
+- Event source
 - Host information
 - Supporting event data
 
-These fields provide the context needed to understand what happened, which system produced the event, and whether further investigation is required.
+These fields help answer basic investigation questions:
 
-## JSON Review
+```text
+What happened?
+Where did it happen?
+When did it happen?
+Why did the platform alert?
+How important might it be?
+What should be reviewed next?
+```
 
-The full JSON alert view was examined to understand how Wazuh stores and organizes event information.
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_05a_windows-error-alert-details-top.png"
+    alt="Lab 10 Wazuh alert overview"
+    width="900">
+</p>
 
-JSON is useful because it provides structured data that can be:
+<p align="center">
+  <em>The alert overview provides timestamp, endpoint, severity, description, and supporting event context.</em>
+</p>
+
+---
+
+# Looking at the Detection Rule
+
+The Wazuh rule fields were also inspected.
+
+These fields help explain why Wazuh considered the event important enough to generate an alert.
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_05b_windows-error-alert-details-rule-fields.png"
+    alt="Lab 10 Wazuh alert rule fields"
+    width="900">
+</p>
+
+<p align="center">
+  <em>Rule details provide structured detection context that can later support triage and automation.</em>
+</p>
+
+---
+
+# Moving From Dashboard Views to Structured Data
+
+The dashboard is useful for human review.
+
+Software needs something more structured.
+
+The full JSON alert view was examined to understand how Wazuh represents the same event internally.
+
+JSON security data can later be:
 
 - Searched
 - Filtered
 - Parsed with Python
 - Compared with other alerts
-- Added to incident reports
-- Sent to dashboards
-- Processed by AI-assisted tools
+- Added to incident records
+- Used in dashboards
+- Fed into controlled analysis workflows
+- Used by AI-assisted tooling
 
-Reviewing the JSON structure helped identify which fields were useful and which fields could be removed from a simplified data sample.
+This makes the JSON view an important bridge between manual SOC-style review and later automation.
 
-## AI-Ready Data Sample
+---
 
-A smaller, sanitized alert-data sample was created from the Wazuh event.
+# Reviewing the Event Fields
 
-The sample retained useful investigation fields while excluding unnecessary, repetitive, or sensitive information.
+The event portion of the JSON was inspected for useful information such as:
 
-The resulting structure can later support an AI tool that explains:
+- Endpoint identity
+- Timestamp
+- Event source
+- Windows event fields
+- Supporting event context
 
-- What happened
-- Which endpoint generated the event
-- Why the alert was created
-- How serious the activity may be
-- What evidence should be reviewed
-- What response steps may be appropriate
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_06a_windows-error-alert-json-event-fields.png"
+    alt="Lab 10 Wazuh JSON event fields"
+    width="900">
+</p>
 
-The AI sample created during this lab is an early building block rather than a completed automated security product.
+<p align="center">
+  <em>Structured event fields provide machine-readable context that later Python tools can process.</em>
+</p>
 
-## Importance
+---
 
-Security tools often produce alerts containing large amounts of technical data.
+# Reviewing the Rule Fields in JSON
 
-An analyst must be able to:
+The structured rule information was also examined.
 
-1. Find the relevant alert
-2. Understand its context
-3. Identify useful fields
-4. Separate important evidence from noise
-5. Explain the event clearly
-6. Decide whether escalation is needed
+These fields are especially useful because they can help later processing understand:
 
-This lab connected traditional alert review with the larger Project Athenaeum goal of building practical AI-assisted security tools.
+- Which detection matched
+- How Wazuh categorized the activity
+- The source severity
+- The rule description
+- Other detection metadata
 
-## Security and Privacy
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_06b_windows-error-alert-json-rule-fields.png"
+    alt="Lab 10 Wazuh JSON rule fields"
+    width="900">
+</p>
 
-This lab followed these rules:
+<p align="center">
+  <em>Structured rule fields become useful inputs for later normalization, severity handling, and analyst explanation.</em>
+</p>
 
-- All activity occurred on personally owned and authorized virtual machines
-- The systems remained on the isolated `BusinessGuardianLab` network
-- No Bridged Adapter was used
-- No public, employer, City, school, or customer systems were tested
-- No real customer or financial data was used
-- The Windows event was safe and controlled
-- Alert data was reviewed before publication
-- Passwords, credentials, personal information, and unnecessary system details were excluded
-- The AI data sample was sanitized before documentation
-- Recovery snapshots were created before future testing
+---
 
-## Lessons Learned
+# Not Every Field Needs to Be Kept
 
-This lab demonstrated that a successful endpoint deployment can be validated by following one event through the entire monitoring pipeline.
+A raw security alert can contain far more information than a small analysis tool needs.
 
-Creating the Windows event was only the beginning. The event had to be collected by the agent, processed by Wazuh, matched to an alert rule, displayed in the dashboard, and reviewed in detail.
+Instead of copying the entire Wazuh alert into the next project, Lab 10 identifies a smaller set of useful fields.
 
-The JSON view also showed why structured security data is valuable. The same alert information can support manual investigation, Python automation, dashboards, reporting, and future AI-assisted explanations.
+The goal is to preserve enough evidence to answer questions such as:
 
-The lab reinforced that AI security tools should begin with clean, understandable, and carefully selected data rather than sending entire alerts without review.
+- Which endpoint produced the event?
+- Which Windows event occurred?
+- Which Wazuh rule matched?
+- What severity did the source provide?
+- What message describes the activity?
+- What evidence should an analyst examine?
 
-## Documentation Created
+Unnecessary, repetitive, or sensitive information was excluded before publication.
 
-The following Lab 10 documentation was completed and retained locally:
+---
 
-- Lab 10 screenshot log
-- Detailed Lab 10 technical notes
-- Lab 10 final portfolio writeup
-- Full cropped screenshot evidence set
-- Wazuh alert-review evidence
-- JSON alert evidence
-- Sanitized AI-ready data sample
-- Recovery snapshot evidence
+# Creating the Sanitized Security Data Sample
 
-Final portfolio writeup:
+Selected fields from the Wazuh alert were converted into a smaller sanitized data sample.
+
+That file becomes the input for later Python development.
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_07_ai-data-sample-file-created.png"
+    alt="Lab 10 sanitized alert data sample"
+    width="850">
+</p>
+
+<p align="center">
+  <em>Selected alert evidence was reduced to a sanitized dataset suitable for later security-tool development.</em>
+</p>
+
+The progression is now:
 
 ```text
-AJ_Chapa_Lab_10_Wazuh_Alert_Review_AI_Data_Collection_Portfolio_Writeup_v1.0.docx
+Raw Wazuh Alert
+       ↓
+Review Relevant Evidence
+       ↓
+Remove Unnecessary or Sensitive Data
+       ↓
+Sanitized Alert Sample
+       ↓
+Python Processing
 ```
 
-## Future Development
+At this stage, the sample is only a building block.
 
-Later Business Guardian work may include:
+No claim is made that it is a complete automated security product.
 
-- Reviewing additional Windows alert types
-- Comparing alert severity levels
-- Creating a repeatable JSON-export process
-- Parsing Wazuh alerts with Python
-- Correlating multiple related events
-- Building AI-assisted alert explanations
-- Producing business-focused incident summaries
-- Adding human review and approval controls
-- Testing alert accuracy and false-positive handling
-- Creating a simplified security dashboard
+---
 
-## Status
+# Why Clean Security Data Matters
 
-**Completed and portfolio ready**
+Security tools often produce a large amount of information.
+
+More data is not automatically better.
+
+An analyst still needs to determine:
+
+1. What happened?
+2. Which system was involved?
+3. Which evidence is important?
+4. Which information is noise?
+5. How serious might the activity be?
+6. What should be reviewed next?
+
+This lab reinforced an important design principle for later Business Guardian development:
+
+> **Automation should begin with understandable, validated security data—not blindly consume everything available.**
+
+That principle becomes increasingly important once Python, normalization, triage, and later investigation logic are introduced.
+
+---
+
+# Preserving the Validated Environment
+
+After the monitoring and data-collection workflow was successfully validated, recovery snapshots were created.
+
+## Wazuh Server Snapshot
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_08a_wazuh-server-alert-data-snapshot.png"
+    alt="Lab 10 Wazuh server recovery snapshot"
+    width="850">
+</p>
+
+## Windows Workstation Snapshot
+
+<p align="center">
+  <img
+    src="screenshots/2026-07-24_Lab10_WazuhAI_08b_windows-events-created-snapshot.png"
+    alt="Lab 10 Windows workstation recovery snapshot"
+    width="850">
+</p>
+
+These snapshots preserve the environment after successful event generation, collection, review, and data preparation.
+
+---
+
+# Complete Workflow Validation
+
+Lab 10 successfully demonstrated:
+
+```text
+Controlled Windows Event
+        ↓
+Event Recorded Locally
+        ↓
+Collected by Wazuh Agent
+        ↓
+Processed by Wazuh Manager
+        ↓
+Detection Rule Matched
+        ↓
+Alert Displayed
+        ↓
+Alert Evidence Reviewed
+        ↓
+JSON Examined
+        ↓
+Useful Fields Identified
+        ↓
+Sanitized Dataset Created
+```
+
+## Validation Status
+
+| Validation Area | Result |
+| --- | --- |
+| Windows event generation | **PASS** |
+| Endpoint event recording | **PASS** |
+| Wazuh agent collection | **PASS** |
+| Wazuh server processing | **PASS** |
+| Alert detection | **PASS** |
+| Dashboard alert review | **PASS** |
+| JSON field review | **PASS** |
+| Relevant-field identification | **PASS** |
+| Sanitized data preparation | **PASS** |
+| Recovery snapshots created | **PASS** |
+
+---
+
+# Security and Privacy
+
+All work was completed using personally owned and authorized virtual systems.
+
+The lab followed several safeguards:
+
+- Systems remained on the isolated `BusinessGuardianLab` network
+- No Bridged Adapter was used
+- No production systems were tested
+- No employer systems were tested
+- No school systems were tested
+- No customer systems were tested
+- No real financial data was used
+- The Windows event was controlled and non-destructive
+- Alert information was reviewed before publication
+- Passwords and credentials were excluded
+- Personal information was excluded
+- Unnecessary system information was removed
+- The sanitized data sample was reviewed before publication
+
+---
+
+# What Lab 10 Proves
+
+Lab 10 demonstrates that the Business Guardian lab can do more than show an active Wazuh agent.
+
+It can follow a known event through the complete monitoring path and inspect the evidence produced at every stage.
+
+The lab connects:
+
+- Windows event generation
+- Endpoint telemetry
+- Wazuh collection
+- SIEM detection
+- Alert review
+- JSON analysis
+- Evidence selection
+- Data sanitization
+- Future automation
+
+Most importantly:
+
+> **The project now has verified security data that custom software can begin working with.**
+
+That changes the direction of Project Athenaeum.
+
+Up to this point, the primary focus was building and validating infrastructure.
+
+After Lab 10, the project begins building software on top of the security data that infrastructure produces.
+
+---
+
+# Skills Demonstrated
+
+- Windows event generation
+- Wazuh endpoint monitoring
+- SIEM alert review
+- Security-event validation
+- Windows telemetry analysis
+- JSON review
+- Detection-rule analysis
+- Security-field identification
+- Evidence collection
+- Data sanitization
+- Dataset preparation
+- SOC-style investigation
+- Technical troubleshooting
+- Snapshot and recovery management
+- Technical documentation
+
+---
+
+# Where the Project Goes From Here
+
+Lab 09 answered:
+
+**Can the Windows endpoint reliably report telemetry to Wazuh inside the isolated environment?**
+
+Lab 10 answered:
+
+**Can I generate a controlled event, follow it through Wazuh, inspect the evidence, and prepare that evidence for automation?**
+
+The answer was yes.
+
+That creates the next question:
+
+**Can I write software that takes this security data and explains it more clearly?**
+
+[Lab 11 — AI Alert Explainer MVP](../lab-11-ai-alert-explainer-mvp/README.md) uses the sanitized alert sample created here as input for the first custom Python security-analysis tool in Project Athenaeum.
+
+The progression becomes:
+
+```text
+Endpoint Monitoring
+       ↓
+Alert Detection
+       ↓
+Evidence Review
+       ↓
+Sanitized Security Data
+       ↓
+Python Processing
+       ↓
+Analyst-Oriented Explanation
+```
+
+Lab 10 is the bridge between **monitoring security events** and **building software that can work with them**.
