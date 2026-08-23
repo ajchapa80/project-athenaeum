@@ -1,356 +1,621 @@
-# Lab 13: AI Alert Explainer v2 Requirements and Design
+# Lab 13 — AI Alert Explainer v2: Requirements and Design
 
-## Overview
+## Before Writing More Code, What Should the Next Version Actually Do?
 
-Lab 13 defines the requirements and technical design for the next version of the Project Athenaeum AI Alert Explainer.
+Lab 11 produced the first working AI Alert Explainer MVP.
 
-Lab 11 created the first functional Python-based alert explanation MVP. Lab 12 then tested and validated that MVP under normal and abnormal input conditions while preserving the published version as a stable baseline.
+Lab 12 then tested it under normal and abnormal conditions and established a stable baseline.
 
-Lab 13 used those validation results to design the next version before additional code was written.
+The easy next move would have been to start adding features immediately.
 
-The goal was to create a clear, testable, and implementation-ready design while keeping Labs 11 and 12 unchanged.
+Instead, Lab 13 stops and asks a more important question:
 
-## Objective
+**What should version 2 look like before I write it?**
 
-Design AI Alert Explainer v2 around the lessons learned from the validated MVP.
+This lab turns the lessons from testing into a controlled technical design for the next processing architecture.
 
-The design focuses on:
+No v2 implementation code was written during Lab 13.
 
-* Multiple-alert processing
-* Cleaner input and output organization
-* A normalized alert-data model
-* Vendor-neutral core processing
-* Consistent severity handling
-* Improved validation
-* Safe missing-field behavior
-* Unique output reports
-* Batch-level reporting
-* Deterministic test cases
-* Human review before security decisions
+That was intentional.
 
-No v2 implementation code was created during this lab.
-
-## Project Progression
+The progression becomes:
 
 ```text
 Lab 11
-AI Alert Explainer MVP
-        |
-        v
+Working MVP
+    ↓
 Lab 12
-Testing and Validation
-        |
-        v
+Test and Validate
+    ↓
 Lab 13
 Requirements and Design
-        |
-        v
+    ↓
 Lab 14
-Controlled v2 Implementation
+Controlled Implementation
 ```
 
-## Why Design Before Coding
+The validated Labs 11 and 12 baseline remains untouched.
 
-Lab 12 confirmed that the original MVP worked and also identified areas that could be improved.
+**Nothing gets built twice.**
 
-Rather than modifying the stable baseline immediately, Lab 13 documented the next version first.
+---
 
-This approach helps:
+# Why Design Before Coding?
 
-* Preserve validated work
-* Prevent unnecessary rewrites
-* Define testable requirements
-* Separate design decisions from implementation
-* Reduce accidental scope expansion
-* Make later testing easier to compare with the original MVP
+Lab 12 showed that the original MVP worked.
 
-## Design Principles
+It also exposed areas that would need to change if the project was going to grow beyond a single prepared alert.
 
-The v2 design follows several principles:
+Rather than modifying the stable version immediately, Lab 13 converted those observations into explicit requirements.
 
-* Preserve the validated Lab 11 and Lab 12 baseline
-* Use testing results to justify changes
-* Keep the first v2 implementation manageable
-* Allow individual alerts to be processed independently
-* Separate source-specific data handling from explanation logic
-* Identify incomplete data instead of inventing values
-* Preserve the original alert evidence
-* Prevent generated reports from being silently overwritten
-* Keep analyst review visible throughout the workflow
+That helps prevent several common problems:
 
-### Design Evidence
+- Rewriting code without a clear target
+- Expanding scope during implementation
+- Breaking a working baseline
+- Mixing source-specific logic with reusable processing
+- Inventing behavior while testing
+- Changing expected results after seeing what the code produces
 
-The design principles were documented before implementation planning continued.
+The goal was to make Lab 14 testable before Lab 14 existed.
 
-![Completed Lab 13 design principles](screenshots/2026-08-13_Lab13_AIAlertExplainerV2_05_design-principles-complete_GitHub.png)
+---
 
-## Vendor-Neutral Alert Model
+# What Version 2 Needed to Solve
 
-Wazuh remains the first alert source used by Project Athenaeum because it is already deployed in the lab environment.
+The first MVP was intentionally small.
 
-However, the v2 core design is not intended to depend permanently on Wazuh-specific field names.
+It processed one prepared alert at a time.
 
-Instead, source data is translated into a common internal alert structure before explanation logic is applied.
+Version 2 needed to prepare for a much more realistic workflow.
 
-At a high level, the normalized model can represent information such as:
+The design focused on:
 
-* Source platform
-* Timestamp
-* Endpoint
-* Event
-* Detection rule
-* Original severity
-* Normalized severity
-* Validation state
-* Review state
+- Multiple-alert processing
+- Cleaner input and output organization
+- Vendor-neutral alert data
+- Wazuh source translation
+- Consistent severity handling
+- Missing and malformed-data validation
+- Independent alert processing
+- Unique output reports
+- Failure isolation
+- Batch summaries
+- Deterministic acceptance testing
+- Human review before consequential conclusions
 
-This allows the explanation workflow to operate on consistent alert information while preserving the original source data for analyst verification.
+The goal was not to build the entire Business Guardian platform.
 
-### Wazuh Mapping Design
+The goal was to define the next reliable layer.
 
-The Wazuh mapping design documents how selected source fields can be translated into the normalized model without changing the underlying evidence.
+---
 
-![Sanitized Wazuh mapping design](screenshots/2026-08-13_Lab13_AIAlertExplainerV2_15_wazuh-mapping-part3_GitHub.png)
+# Preserve the Working Baseline
 
-## Severity Design
+A major Lab 13 design rule was simple:
 
-Lab 12 demonstrated that the original MVP correctly changed its explanation when the Wazuh rule level changed.
+> **Do not improve a stable baseline by destroying the evidence that it worked.**
 
-Version 2 expands this concept by separating the source platform's original severity from a consistent analyst-facing severity category.
+Labs 11 and 12 remain preserved exactly as the validated MVP stage.
 
-Planned normalized categories include:
+Lab 13 creates the next design separately.
+
+That means future implementation can be compared against the original behavior instead of retroactively changing history.
+
+The design principles include:
+
+- Preserve validated work
+- Use testing results to justify changes
+- Keep the first v2 implementation manageable
+- Process alerts independently
+- Separate source handling from reusable logic
+- Identify incomplete data rather than invent values
+- Preserve original alert evidence
+- Protect generated reports from overwrite
+- Keep analyst review visible throughout the workflow
+
+<p align="center">
+  <img
+    src="screenshots/2026-08-13_Lab13_AIAlertExplainerV2_05_design-principles-complete_GitHub.png"
+    alt="Lab 13 completed design principles"
+    width="820">
+</p>
+
+<p align="center">
+  <em>The v2 design principles were documented before implementation began.</em>
+</p>
+
+---
+
+# Stop Designing Around One Vendor
+
+Wazuh is the first alert source used by Project Athenaeum because it is already deployed in the lab.
+
+But Lab 13 deliberately avoids making Wazuh field names the permanent internal architecture.
+
+Instead:
 
 ```text
-Informational
-Low
-Medium
-High
-Critical
-Unknown
+Wazuh Alert
+     ↓
+Source-Specific Mapping
+     ↓
+Normalized Alert Model
+     ↓
+Shared Processing Logic
 ```
 
-The original Wazuh rule level remains available for review.
+At a high level, the normalized model can represent:
 
-Severity normalization is intended to improve consistency across reports. It does not replace source evidence or determine whether activity is malicious.
+- Source platform
+- Timestamp
+- Endpoint information
+- Event information
+- Detection rule
+- Original severity
+- Normalized severity
+- Validation state
+- Review state
 
-### Severity Design Evidence
+The original source data remains available for analyst verification.
 
-The severity design defines how source severity information can be preserved while also creating a consistent normalized value.
+The benefit is that the core workflow can eventually support additional security platforms without rebuilding the entire explanation system around each vendor.
 
-![Sanitized normalized severity design](screenshots/2026-08-13_Lab13_AIAlertExplainerV2_18_severity-design-part3_GitHub.png)
+---
 
-## Multiple-Alert Processing
+# Designing the Wazuh Mapping Layer
 
-The Lab 11 MVP processes one prepared alert sample at a time.
+Lab 13 defines how selected Wazuh fields can be translated into the common model.
 
-Version 2 is designed to support multiple alert samples during one processing run.
+The mapping layer acts as the boundary between:
 
-The planned workflow will:
+```text
+Vendor-Specific Security Data
+            ↓
+Reusable Internal Structure
+```
 
-1. Discover available input files
+That separation becomes one of the most important architectural decisions in the later Business Guardian direction.
+
+<p align="center">
+  <img
+    src="screenshots/2026-08-13_Lab13_AIAlertExplainerV2_15_wazuh-mapping-part3_GitHub.png"
+    alt="Lab 13 sanitized Wazuh-to-normalized mapping design"
+    width="900">
+</p>
+
+<p align="center">
+  <em>Selected Wazuh fields are mapped into a reusable normalized alert structure without changing the source evidence.</em>
+</p>
+
+---
+
+# Severity Needs Its Own Design
+
+Lab 12 proved that the MVP responded correctly when the Wazuh rule level changed.
+
+Version 2 takes the next step.
+
+Instead of treating Wazuh's numeric rule level as the permanent internal severity system, Lab 13 defines platform-neutral categories:
+
+```text
+INFORMATIONAL
+LOW
+MEDIUM
+HIGH
+CRITICAL
+UNKNOWN
+```
+
+The original source severity remains preserved.
+
+Conceptually:
+
+```text
+Original Wazuh Severity
+          +
+Normalized Severity
+```
+
+The normalized value improves consistency across reports.
+
+It does not erase the original evidence.
+
+It also does not decide whether activity is malicious.
+
+> **Severity helps describe importance. It is not a security verdict.**
+
+<p align="center">
+  <img
+    src="screenshots/2026-08-13_Lab13_AIAlertExplainerV2_18_severity-design-part3_GitHub.png"
+    alt="Lab 13 normalized severity design"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The severity design preserves the source value while introducing a consistent platform-neutral representation.</em>
+</p>
+
+---
+
+# Moving Beyond One Alert at a Time
+
+The Lab 11 MVP handled one prepared alert per execution.
+
+Lab 13 designs a workflow capable of processing several alerts during one run.
+
+The planned sequence is:
+
+```text
+1. Discover input files
 2. Process each alert independently
-3. Normalize supported alert data
+3. Normalize supported data
 4. Validate available fields
 5. Generate an explanation
 6. Create a unique report
 7. Record the processing result
 8. Continue to the next alert
-9. Produce a final batch summary
+9. Produce a batch summary
+```
 
-One invalid alert should not automatically prevent other valid alerts from being processed.
+The key reliability requirement is:
 
-### Processing Flow
+> **One invalid alert should not automatically stop the rest of the batch.**
 
-The processing-flow design defines the sequence that will guide Lab 14 implementation.
+That idea becomes failure isolation in Lab 14.
 
-![AI Alert Explainer v2 processing flow](screenshots/2026-08-13_Lab13_AIAlertExplainerV2_21_processing-flow-diagram_GitHub.png)
+<p align="center">
+  <img
+    src="screenshots/2026-08-13_Lab13_AIAlertExplainerV2_21_processing-flow-diagram_GitHub.png"
+    alt="Lab 13 AI Alert Explainer v2 processing flow"
+    width="900">
+</p>
 
-## Validation Design
+<p align="center">
+  <em>The planned processing flow defines the sequence later implemented in Lab 14.</em>
+</p>
 
-Lab 12 tested several abnormal input conditions, including missing files, empty files, missing fields, and changed severity values.
+---
 
-Version 2 incorporates validation as a defined processing stage rather than treating validation only as an error condition.
+# Validation Becomes Part of the Architecture
 
-The design requires the tool to distinguish between:
+In the original MVP, validation was mainly something encountered when input went wrong.
 
-* Valid input
-* Incomplete input
-* Missing optional information
-* Unsupported input
-* Processing errors
+Version 2 treats validation as an explicit processing stage.
 
-Missing values should be clearly identified.
+The design distinguishes between:
 
-The tool must not invent alert information when evidence is unavailable.
+- Valid input
+- Incomplete input
+- Missing optional information
+- Unsupported input
+- Processing errors
 
-### Validation Evidence
+Missing values must be identified.
 
-The validation design defines how incomplete or unsupported alert data should be handled before explanation output is generated.
+They must not be invented.
 
-![Sanitized Lab 13 validation design](screenshots/2026-08-13_Lab13_AIAlertExplainerV2_34_validation-design-part5_GitHub.png)
+That gives the system room to say:
 
-## Output Design
+```text
+I can process this, but some information is missing.
+```
 
-Version 2 is designed to generate an individual report for each processed alert.
+rather than choosing between only:
 
-Reports should preserve important analyst information while remaining easy to review.
+```text
+Success
+```
+
+or:
+
+```text
+Failure
+```
+
+<p align="center">
+  <img
+    src="screenshots/2026-08-13_Lab13_AIAlertExplainerV2_34_validation-design-part5_GitHub.png"
+    alt="Lab 13 validation design"
+    width="900">
+</p>
+
+<p align="center">
+  <em>The validation design separates incomplete, unsupported, and valid security data before output is generated.</em>
+</p>
+
+---
+
+# Designing the Output Before Generating It
+
+Version 2 is designed to create one report for each processable alert.
 
 Planned report content includes:
 
-* Alert identification
-* Endpoint context
-* Event context
-* Source rule information
-* Original severity
-* Normalized severity
-* Missing-field warnings
-* Plain-language explanation
-* Recommended review steps
-* Human-review status
+- Alert identification
+- Endpoint context
+- Event context
+- Source rule information
+- Original severity
+- Normalized severity
+- Missing-field warnings
+- Plain-language explanation
+- Recommended review steps
+- Human-review status
 
-Output files will use unique names so one processing run does not silently replace previous evidence.
+Every report must use a unique filename.
 
-## Batch Summary Design
+That prevents a later execution from silently replacing earlier evidence.
 
-After all available alert samples have been attempted, the tool should produce a batch-level summary.
+---
 
-The summary may include:
+# The Batch Summary
 
-* Files discovered
-* Alerts successfully processed
-* Alerts containing incomplete data
-* Alerts that failed validation
-* Reports generated
-* Processing errors
-* Items requiring human review
+Processing multiple alerts creates another problem:
 
-This provides an analyst with a quick overview of the run without requiring every report to be opened first.
+**How does an analyst understand the entire run without opening every report first?**
 
-## Planned Lab 14 Test Cases
+Lab 13 introduces the batch-summary concept.
 
-Lab 13 defines five deterministic test scenarios for the first v2 implementation:
+A batch summary may include:
 
-1. Normal baseline alert
-2. Lower-severity alert
-3. Higher-severity alert
-4. Alert with missing information
+- Files discovered
+- Alerts successfully processed
+- Alerts containing incomplete data
+- Alerts that failed validation
+- Reports generated
+- Processing errors
+- Items requiring human review
+
+The batch summary becomes the high-level record of one complete processing execution.
+
+---
+
+# Designing the Test Before Building the Feature
+
+One of the most important outcomes from Lab 13 is the controlled validation plan for Lab 14.
+
+The design defines five deterministic test scenarios.
+
+They cover:
+
+1. A normal baseline alert
+2. A different severity condition
+3. A higher-severity alert
+4. An alert with missing information
 5. Invalid or unsupported input
 
-These test cases are intended to verify predictable behavior before additional features are introduced.
+The purpose is not simply to see whether the program runs.
 
-## Lab 14 Implementation Scope
+The purpose is to define what correct behavior looks like before implementation begins.
 
-Lab 13 concludes with a frozen implementation scope for Lab 14.
+That changes the development process from:
 
-The first implementation phase will focus on the core processing workflow rather than dashboard or commercial features.
+```text
+Write Code
+    ↓
+See What Happens
+```
 
-Planned Lab 14 priorities include:
+to:
 
-* Creating the v2 workspace
-* Supporting multiple sanitized alert samples
-* Separating input and output handling
-* Building the normalized alert structure
-* Creating the first Wazuh mapping process
-* Applying validation rules
-* Adding severity normalization
-* Generating unique individual reports
-* Isolating individual alert failures
-* Creating a batch summary
-* Running the five planned deterministic tests
+```text
+Define Expected Behavior
+        ↓
+Write Code
+        ↓
+Compare Actual Result
+        ↓
+PASS or FIX
+```
 
-### Final Baseline
+That model becomes increasingly important in Labs 14, 15, and 16.
 
-The final design review confirms that Labs 11 and 12 remain preserved and that Lab 14 will begin from the approved Lab 13 design rather than modifying the validated baseline.
+---
 
-![Lab 13 final baseline and Lab 14 scope](screenshots/2026-08-13_Lab13_AIAlertExplainerV2_42_final-baseline-part2_GitHub.png)
+# Freezing the Lab 14 Scope
 
-## Public Repository Boundary
+Lab 13 ends by defining exactly what the next implementation is allowed to include.
 
-This public lab documents the portfolio-safe design progression of the AI Alert Explainer.
+Lab 14 will focus on:
 
-The public repository includes:
+- Creating the v2 workspace
+- Supporting multiple sanitized alert samples
+- Separating input and output
+- Building the normalized alert structure
+- Creating the first Wazuh mapping process
+- Applying validation rules
+- Adding normalized severity
+- Generating unique reports
+- Isolating individual alert failures
+- Creating a batch summary
+- Running the planned deterministic tests
 
-* High-level requirements
-* Sanitized architectural concepts
-* Portfolio-safe design evidence
-* Testing strategy
-* Implementation scope
-* Lessons learned
+It will not attempt to build:
 
-The full internal requirements document and complete 42-screenshot evidence record are intentionally not published.
+- A full dashboard
+- Autonomous remediation
+- Advanced investigation
+- Commercial Business Guardian functionality
+- The entire future security lifecycle
 
-Proprietary Business Guardian product implementation, private connector logic, policy and approval workflows, tenant architecture, sensitive logging, commercial material, and other non-public product details remain outside the public Project Athenaeum repository.
+Scope is intentionally limited so the processing foundation can be proven first.
 
-## Work Completed
+<p align="center">
+  <img
+    src="screenshots/2026-08-13_Lab13_AIAlertExplainerV2_42_final-baseline-part2_GitHub.png"
+    alt="Lab 13 final baseline and Lab 14 implementation scope"
+    width="900">
+</p>
 
-During this lab, I:
+<p align="center">
+  <em>The final design review preserves the validated MVP and freezes the implementation scope for Lab 14.</em>
+</p>
 
-* Reviewed the validated Lab 11 MVP
-* Reviewed the Lab 12 testing results
-* Preserved Labs 11 and 12 as the stable baseline
-* Defined v2 design principles
-* Designed a normalized alert model
-* Designed the initial Wazuh-to-normalized mapping
-* Designed normalized severity handling
-* Defined multiple-alert processing requirements
-* Defined validation behavior
-* Defined missing-field behavior
-* Planned isolated failure handling
-* Designed individual alert-report requirements
-* Designed batch-summary requirements
-* Defined the Lab 14 workspace structure
-* Created five deterministic validation scenarios
-* Defined the initial Lab 14 implementation scope
-* Completed the technical design documentation
-* Completed the Lab Notes
-* Completed the Screenshot Log
-* Completed the one-page Portfolio Writeup
-* Selected six sanitized screenshots for public publication
+---
 
-## Design Outcome
+# What Was Completed
 
-Lab 13 produced an implementation-ready v2 design without changing the validated MVP.
+Lab 13 produced an implementation-ready design without changing the working MVP.
 
-The project progression is now:
+Completed work includes:
+
+- Reviewed the validated Lab 11 MVP
+- Reviewed Lab 12 testing results
+- Preserved Labs 11 and 12 as the stable baseline
+- Defined v2 design principles
+- Designed the normalized alert model
+- Designed the initial Wazuh mapping
+- Designed normalized severity handling
+- Defined multiple-alert processing
+- Defined validation behavior
+- Defined missing-field behavior
+- Planned failure isolation
+- Designed individual report requirements
+- Designed batch-summary requirements
+- Defined the Lab 14 workspace
+- Created deterministic validation scenarios
+- Frozen the initial Lab 14 implementation scope
+- Completed technical design documentation
+- Completed the lab notes and screenshot record
+- Selected sanitized evidence for public publication
+
+No v2 production implementation was written during this lab.
+
+That distinction is important.
+
+**Lab 13 is the design. Lab 14 is the implementation.**
+
+---
+
+# What Lab 13 Changed About the Development Process
+
+The project progression now becomes:
 
 ```text
 Build
-→ Test
-→ Validate
-→ Design
-→ Implement
-→ Test again
+  ↓
+Test
+  ↓
+Validate
+  ↓
+Design the Next Version
+  ↓
+Implement
+  ↓
+Test Again
 ```
 
-This provides a controlled foundation for Lab 14.
+Lab 13 demonstrates that development is not just about adding more code.
 
-## Lessons Learned
+Sometimes the correct next technical step is to stop coding long enough to decide what the code should actually do.
 
-Lab 13 reinforced that successful development is not only about writing more code.
+---
 
-Testing from Lab 12 identified behavior that needed to be preserved or improved. Lab 13 converted those observations into explicit requirements before implementation began.
+# Public / Private Boundary
 
-The design process also reinforced the value of separating source-platform data from core analysis logic. This provides a cleaner path toward supporting additional security platforms later without rebuilding the explanation workflow around every vendor.
+Lab 13 publishes the portfolio-safe design progression.
 
-Most importantly, the lab kept the next development phase intentionally limited. The goal of Lab 14 is to implement and validate the approved core v2 workflow—not to build the entire Business Guardian platform at once.
+Public material includes:
 
-## Future Development
+- High-level requirements
+- Sanitized architectural concepts
+- Vendor-neutral design principles
+- Testing strategy
+- Implementation scope
+- Selected design evidence
+- Lessons learned
 
-Lab 14 will begin controlled implementation of AI Alert Explainer v2.
+The complete internal requirements record and full screenshot history are intentionally not published.
 
-The first implementation will focus on:
+Business Guardian product-level development remains private, including areas such as:
 
-* Multiple-alert processing
-* Normalized alert data
-* Improved validation
-* Severity normalization
-* Unique reports
-* Failure isolation
-* Batch reporting
-* Deterministic testing
+- Proprietary connector logic
+- Production investigation workflows
+- Policy and approval systems
+- Tenant architecture
+- Sensitive logging
+- Product-specific automation
+- Commercial workflows
+- Other proprietary implementation details
 
-Dashboard development, advanced AI integration, automated response, and commercial product functionality remain outside the immediate Lab 14 scope.
+Project Athenaeum shows the engineering decisions without exposing the commercial product architecture.
 
-## Status
+---
 
-**Requirements and technical design completed; approved for controlled Lab 14 implementation**
+# Skills Demonstrated
+
+- Requirements analysis
+- Technical design
+- Security architecture planning
+- Vendor-neutral data modeling
+- Wazuh data mapping
+- Severity normalization design
+- Validation design
+- Missing-data handling
+- Failure-isolation planning
+- Batch-processing design
+- Report architecture
+- Deterministic test planning
+- Scope control
+- Human-in-the-loop security design
+- Technical documentation
+
+---
+
+# What Lab 13 Proves
+
+Lab 13 demonstrates that a validated MVP can be extended without immediately rewriting it.
+
+The lab successfully established:
+
+- A vendor-neutral direction
+- A normalized alert model
+- A Wazuh translation boundary
+- Platform-neutral severity
+- Multiple-alert processing requirements
+- Explicit validation behavior
+- Missing-data rules
+- Failure isolation
+- Unique output requirements
+- Batch-level reporting
+- Deterministic acceptance criteria
+- A frozen implementation scope
+
+Most importantly:
+
+> **The next version had a measurable definition of success before the first new line of v2 implementation code was written.**
+
+---
+
+# Where the Project Goes From Here
+
+Lab 12 answered:
+
+**Does the original MVP behave reliably under normal and abnormal conditions?**
+
+Lab 13 answered:
+
+**What should the next version look like based on what those tests taught me?**
+
+The next question is:
+
+**Can I actually build it and make the observed behavior match the design?**
+
+[Lab 14 — AI Alert Explainer v2: Multiple Alert Processing](../lab-14-ai-alert-explainer-v2-multiple-alert-processing/README.md) answers that question.
+
+The progression becomes:
+
+```text
+Single-Alert MVP
+      ↓
+Validated MVP
+      ↓
+Requirements and Design
+      ↓
+Multiple-Alert Implementation
+      ↓
+Controlled Validation
+```
+
+Lab 13 is the point where Project Athenaeum stops adding features reactively and starts treating the security tooling like a designed software system.
