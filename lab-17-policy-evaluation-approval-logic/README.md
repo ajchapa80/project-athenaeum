@@ -36,9 +36,15 @@ Lab 17 decides whether a proposed response is permitted by policy and whether ex
 
 It does **not** execute the response.
 
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_02_architecture-and-workflow-states.png" width="700">
+</p>
+
+<p align="center"><em>Lab 17 adds policy evaluation and approval control between triage and any future defensive execution.</em></p>
+
 ---
 
-# What Lab 17 Adds
+## What Lab 17 Adds
 
 The Lab 17 processor consumes sanitized Lab 16-style triage records and extends their history without replacing anything that came before.
 
@@ -66,7 +72,7 @@ This adds another distinct decision layer without rebuilding the alert-record or
 
 ---
 
-# The New Authorization Boundary
+## The New Authorization Boundary
 
 Before Lab 17, the public workflow could answer:
 
@@ -92,7 +98,7 @@ That boundary matters because a system may understand a security condition perfe
 
 ---
 
-# Four Final Workflow States
+## Four Final Workflow States
 
 Lab 17 produces one of four public-safe workflow states:
 
@@ -103,23 +109,23 @@ INVESTIGATION
 NO_ACTION_AUTHORIZED
 ```
 
-## `READY_FOR_ACTION`
+### `READY_FOR_ACTION`
 
 Policy requirements have been satisfied and the proposed response is eligible for a later action layer.
 
 This does **not** mean the action was executed.
 
-## `AWAITING_APPROVAL`
+### `AWAITING_APPROVAL`
 
 The proposed response requires explicit human approval and has not yet received it.
 
-## `INVESTIGATION`
+### `INVESTIGATION`
 
 The security condition still requires investigation.
 
 A requested action cannot bypass that state.
 
-## `NO_ACTION_AUTHORIZED`
+### `NO_ACTION_AUTHORIZED`
 
 Policy does not permit the proposed action.
 
@@ -132,13 +138,13 @@ This can result from:
 
 ---
 
-# A Small Public Demonstration Policy
+## A Small Public Demonstration Policy
 
 Lab 17 intentionally uses a limited sanitized action catalog.
 
 It demonstrates policy behavior without exposing the production Business Guardian policy system.
 
-## Low Risk — Pre-Authorized
+### Low Risk — Pre-Authorized
 
 ```text
 ADD_MONITORING_NOTE
@@ -154,9 +160,7 @@ READY_FOR_ACTION
 
 No human approval record is required.
 
----
-
-## Medium Risk — Approval Required
+### Medium Risk — Approval Required
 
 ```text
 TEMPORARY_BLOCK_SOURCE
@@ -180,9 +184,7 @@ DENIED
 NO_ACTION_AUTHORIZED
 ```
 
----
-
-## High Risk — Not Authorized
+### High Risk — Not Authorized
 
 ```text
 DISABLE_USER_ACCOUNT
@@ -210,7 +212,7 @@ They do not represent the production Business Guardian action or policy catalog.
 
 ---
 
-# Missing Approval Never Means Approved
+## Missing Approval Never Means Approved
 
 Approval-required actions use three explicit states:
 
@@ -238,9 +240,15 @@ That means an approval-required action cannot become `READY_FOR_ACTION` unless a
 
 This is one of the most important safety controls in the lab.
 
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_22_pending-approved-denied-approval-traceability.png" width="620">
+</p>
+
+<p align="center"><em>The same approval-required action produces distinct workflow outcomes depending on explicit human approval state.</em></p>
+
 ---
 
-# Investigation Cannot Be Bypassed
+## Investigation Cannot Be Bypassed
 
 A proposed response does not automatically become eligible simply because the action itself exists in the policy catalog.
 
@@ -264,9 +272,15 @@ Still INVESTIGATION
 
 The request cannot pull an unresolved security condition into an action workflow prematurely.
 
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_23_investigation-gate-validation.png" width="700">
+</p>
+
+<p align="center"><em>An unresolved condition remains in INVESTIGATION even when a supported defensive action has been requested.</em></p>
+
 ---
 
-# Policy Evaluation Order
+## Policy Evaluation Order
 
 The public policy rules are evaluated in a controlled priority order.
 
@@ -319,7 +333,7 @@ If a safe authorization rule cannot be established, the system does not invent p
 
 ---
 
-# Identity and Traceability Continue Forward
+## Identity and Traceability Continue Forward
 
 Lab 15 introduced persistent Alert Record identities:
 
@@ -356,13 +370,17 @@ An Approval Record is only created when approval is actually part of the policy 
 
 This keeps the original alert, the triage decision, the policy decision, and the approval decision as separate records.
 
-That matters because:
-
 > **The evidence, the classification, the policy decision, and the human approval are four different things.**
+
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_28_approved-policy-record-traceability-and-decision.png" width="760">
+</p>
+
+<p align="center"><em>The approved path preserves the Alert Record, Triage Decision, Policy Decision, and Approval Record as separate traceable identities.</em></p>
 
 ---
 
-# Controlled Validation
+## Controlled Validation
 
 Seven sanitized policy inputs were created before implementation.
 
@@ -378,9 +396,7 @@ They test:
 
 Expected results were frozen before coding began.
 
----
-
-# Frozen Expected Result
+### Frozen Expected Result
 
 ```text
 Policy inputs discovered: 7
@@ -407,7 +423,7 @@ Failed: 0
 
 ---
 
-# First Controlled Run
+## First Controlled Run
 
 The first complete execution produced the exact frozen result.
 
@@ -435,9 +451,15 @@ The first complete execution produced the exact frozen result.
 
 **Expected vs. observed: Exact match — PASS**
 
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_18_first-controlled-execution-results.png" width="700">
+</p>
+
+<p align="center"><em>The first controlled run matched the frozen validation target exactly with seven policy inputs and zero failures.</em></p>
+
 ---
 
-# Repeat-Processing Validation
+## Repeat-Processing Validation
 
 A second complete execution reproduced the same policy, approval, and workflow results.
 
@@ -464,9 +486,61 @@ Repeat processing confirmed that:
 
 **Repeat-processing validation: PASS**
 
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_31_repeat-processing-overwrite-protection-part1.png" width="700">
+</p>
+
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_32_repeat-processing-overwrite-protection-part2.png" width="700">
+</p>
+
+<p align="center"><em>Two complete controlled runs were preserved with new PD/AP identities and no overwritten output.</em></p>
+
 ---
 
-# Safety Validation
+## Published Inputs and Outputs
+
+The public repository includes the seven sanitized controlled inputs used to validate the policy engine.
+
+### Controlled Inputs
+
+- [`policy_input_001_preauthorized_low_risk.json`](input/policy_input_001_preauthorized_low_risk.json)
+- [`policy_input_002_approval_pending.json`](input/policy_input_002_approval_pending.json)
+- [`policy_input_003_approval_approved.json`](input/policy_input_003_approval_approved.json)
+- [`policy_input_004_approval_denied.json`](input/policy_input_004_approval_denied.json)
+- [`policy_input_005_investigation_gate.json`](input/policy_input_005_investigation_gate.json)
+- [`policy_input_006_prohibited_high_risk.json`](input/policy_input_006_prohibited_high_risk.json)
+- [`policy_input_007_unsupported_action.json`](input/policy_input_007_unsupported_action.json)
+
+The public `output/` folder intentionally contains a representative subset rather than all 22 runtime files.
+
+### Representative Outputs
+
+- [`batch_summary_20260827_180747Z.txt`](output/batch_summary_20260827_180747Z.txt)
+- [`Pre-authorized low-risk Policy Decision`](output/policy_input_001_preauthorized_low_risk_PD-bb8c2410-dde0-4850-bd34-c10efc7952ee.json)
+- [`Pending-approval Policy Decision`](output/policy_input_002_approval_pending_PD-062eeb15-ee8d-4988-97af-c57c469b3262.json)
+- [`Approved Policy Decision`](output/policy_input_003_approval_approved_PD-10e004b4-374a-42e2-a28c-c49a6881540f.json)
+- [`Approved Approval Record`](output/policy_input_003_approval_approved_AP-1274c641-82e6-4e86-ad72-9b11e6315cb5.json)
+- [`Investigation-gate Policy Decision`](output/policy_input_005_investigation_gate_PD-79696f4e-b368-478a-a7e1-e4154cf4cb77.json)
+- [`Unsupported-action Policy Decision`](output/policy_input_007_unsupported_action_PD-5f5132ce-6991-475b-b1c5-6e8eb0aec7a8.json)
+
+The full two-run runtime set was retained as local validation evidence but was not necessary for the public portfolio.
+
+---
+
+## Requirements and Formal Validation
+
+The lab was designed against a frozen requirements and validation plan before implementation.
+
+- [`Lab17_Policy_Evaluation_and_Approval_Requirements_and_Validation_Plan.txt`](Lab17_Policy_Evaluation_and_Approval_Requirements_and_Validation_Plan.txt)
+- [`Lab17_Policy_Evaluation_and_Approval_Logic_Validation_Results.txt`](Lab17_Policy_Evaluation_and_Approval_Logic_Validation_Results.txt)
+- [`Lab17_Policy_Evaluation_and_Approval_Logic.py`](Lab17_Policy_Evaluation_and_Approval_Logic.py)
+
+The acceptance criteria were not changed afterward simply to match observed program behavior.
+
+---
+
+## Safety Validation
 
 Lab 17 deliberately stops before remediation.
 
@@ -497,9 +571,15 @@ Lab 17 evaluated policy and approval state only.
 No defensive action was executed.
 ```
 
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_39_formal-safety-validation.png" width="700">
+</p>
+
+<p align="center"><em>Formal safety validation confirmed that authorization controls were enforced without executing remediation.</em></p>
+
 ---
 
-# `READY_FOR_ACTION` Does Not Mean Executed
+## `READY_FOR_ACTION` Does Not Mean Executed
 
 This distinction is critical.
 
@@ -527,7 +607,7 @@ Execution belongs to a later layer.
 
 ---
 
-# Validation Status
+## Validation Status
 
 | Validation Area | Result |
 | --- | --- |
@@ -546,9 +626,15 @@ Execution belongs to a later layer.
 | Output overwrite protection | **PASS** |
 | Defensive actions executed | **0** |
 
+<p align="center">
+  <img src="../lab-documentation/lab-17-policy-evaluation-approval-logic/2026-08-27_Lab17_PolicyApproval_40_final-validation-pass.png" width="700">
+</p>
+
+<p align="center"><em>Final Lab 17 technical validation: PASS.</em></p>
+
 ---
 
-# What Lab 17 Proves
+## What Lab 17 Proves
 
 Lab 17 demonstrates that understanding a security condition and recommending a response are not enough to authorize that response.
 
@@ -575,11 +661,11 @@ The most important principle is:
 
 ---
 
-# Public / Private Boundary
+## Public / Private Boundary
 
 Project Athenaeum publishes the sanitized architecture and controlled validation evidence.
 
-Public Lab 17 may demonstrate:
+Public Lab 17 demonstrates:
 
 - Vendor-neutral policy architecture
 - Sanitized deterministic policy rules
@@ -614,7 +700,7 @@ The public lab demonstrates the security-control architecture without exposing t
 
 ---
 
-# Skills Demonstrated
+## Skills Demonstrated
 
 - Python
 - JSON processing
@@ -638,7 +724,7 @@ The public lab demonstrates the security-control architecture without exposing t
 
 ---
 
-# Where the Project Goes From Here
+## Where the Project Goes From Here
 
 Lab 15 answered:
 
