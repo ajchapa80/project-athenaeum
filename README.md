@@ -1,12 +1,11 @@
 # Project Athenaeum
-
 ## Building Cybersecurity Skills Into a Working Security Platform
 
 Project Athenaeum started as a place to document hands-on cybersecurity and IT labs.
 
 It has grown into something much more interesting.
 
-What began with VirtualBox, Linux, Windows administration, networking, and basic security testing has progressed into endpoint monitoring, Wazuh alert collection, Python-based security tooling, structured alert records, traceability, and deterministic cybersecurity triage.
+What began with VirtualBox, Linux, Windows administration, networking, and basic security testing has progressed into endpoint monitoring, Wazuh alert collection, Python-based security tooling, structured alert records, traceability, deterministic cybersecurity triage, and policy-controlled authorization.
 
 The project now follows a clear technical progression:
 
@@ -25,7 +24,11 @@ Preserve Identity and Traceability
         ↓
 Triage the Condition
         ↓
-Decide What Should Happen Next
+Evaluate Policy
+        ↓
+Require Approval When Necessary
+        ↓
+Determine Whether Action Is Allowed
 ```
 
 Every major step is built, tested, documented, and preserved before the next layer is added.
@@ -43,11 +46,14 @@ The goal is not simply to complete labs. The goal is to demonstrate how I approa
 - Build controlled environments
 - Understand what the systems are actually doing
 - Troubleshoot failures
-- Work with real security data
+- Work with real and controlled security data
 - Write tools to process that data
 - Define expected behavior before trusting the result
 - Test normal and failure conditions
 - Preserve evidence and traceability
+- Separate technical severity from security conclusions
+- Separate recommendations from authorization
+- Fail safely when evidence or authorization is missing
 - Document what worked, what failed, and what changed
 - Extend validated work instead of constantly starting over
 
@@ -77,6 +83,10 @@ Current areas include:
 - Deterministic cybersecurity triage
 - Evidence-quality-first decision logic
 - Investigation and policy-evaluation routing
+- Policy and authorization controls
+- Human approval workflows
+- Fail-closed security behavior
+- Audit-oriented decision records
 - Testing, repeatability, and failure isolation
 - Human-controlled consequential security decisions
 
@@ -174,7 +184,9 @@ The result was a fully isolated Windows endpoint reporting security telemetry to
 
 ### [Lab 10: Wazuh Alert Review and AI Data Collection](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-10-wazuh-alert-review-ai-data-collection/README.md)
 
-The monitoring environment was working. The next question was:
+The monitoring environment was working.
+
+The next question was:
 
 **What can I do with the security data it produces?**
 
@@ -280,7 +292,7 @@ At this stage, some Business Guardian development moved into a separate private 
 
 The goal was no longer just to process sanitized examples. I wanted to know whether the architecture could retrieve evidence from the actual lab.
 
-A private read-only Wazuh evidence connector was tested against both the Wazuh Server API and the indexed alert data.
+A private read-only Wazuh evidence connector was tested against both the Wazuh Server API and indexed alert data.
 
 Results:
 
@@ -291,7 +303,7 @@ Results:
 - GitHub Actions passed after the correction
 - Final live validation returned `PASS`
 
-The proprietary connector implementation, investigation system, and other product-level Business Guardian components remain private.
+The proprietary connector implementation, investigation system, production policy logic, action-selection logic, and other product-level Business Guardian components remain private.
 
 Project Athenaeum records only the sanitized milestone.
 
@@ -301,7 +313,9 @@ Project Athenaeum records only the sanitized milestone.
 
 ### [Lab 15 — Alert Records, Validation, and Traceability](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-15-alert-records-validation-traceability/README.md)
 
-Alerts are temporary events. A security workflow needs something more durable.
+Alerts are temporary events.
+
+A security workflow needs something more durable.
 
 Lab 15 introduced structured vendor-neutral alert records that can preserve an alert's identity as it moves through later security decisions.
 
@@ -375,6 +389,7 @@ The controlled validation produced:
 
 ```text
 5 records processed
+
 2 KNOWN_COMMON
 1 INSUFFICIENT_DATA
 1 UNUSUAL
@@ -393,15 +408,146 @@ One of the most important results from this lab is simple:
 
 > A HIGH-severity alert is not automatically malicious, and a LOW-severity alert is not automatically safe.
 
-Severity is evidence. It is not a verdict.
+Severity is evidence.
+
+It is not a verdict.
 
 Lab 16 intentionally stops at decision routing. It does not authorize remediation, execute defensive actions, verify fixes, or mark an alert resolved.
 
 ---
 
+# Deciding Whether a Response Is Allowed
+
+### [Lab 17 — Policy Evaluation and Approval Logic](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-17-policy-evaluation-approval-logic/README.md)
+
+Lab 16 could decide where a security condition should go next.
+
+That created another question:
+
+**If a response is proposed, is the system actually allowed to do it?**
+
+Lab 17 adds a deterministic policy-evaluation and approval-control layer between triage and future defensive execution.
+
+The workflow now preserves four separate decision identities:
+
+```text
+Alert Record
+    AR-...
+      ↓
+Triage Decision
+    TR-...
+      ↓
+Policy Decision
+    PD-...
+      ↓
+Approval Record
+    AP-...
+    when required
+```
+
+The lab demonstrates four final workflow states:
+
+```text
+READY_FOR_ACTION
+AWAITING_APPROVAL
+INVESTIGATION
+NO_ACTION_AUTHORIZED
+```
+
+The distinction is critical:
+
+> **Detection is not authorization. Triage is not authorization. Severity is not authorization. A recommendation is not authorization.**
+
+Lab 17 uses a deliberately small sanitized demonstration policy to test several control paths:
+
+- A low-risk supported action that is pre-authorized
+- A medium-risk action requiring explicit human approval
+- Pending approval
+- Approved approval
+- Denied approval
+- Investigation-lane protection
+- Explicit prohibition
+- Unsupported-action denial
+- Fail-closed fallback behavior
+
+Seven controlled inputs were defined before implementation.
+
+The frozen and observed results matched exactly:
+
+```text
+Policy inputs discovered: 7
+
+AUTHORIZED: 1
+REQUIRES_APPROVAL: 3
+DEFERRED_TO_INVESTIGATION: 1
+NOT_AUTHORIZED: 2
+
+Approval records created: 3
+
+PENDING: 1
+APPROVED: 1
+DENIED: 1
+
+READY_FOR_ACTION: 2
+AWAITING_APPROVAL: 1
+INVESTIGATION: 1
+NO_ACTION_AUTHORIZED: 3
+
+Policy Decision records created: 7
+Failed: 0
+```
+
+A second complete execution reproduced the same policy, approval, and workflow results.
+
+Across the two runs:
+
+```text
+14 Policy Decision records
+ 6 Approval Records
+ 2 batch summaries
+22 total output files
+```
+
+Original `AR-...` and `TR-...` identities remained unchanged.
+
+New `PD-...` and `AP-...` identities were generated for the new processing run.
+
+Previous output remained intact.
+
+**Final technical validation: PASS**
+
+Lab 17 also confirmed that:
+
+- Missing approval never becomes approval
+- HIGH severity does not create authorization
+- LOW severity does not automatically mean safe
+- AI output cannot grant authorization
+- Unsupported behavior fails closed
+- Investigation cannot be bypassed by a requested action
+- Prohibited actions cannot become ready
+- Approval-required actions cannot become ready without explicit approval
+- Policy evaluation does not mark the security condition resolved
+- No defensive action was executed
+
+Most importantly:
+
+```text
+READY_FOR_ACTION
+```
+
+means the demonstrated policy and approval requirements have been satisfied.
+
+It does **not** mean the response was executed.
+
+Lab 17 establishes the authorization boundary.
+
+Execution remains a separate future layer.
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete through **Lab 16 — Alert Triage and Decision Logic**.
+Project Athenaeum is complete through **Lab 17 — Policy Evaluation and Approval Logic**.
 
 The technical progression now looks like this:
 
@@ -419,6 +565,12 @@ Preserve Traceability
 Triage the Condition
       ↓
 Route to the Next Security Stage
+      ↓
+Evaluate Policy
+      ↓
+Require Approval When Necessary
+      ↓
+Determine Action Eligibility
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -431,31 +583,31 @@ Lab 15 added persistent alert identity and traceability.
 
 Lab 16 added deterministic triage and decision routing.
 
+Lab 17 added deterministic policy evaluation, approval control, fail-closed authorization behavior, and separate Policy Decision and Approval Record identities.
+
 Each layer extends the previous validated baseline instead of replacing it.
 
 ---
 
 # Next Project Phase
 
-Lab 16 answers:
+The project has now reached an important boundary.
 
-**What should happen next?**
+Lab 15 asked:
 
-The next phase will move deeper into the remaining security lifecycle.
+**How do I preserve the alert?**
 
-Potential areas include:
+Lab 16 asked:
 
-- Investigation and evidence handling
-- Policy and approval records
-- Business-risk and impact representation
-- Audit-oriented workflow records
-- Controlled defensive-action planning
-- Verification and outcome tracking
-- Customer-facing incident and resolution reporting
+**Where should it go next?**
 
-The exact next lab will be selected only after comparing the public roadmap with work already completed in the private Business Guardian repository.
+Lab 17 asked:
 
-That prevents duplicate implementation and keeps the public portfolio aligned with the larger product architecture.
+**Is the proposed response actually allowed?**
+
+The remaining lifecycle moves toward controlled execution and proving the result.
+
+Conceptually:
 
 ```text
 Alert
@@ -470,12 +622,24 @@ Investigate when needed
   ↓
 Policy / Approval
   ↓
-Authorized Defensive Action
+Controlled Defensive Action
   ↓
-Verify
+Verify the Result
   ↓
-Audit
+Audit / Outcome
 ```
+
+The next public lab will not automatically be created just because this is the next box in the diagram.
+
+Before selecting it, the public Project Athenaeum roadmap will be compared against work already completed in the private Business Guardian repository.
+
+That protects the project from duplicate implementation and keeps proprietary product behavior private.
+
+Whatever comes next must preserve the same rule:
+
+> **Nothing is resolved until the result is verified.**
+
+And:
 
 **Nothing gets built twice.**
 
@@ -489,17 +653,20 @@ Project Athenaeum follows a simple development cycle:
 
 That means:
 
-- Validated work is preserved rather than rebuilt unnecessarily.
-- Expected behavior is defined before implementation when practical.
-- Failure conditions are tested along with successful ones.
-- Stable baselines are preserved before adding new capabilities.
-- Security-platform-specific data is separated from reusable processing logic.
-- Missing information is identified rather than fabricated.
-- Alerts, logs, and external security data are treated as untrusted input.
-- Technical severity does not automatically determine maliciousness.
-- Core security decisions use deterministic, testable logic.
-- Consequential security actions remain appropriately human-controlled.
-- Nothing is treated as resolved until the result has been verified.
+- Validated work is preserved rather than rebuilt unnecessarily
+- Expected behavior is defined before implementation when practical
+- Failure conditions are tested along with successful ones
+- Stable baselines are preserved before adding new capabilities
+- Security-platform-specific data is separated from reusable processing logic
+- Missing information is identified rather than fabricated
+- Alerts, logs, and external security data are treated as untrusted input
+- Technical severity does not automatically determine maliciousness
+- Recommendations do not automatically create authorization
+- Approval is explicit when policy requires it
+- Unsupported or uncertain behavior fails safely
+- Core security decisions use deterministic, testable logic
+- Consequential security actions remain appropriately human-controlled
+- Nothing is treated as resolved until the result has been verified
 
 ---
 
@@ -516,6 +683,7 @@ It may contain:
 - High-level architecture
 - Testing methodology
 - Validation results
+- Public-safe policy demonstrations
 - Technical lessons
 - Professional-development progress
 
@@ -525,9 +693,14 @@ The private Business Guardian repository contains product-level development such
 - Production triage logic
 - Evidence orchestration
 - Investigation workflows
-- Policy and approval systems
+- Production policy catalogs
+- Customer and tenant permissions
 - Business-risk logic
+- Production approval workflows
 - Defensive-action selection and execution
+- Privileged integrations
+- Remediation implementation
+- Rollback mechanisms
 - Verification mechanisms
 - Audit systems
 - Tenant/customer logic
@@ -582,9 +755,19 @@ All cybersecurity exercises are performed using personally owned or authorized s
 - Evidence-quality-first decision logic
 - Severity-independent classification
 - Investigation and policy routing
+- Policy evaluation
+- Authorization-boundary design
+- Human approval workflows
+- Action-risk classification
+- Fail-closed security controls
+- Policy Decision records
+- Approval Records
+- `AR → TR → PD → AP` traceability
+- Audit-oriented decision history
 - Automated testing
 - Repeatability testing
 - Non-destructive processing
+- Output overwrite protection
 - Technical documentation
 - Security architecture planning
 
@@ -592,7 +775,7 @@ All cybersecurity exercises are performed using personally owned or authorized s
 
 # Education and Development
 
-- Bachelor of Science in Cybersecurity with a concentration in Project Management Fundamentals — degree conferral expected September 2026
+- Bachelor of Science in Cybersecurity with a concentration in Project Management Fundamentals — academic requirements completed, degree conferral expected September 2026
 - InfoSec Labs Pre-Security Fundamentals Certificate
 - InfoSec Labs Alert Investigation Specialist training
 - CompTIA Security+ preparation
@@ -602,11 +785,11 @@ All cybersecurity exercises are performed using personally owned or authorized s
 
 # Professional Direction
 
-My immediate goal is to move into an IT support, SOC analyst, cybersecurity support, or public-sector IT role where I can apply practical troubleshooting, documentation, endpoint-monitoring, and security-analysis skills while continuing to grow technically.
+My immediate goal is to move into an IT support, SOC analyst, cybersecurity support, or public-sector IT role where I can apply practical troubleshooting, documentation, endpoint-monitoring, security-analysis, and security-automation skills while continuing to grow technically.
 
 Longer term, I want to take on deeper security and systems responsibilities while continuing to build practical cybersecurity tooling and automation.
 
-Project Athenaeum is also helping me explore a larger goal: building cybersecurity technology that can help smaller organizations understand what is happening in their environment, investigate security conditions, and eventually perform supported defensive actions when policy and authorization permit.
+Project Athenaeum is also helping me explore a larger goal: building cybersecurity technology that can help smaller organizations understand what is happening in their environment, investigate security conditions, determine what responses are permitted, and eventually perform supported defensive actions when policy and authorization allow.
 
 The system should not simply say that something was fixed.
 
