@@ -1,0 +1,1191 @@
+LAB 17 - POLICY EVALUATION AND APPROVAL LOGIC
+Requirements and Validation Plan
+
+Project: Project Athenaeum
+Lab: 17
+Title: Policy Evaluation and Approval Logic
+Date Started: 2026-08-27
+Status: Requirements and Validation Plan - Frozen Before Coding
+
+======================================================================
+1. PURPOSE
+======================================================================
+
+Lab 17 extends the validated Lab 16 alert-triage baseline with a public-safe,
+vendor-neutral policy evaluation and approval-control layer.
+
+Lab 16 answered:
+    "What kind of condition is this, and where should it go next?"
+
+Lab 17 answers:
+    "Is a proposed response allowed by policy, does it require human approval,
+     and what workflow state should the record enter next?"
+
+Lab 17 does NOT perform remediation.
+
+The lab must demonstrate that:
+- a triage result cannot directly trigger a defensive action;
+- technical severity cannot authorize an action;
+- AI output cannot authorize an action;
+- only supported, policy-defined actions may proceed;
+- some low-risk actions may be pre-authorized;
+- some actions require explicit human approval;
+- denied, unsupported, prohibited, unusual, unknown, or insufficiently
+  understood conditions do not bypass policy controls;
+- approval decisions are recorded separately and remain auditable;
+- approved actions are only marked READY_FOR_ACTION for a later execution
+  layer;
+- no defensive action is executed in Lab 17.
+
+Lab 17 is a policy-and-authorization control layer, not an action engine.
+
+======================================================================
+2. DESIGN POSITION IN THE BUSINESS GUARDIAN LIFECYCLE
+======================================================================
+
+Current public-safe processing sequence:
+
+    Security Source
+        ->
+    Ingestion / Normalization / Validation
+        ->
+    Alert Record (AR)
+        ->
+    Triage Decision (TR)
+        ->
+    Policy Evaluation
+        ->
+    Policy Decision (PD)
+        ->
+    Optional Approval Record (AP)
+        ->
+    Final Workflow State
+
+Lab 17 final workflow states:
+
+    READY_FOR_ACTION
+    AWAITING_APPROVAL
+    INVESTIGATION
+    NO_ACTION_AUTHORIZED
+
+Important:
+
+READY_FOR_ACTION does NOT mean Lab 17 executes anything.
+
+It means:
+    "The proposed action has satisfied the policy/approval requirements
+     demonstrated by this lab and may be handed to a future controlled
+     action-execution layer."
+
+The future execution layer must still perform its own:
+- scope validation,
+- target validation,
+- permission checks,
+- action-specific safety checks,
+- execution,
+- rollback handling where applicable,
+- verification,
+- audit logging.
+
+======================================================================
+3. PUBLIC / PRIVATE BOUNDARY
+======================================================================
+
+PUBLIC PROJECT ATHENAEUM LAB 17 MAY SHOW:
+
+- vendor-neutral policy-decision records;
+- AR -> TR -> PD -> AP traceability;
+- public-safe deterministic policy rules;
+- sanitized action names;
+- action-risk categories;
+- pre-authorized vs. approval-required behavior;
+- approval states;
+- denied and unsupported-action handling;
+- investigation-lane protection;
+- chronological policy/approval history;
+- structured JSON input/output;
+- batch validation;
+- repeat-processing protection;
+- no-action safety boundaries.
+
+PRIVATE BUSINESS GUARDIAN MUST RETAIN:
+
+- production policy catalogs;
+- customer-specific policy configuration;
+- tenant-specific permissions;
+- real action-selection heuristics;
+- proprietary business-risk scoring;
+- production approval workflows;
+- sensitive reviewer/identity integrations;
+- privileged credentials;
+- action adapters;
+- remediation implementation details;
+- endpoint/network/cloud execution mechanisms;
+- rollback logic;
+- production verification logic;
+- proprietary orchestration;
+- production security controls;
+- commercial product behavior.
+
+Nothing gets built twice.
+
+The public lab demonstrates the architecture and safety model.
+The private repository contains the real product implementation.
+
+======================================================================
+4. SOURCE RECORD REQUIREMENTS
+======================================================================
+
+Lab 17 begins from Lab 16-style triage records.
+
+Each supported policy-evaluation input must preserve or provide:
+
+- record_id
+- triage_id
+- triage_classification
+- triage_confidence
+- source_normalized_severity
+- next_stage
+- investigation_required
+- human_review_required
+- triage_rule_id
+- triage_reason
+- triage_history
+- requested_action
+
+Optional controlled test field:
+
+- controlled_approval_response
+
+The controlled_approval_response field exists only to validate approval-state
+handling in this public lab.
+
+Allowed controlled values:
+
+    PENDING
+    APPROVED
+    DENIED
+
+Approval MUST NEVER be inferred from:
+- severity;
+- classification;
+- AI recommendation;
+- alert text;
+- event text;
+- source-system instructions;
+- action name;
+- a missing approval field.
+
+If a required approval response is not explicitly APPROVED, the action must
+not become READY_FOR_ACTION.
+
+======================================================================
+5. IDENTIFIER AND TRACEABILITY MODEL
+======================================================================
+
+Existing identifiers MUST be preserved:
+
+    AR-...  = Alert Record identity
+    TR-...  = Triage Decision identity
+
+Lab 17 introduces:
+
+    PD-...  = Policy Decision identity
+    AP-...  = Approval Record identity, only when approval is required
+
+The relationship must remain:
+
+    AR
+     |
+     v
+    TR
+     |
+     v
+    PD
+     |
+     +----> AP, when approval is required
+
+Rules:
+
+- A PD identifier must never replace an AR or TR identifier.
+- An AP identifier must never replace AR, TR, or PD identifiers.
+- Every PD must retain its source AR and TR identifiers.
+- Every AP must retain its source AR, TR, and PD identifiers.
+- Reprocessing the same source must create a new PD identifier.
+- Reprocessing an approval-required case must create a new AP identifier.
+- Existing output records must not be overwritten.
+
+======================================================================
+6. POLICY DECISION OUTCOMES
+======================================================================
+
+Lab 17 uses four frozen policy outcomes.
+
+1. AUTHORIZED
+
+Meaning:
+The requested action is supported by the public demonstration policy and is
+explicitly classified as low-risk and pre-authorized.
+
+Result:
+- approval_status = NOT_REQUIRED
+- final_workflow_state = READY_FOR_ACTION
+
+AUTHORIZED does NOT mean executed.
+
+------------------------------------------------------------
+
+2. REQUIRES_APPROVAL
+
+Meaning:
+The requested action is supported, but policy requires explicit human approval
+before it may proceed.
+
+Possible approval results:
+
+PENDING:
+- final_workflow_state = AWAITING_APPROVAL
+
+APPROVED:
+- final_workflow_state = READY_FOR_ACTION
+
+DENIED:
+- final_workflow_state = NO_ACTION_AUTHORIZED
+
+------------------------------------------------------------
+
+3. NOT_AUTHORIZED
+
+Meaning:
+Policy does not permit the requested action to proceed.
+
+Examples:
+- prohibited action;
+- unsupported action;
+- action outside the public demonstration catalog;
+- policy fallback when no rule safely permits the request.
+
+Result:
+- approval_status = NOT_REQUIRED
+- final_workflow_state = NO_ACTION_AUTHORIZED
+
+------------------------------------------------------------
+
+4. DEFERRED_TO_INVESTIGATION
+
+Meaning:
+The source triage record is not eligible for policy-based action evaluation
+because the condition still requires investigation.
+
+Examples:
+- source next_stage = INVESTIGATION;
+- source classification = UNKNOWN;
+- source classification = UNUSUAL;
+- source classification = INSUFFICIENT_DATA when routed to investigation.
+
+Result:
+- approval_status = NOT_REQUIRED
+- final_workflow_state = INVESTIGATION
+
+No requested action may override this gate.
+
+======================================================================
+7. APPROVAL STATUS VALUES
+======================================================================
+
+Frozen approval statuses:
+
+    NOT_REQUIRED
+    PENDING
+    APPROVED
+    DENIED
+
+Definitions:
+
+NOT_REQUIRED
+Policy does not require a separate approval record for the current outcome.
+
+PENDING
+Human approval is required and has not been granted or denied.
+
+APPROVED
+A controlled explicit human approval response is recorded.
+
+DENIED
+A controlled explicit human denial response is recorded.
+
+Safety rule:
+
+Only APPROVED may satisfy an approval-required policy.
+
+PENDING, absent approval, malformed approval, or any unrecognized value must
+never be treated as approval.
+
+======================================================================
+8. FINAL WORKFLOW STATES
+======================================================================
+
+Frozen Lab 17 workflow states:
+
+    READY_FOR_ACTION
+    AWAITING_APPROVAL
+    INVESTIGATION
+    NO_ACTION_AUTHORIZED
+
+READY_FOR_ACTION
+The policy/approval requirements represented by Lab 17 are satisfied.
+No action is executed.
+
+AWAITING_APPROVAL
+A supported action requires human approval and may not proceed yet.
+
+INVESTIGATION
+The source triage condition must return to or remain in the investigation lane.
+
+NO_ACTION_AUTHORIZED
+Policy or approval state prevents the proposed action from proceeding.
+
+======================================================================
+9. PUBLIC-SAFE ACTION CATALOG
+======================================================================
+
+Lab 17 uses a deliberately small sanitized demonstration action catalog.
+
+ACTION 1
+Name:
+    ADD_MONITORING_NOTE
+
+Risk:
+    LOW
+
+Policy behavior:
+    Pre-authorized
+
+Purpose:
+Demonstrates that a low-risk, non-disruptive supported action can satisfy
+policy without human approval.
+
+No implementation of the action occurs in Lab 17.
+
+------------------------------------------------------------
+
+ACTION 2
+Name:
+    TEMPORARY_BLOCK_SOURCE
+
+Risk:
+    MEDIUM
+
+Policy behavior:
+    Human approval required
+
+Purpose:
+Demonstrates a realistic defensive action candidate that must not proceed
+without explicit approval.
+
+No firewall command, adapter call, or blocking operation occurs in Lab 17.
+
+------------------------------------------------------------
+
+ACTION 3
+Name:
+    DISABLE_USER_ACCOUNT
+
+Risk:
+    HIGH
+
+Policy behavior:
+    Not authorized by this public demonstration policy
+
+Purpose:
+Demonstrates that a consequential action may be deliberately prohibited even
+when technically possible.
+
+This does not define future production Business Guardian policy.
+It only demonstrates the control boundary.
+
+------------------------------------------------------------
+
+Any other action name:
+
+Policy behavior:
+    NOT_AUTHORIZED
+
+Reason:
+Business Guardian must not improvise an action that is absent from the
+supported policy catalog.
+
+======================================================================
+10. DETERMINISTIC POLICY RULE ORDER
+======================================================================
+
+Policy rules must be evaluated in this exact priority order.
+
+RULE 1 - SOURCE / TRACEABILITY VALIDATION
+
+Validate required identifiers, supported values, and structural fields before
+policy evaluation.
+
+A malformed or unusable policy input must fail safely.
+
+No missing security-relevant value may be invented.
+
+------------------------------------------------------------
+
+RULE 2 - INVESTIGATION LANE GATE
+
+If:
+- next_stage = INVESTIGATION
+
+Then:
+- policy_outcome = DEFERRED_TO_INVESTIGATION
+- approval_status = NOT_REQUIRED
+- final_workflow_state = INVESTIGATION
+
+This rule takes priority over the requested action.
+
+A requested action must not pull an unresolved condition out of investigation.
+
+------------------------------------------------------------
+
+RULE 3 - UNSUPPORTED ACTION GATE
+
+If requested_action is not in the public supported-action catalog:
+
+- policy_outcome = NOT_AUTHORIZED
+- approval_status = NOT_REQUIRED
+- final_workflow_state = NO_ACTION_AUTHORIZED
+
+No arbitrary action execution is allowed.
+
+------------------------------------------------------------
+
+RULE 4 - PROHIBITED HIGH-RISK DEMO ACTION
+
+If:
+- requested_action = DISABLE_USER_ACCOUNT
+
+Then:
+- policy_outcome = NOT_AUTHORIZED
+- approval_status = NOT_REQUIRED
+- final_workflow_state = NO_ACTION_AUTHORIZED
+
+This public demonstration policy deliberately prohibits the action.
+
+------------------------------------------------------------
+
+RULE 5 - PRE-AUTHORIZED LOW-RISK ACTION
+
+If:
+- source next_stage = POLICY_EVALUATION
+- requested_action = ADD_MONITORING_NOTE
+
+Then:
+- policy_outcome = AUTHORIZED
+- approval_status = NOT_REQUIRED
+- final_workflow_state = READY_FOR_ACTION
+
+Technical severity does not create the authorization.
+The explicit deterministic policy does.
+
+------------------------------------------------------------
+
+RULE 6 - APPROVAL-REQUIRED ACTION
+
+If:
+- source next_stage = POLICY_EVALUATION
+- requested_action = TEMPORARY_BLOCK_SOURCE
+
+Then:
+- policy_outcome = REQUIRES_APPROVAL
+
+Approval handling:
+
+If controlled_approval_response = APPROVED:
+    approval_status = APPROVED
+    final_workflow_state = READY_FOR_ACTION
+
+If controlled_approval_response = DENIED:
+    approval_status = DENIED
+    final_workflow_state = NO_ACTION_AUTHORIZED
+
+If controlled_approval_response = PENDING or is absent:
+    approval_status = PENDING
+    final_workflow_state = AWAITING_APPROVAL
+
+------------------------------------------------------------
+
+RULE 7 - SAFE FALLBACK
+
+If no earlier rule safely authorizes or routes the request:
+
+- policy_outcome = NOT_AUTHORIZED
+- approval_status = NOT_REQUIRED
+- final_workflow_state = NO_ACTION_AUTHORIZED
+
+Unknown policy behavior must fail closed.
+
+======================================================================
+11. POLICY RULE IDENTIFIERS
+======================================================================
+
+Frozen public-safe rule IDs:
+
+POLICY-RULE-001
+    Investigation Lane Protection
+
+POLICY-RULE-002
+    Unsupported Action Denial
+
+POLICY-RULE-003
+    Prohibited High-Risk Demonstration Action
+
+POLICY-RULE-004
+    Pre-Authorized Low-Risk Demonstration Action
+
+POLICY-RULE-005
+    Approval-Required Medium-Risk Demonstration Action
+
+POLICY-RULE-006
+    Safe Policy Fallback
+
+Approval handling rule:
+
+APPROVAL-RULE-001
+    Explicit Human Approval State Processing
+
+These rule identifiers are documentation and audit references.
+They are not production Business Guardian policy identifiers.
+
+======================================================================
+12. POLICY DECISION RECORD SCHEMA
+======================================================================
+
+Each Policy Decision record should contain at minimum:
+
+Identity:
+- policy_decision_id
+- policy_version
+- policy_timestamp
+
+Source traceability:
+- record_id
+- triage_id
+- source_triage_classification
+- source_triage_confidence
+- source_normalized_severity
+- source_next_stage
+- source_investigation_required
+- source_human_review_required
+- source_triage_rule_id
+
+Request:
+- requested_action
+- action_risk
+
+Policy result:
+- policy_rule_id
+- policy_outcome
+- policy_reason
+
+Approval:
+- approval_required
+- approval_id
+- approval_status
+
+Workflow:
+- final_workflow_state
+
+Documentation:
+- decision_notes
+- policy_history
+
+Important:
+Source fields must be preserved from the triage input rather than rewritten to
+make the policy result appear more favorable.
+
+======================================================================
+13. APPROVAL RECORD SCHEMA
+======================================================================
+
+An Approval Record is created only when:
+
+    policy_outcome = REQUIRES_APPROVAL
+
+Each Approval Record should contain at minimum:
+
+Identity:
+- approval_id
+- approval_version
+- approval_timestamp
+
+Traceability:
+- record_id
+- triage_id
+- policy_decision_id
+
+Request:
+- requested_action
+- action_risk
+
+Approval state:
+- approval_status
+- reviewer_type
+- approval_reason
+
+Documentation:
+- approval_history
+
+Public-safe reviewer value:
+
+    CONTROLLED_HUMAN_REVIEWER
+
+Do not store personal names, credentials, email addresses, employee IDs, or
+other unnecessary identity information in the public lab.
+
+======================================================================
+14. CHRONOLOGICAL HISTORY REQUIREMENTS
+======================================================================
+
+Policy Decision history should record meaningful stages such as:
+
+- Policy Record Created
+- Policy Evaluation Started
+- Policy Rule Matched
+- Approval Requirement Assigned
+- Final Workflow State Assigned
+- Policy Output Prepared
+
+Approval history, when present, should record:
+
+- Approval Record Created
+- Approval State Recorded
+- Final Approval State Confirmed
+
+History entries must:
+- be chronological;
+- use UTC timestamps;
+- describe the stage;
+- identify the rule when appropriate;
+- avoid recording secrets or sensitive data.
+
+======================================================================
+15. SEVERITY SEPARATION REQUIREMENT
+======================================================================
+
+Technical severity remains separate from policy authorization.
+
+Examples:
+
+HIGH severity:
+    does not automatically authorize blocking, disabling, isolation, or any
+    other action.
+
+LOW severity:
+    does not automatically mean no approval is needed.
+
+Policy behavior is determined by:
+- source workflow lane;
+- supported action;
+- explicit action risk;
+- deterministic policy rule;
+- explicit human approval where required.
+
+A severity field may be preserved for context and prioritization, but it may
+not independently grant permission.
+
+======================================================================
+16. AI SAFETY REQUIREMENT
+======================================================================
+
+AI output may eventually:
+- summarize evidence;
+- explain conditions;
+- recommend possible actions;
+- help investigate;
+- assist an analyst.
+
+AI output may NOT:
+- approve its own recommendation;
+- bypass a deterministic policy rule;
+- change a denied state to approved;
+- convert alert/log text into executable instructions;
+- invent an approval;
+- invent missing authorization;
+- create a supported action that is absent from the action catalog.
+
+The policy engine is deterministic.
+
+======================================================================
+17. CONTROLLED VALIDATION TEST SET
+======================================================================
+
+Seven sanitized policy-evaluation inputs will be used.
+
+Each input will preserve AR/TR-style traceability and include a controlled
+requested_action.
+
+------------------------------------------------------------
+TEST 1 - PRE-AUTHORIZED LOW-RISK ACTION
+------------------------------------------------------------
+
+Source:
+- triage_classification = KNOWN_COMMON
+- next_stage = POLICY_EVALUATION
+- requested_action = ADD_MONITORING_NOTE
+- source_normalized_severity = MEDIUM
+
+Expected:
+- policy_outcome = AUTHORIZED
+- policy_rule_id = POLICY-RULE-004
+- approval_required = false
+- approval_status = NOT_REQUIRED
+- final_workflow_state = READY_FOR_ACTION
+
+Purpose:
+Prove that an explicit low-risk policy can authorize a supported action
+without human approval.
+
+------------------------------------------------------------
+TEST 2 - APPROVAL REQUIRED / PENDING
+------------------------------------------------------------
+
+Source:
+- triage_classification = KNOWN_COMMON
+- next_stage = POLICY_EVALUATION
+- requested_action = TEMPORARY_BLOCK_SOURCE
+- controlled_approval_response = PENDING
+- source_normalized_severity = HIGH
+
+Expected:
+- policy_outcome = REQUIRES_APPROVAL
+- policy_rule_id = POLICY-RULE-005
+- approval_required = true
+- approval_status = PENDING
+- final_workflow_state = AWAITING_APPROVAL
+- Approval Record created
+
+Purpose:
+Prove that HIGH severity does not bypass approval.
+
+------------------------------------------------------------
+TEST 3 - APPROVAL REQUIRED / APPROVED
+------------------------------------------------------------
+
+Source:
+- triage_classification = KNOWN_COMMON
+- next_stage = POLICY_EVALUATION
+- requested_action = TEMPORARY_BLOCK_SOURCE
+- controlled_approval_response = APPROVED
+- source_normalized_severity = HIGH
+
+Expected:
+- policy_outcome = REQUIRES_APPROVAL
+- policy_rule_id = POLICY-RULE-005
+- approval_required = true
+- approval_status = APPROVED
+- final_workflow_state = READY_FOR_ACTION
+- Approval Record created
+
+Purpose:
+Prove that explicit human approval can satisfy a policy requirement without
+executing the action.
+
+------------------------------------------------------------
+TEST 4 - APPROVAL REQUIRED / DENIED
+------------------------------------------------------------
+
+Source:
+- triage_classification = KNOWN_COMMON
+- next_stage = POLICY_EVALUATION
+- requested_action = TEMPORARY_BLOCK_SOURCE
+- controlled_approval_response = DENIED
+- source_normalized_severity = MEDIUM
+
+Expected:
+- policy_outcome = REQUIRES_APPROVAL
+- policy_rule_id = POLICY-RULE-005
+- approval_required = true
+- approval_status = DENIED
+- final_workflow_state = NO_ACTION_AUTHORIZED
+- Approval Record created
+
+Purpose:
+Prove that denial prevents the action from becoming ready.
+
+------------------------------------------------------------
+TEST 5 - INVESTIGATION LANE PROTECTION
+------------------------------------------------------------
+
+Source:
+- triage_classification = UNKNOWN
+- next_stage = INVESTIGATION
+- requested_action = TEMPORARY_BLOCK_SOURCE
+- source_normalized_severity = LOW
+
+Expected:
+- policy_outcome = DEFERRED_TO_INVESTIGATION
+- policy_rule_id = POLICY-RULE-001
+- approval_required = false
+- approval_status = NOT_REQUIRED
+- final_workflow_state = INVESTIGATION
+
+Purpose:
+Prove that LOW severity and a requested action cannot bypass unresolved
+investigation requirements.
+
+------------------------------------------------------------
+TEST 6 - PROHIBITED HIGH-RISK ACTION
+------------------------------------------------------------
+
+Source:
+- triage_classification = KNOWN_COMMON
+- next_stage = POLICY_EVALUATION
+- requested_action = DISABLE_USER_ACCOUNT
+- source_normalized_severity = HIGH
+
+Expected:
+- policy_outcome = NOT_AUTHORIZED
+- policy_rule_id = POLICY-RULE-003
+- approval_required = false
+- approval_status = NOT_REQUIRED
+- final_workflow_state = NO_ACTION_AUTHORIZED
+
+Purpose:
+Prove that the policy layer can explicitly prohibit a consequential action.
+
+------------------------------------------------------------
+TEST 7 - UNSUPPORTED ACTION
+------------------------------------------------------------
+
+Source:
+- triage_classification = KNOWN_COMMON
+- next_stage = POLICY_EVALUATION
+- requested_action = UNSUPPORTED_ACTION
+- source_normalized_severity = MEDIUM
+
+Expected:
+- policy_outcome = NOT_AUTHORIZED
+- policy_rule_id = POLICY-RULE-002
+- approval_required = false
+- approval_status = NOT_REQUIRED
+- final_workflow_state = NO_ACTION_AUTHORIZED
+
+Purpose:
+Prove that Business Guardian does not improvise or execute unrecognized
+actions.
+
+======================================================================
+18. FROZEN EXPECTED FIRST-RUN BATCH RESULTS
+======================================================================
+
+Total processable policy inputs discovered:
+    7
+
+Policy outcomes:
+
+    AUTHORIZED:
+        1
+
+    REQUIRES_APPROVAL:
+        3
+
+    DEFERRED_TO_INVESTIGATION:
+        1
+
+    NOT_AUTHORIZED:
+        2
+
+Approval records created:
+    3
+
+Approval statuses among approval-required records:
+
+    PENDING:
+        1
+
+    APPROVED:
+        1
+
+    DENIED:
+        1
+
+Final workflow states:
+
+    READY_FOR_ACTION:
+        2
+
+    AWAITING_APPROVAL:
+        1
+
+    INVESTIGATION:
+        1
+
+    NO_ACTION_AUTHORIZED:
+        3
+
+Policy Decision records created:
+    7
+
+Failed:
+    0
+
+These values are frozen before implementation.
+
+The code must be tested against these targets.
+The targets must not be changed merely to match observed program output.
+
+======================================================================
+19. REPEAT-PROCESSING VALIDATION
+======================================================================
+
+A second controlled run must be performed.
+
+Expected:
+
+- same seven source inputs discovered;
+- same policy outcome totals;
+- same approval totals;
+- same final workflow-state totals;
+- zero failures;
+- original AR identifiers unchanged;
+- original TR identifiers unchanged;
+- new PD identifiers created;
+- new AP identifiers created for approval-required cases;
+- first-run outputs remain intact;
+- first-run batch summary remains intact;
+- source inputs are not modified.
+
+This validates:
+- deterministic behavior;
+- record identity preservation;
+- repeatability;
+- output overwrite protection.
+
+======================================================================
+20. INPUT VALIDATION REQUIREMENTS
+======================================================================
+
+The program must fail safely when a source record cannot be reliably processed.
+
+Validation should include at minimum:
+
+- supported .json input;
+- file exists;
+- file is not empty;
+- valid UTF-8 JSON;
+- one JSON object;
+- valid record_id beginning with AR-;
+- valid triage_id beginning with TR-;
+- supported triage classification;
+- supported next_stage;
+- supported normalized severity;
+- requested_action present as a non-empty string;
+- triage_history is list-structured when required;
+- controlled approval response, if present, is a supported value.
+
+Malformed records must not produce invented evidence or invented authorization.
+
+Per-record failure isolation should be preserved so one bad input does not
+silently prevent other valid records from being attempted.
+
+======================================================================
+21. OUTPUT REQUIREMENTS
+======================================================================
+
+For each successfully processed input:
+
+Create one Policy Decision JSON record.
+
+When approval is required:
+
+Create one Approval JSON record.
+
+Also create one batch summary per run.
+
+Output filenames must:
+- identify the source record or controlled input clearly;
+- include the unique PD or AP identifier when appropriate;
+- avoid overwriting previous output;
+- remain Windows-safe.
+
+JSON output should be:
+- UTF-8;
+- human-readable;
+- consistently indented;
+- structured for future machine processing.
+
+======================================================================
+22. BATCH SUMMARY REQUIREMENTS
+======================================================================
+
+Each batch summary must report at minimum:
+
+- processing timestamp;
+- inputs discovered;
+- policy outcome totals;
+- approval totals;
+- final workflow-state totals;
+- Policy Decision records created;
+- Approval Records created;
+- failures;
+- per-record AR -> TR -> PD traceability;
+- AP identity when applicable;
+- requested action;
+- matched policy rule;
+- policy outcome;
+- approval status;
+- final workflow state;
+- completion result.
+
+Required safety statement:
+
+"Lab 17 evaluated policy and approval state only. No defensive action was
+executed."
+
+======================================================================
+23. SAFETY REQUIREMENTS
+======================================================================
+
+Lab 17 must enforce all of the following:
+
+1. No defensive action is executed.
+2. No PowerShell remediation command is generated or run.
+3. No firewall rule is changed.
+4. No account is disabled.
+5. No service is modified.
+6. No endpoint is isolated.
+7. No file is quarantined.
+8. No requested action can bypass the investigation gate.
+9. No unsupported action can become READY_FOR_ACTION.
+10. No prohibited action can become READY_FOR_ACTION.
+11. No approval-required action can become READY_FOR_ACTION without explicit
+    APPROVED state.
+12. Severity cannot grant authorization.
+13. AI output cannot grant authorization.
+14. Alert/log text cannot become executable instruction.
+15. Missing evidence cannot be fabricated.
+16. Missing approval cannot be interpreted as approval.
+17. A policy decision cannot mark the underlying security condition resolved.
+18. READY_FOR_ACTION means eligible for a future action layer, not executed.
+19. Source AR and TR identities remain unchanged.
+20. Every meaningful decision remains auditable.
+
+======================================================================
+24. COMPLETION CRITERIA
+======================================================================
+
+Lab 17 is technically complete only when:
+
+- requirements are frozen before coding;
+- seven controlled inputs exist;
+- deterministic policy rules are implemented in the documented priority;
+- AR and TR identities are preserved;
+- PD identities are created separately;
+- AP identities are created only when required;
+- first-run totals exactly match the frozen expected results;
+- approval-required cases correctly produce PENDING, APPROVED, and DENIED;
+- investigation-lane protection passes;
+- prohibited-action protection passes;
+- unsupported-action protection passes;
+- severity/authorization separation is demonstrated;
+- zero defensive actions are executed;
+- second-run totals match the first run;
+- repeat processing creates new PD/AP IDs;
+- first-run output is not overwritten;
+- batch summaries are generated;
+- formal validation results are documented;
+- selected screenshots are captured for portfolio evidence;
+- Lab Notes are completed;
+- Screenshot Log is completed;
+- one-page Portfolio Writeup is completed;
+- public/private repository boundary is reviewed;
+- sanitized public-safe artifacts are ready for GitHub publication.
+
+======================================================================
+25. RECOMMENDED PORTFOLIO SCREENSHOT EVIDENCE
+======================================================================
+
+The complete .txt file is the authoritative requirements record.
+
+Do NOT screenshot every section.
+
+Recommended requirements/design screenshots:
+
+A. ARCHITECTURE AND SCOPE
+Capture:
+- Section 2 - Design Position in the Business Guardian Lifecycle
+- enough surrounding text to show Lab 17 stops before execution
+
+Why:
+Shows where policy/approval fits into the end-to-end architecture.
+
+------------------------------------------------------------
+
+B. POLICY OUTCOMES + APPROVAL STATES
+Capture:
+- Section 6 - Policy Decision Outcomes
+- Section 7 - Approval Status Values if it fits cleanly
+
+Why:
+Shows the core control model:
+AUTHORIZED / REQUIRES_APPROVAL / NOT_AUTHORIZED /
+DEFERRED_TO_INVESTIGATION.
+
+------------------------------------------------------------
+
+C. DETERMINISTIC POLICY RULE ORDER
+Capture:
+- Section 10 - Deterministic Policy Rule Order
+- preferably the investigation gate, unsupported-action gate,
+  pre-authorization rule, and approval-required rule
+
+Why:
+Strong evidence that authorization is controlled by deterministic rules rather
+than severity or AI output.
+
+------------------------------------------------------------
+
+D. FROZEN VALIDATION TARGET
+Capture:
+- Section 18 - Frozen Expected First-Run Batch Results
+
+Why:
+Proves measurable acceptance criteria were established before coding.
+
+------------------------------------------------------------
+
+E. SAFETY BOUNDARY
+Capture:
+- the strongest portion of Section 23 - Safety Requirements
+
+Why:
+Shows that approval logic is deliberately separated from remediation.
+
+These are sufficient requirements/design screenshots for the portfolio.
+The full .txt file preserves the complete plan.
+
+======================================================================
+26. FINAL DESIGN STATEMENT
+======================================================================
+
+Lab 17 establishes the authorization boundary between cybersecurity reasoning
+and defensive execution.
+
+The lab must prove that:
+
+    detection is not authorization;
+    severity is not authorization;
+    triage is not authorization;
+    recommendation is not authorization;
+    AI is not authorization;
+    approval-required means approval-required;
+    unsupported means denied;
+    unresolved means investigate;
+    and no action occurs until a later controlled execution layer is allowed
+    to act.
+
+Lab 17 therefore prepares Business Guardian for future controlled remediation
+without prematurely giving the system execution authority.
+
+END OF REQUIREMENTS AND VALIDATION PLAN
