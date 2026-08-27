@@ -1,0 +1,25 @@
+{
+  "record_id": "AR-17000000-0000-4000-8000-000000000005",
+  "triage_id": "TR-17000000-0000-4000-8000-000000000005",
+  "triage_classification": "UNKNOWN",
+  "triage_confidence": "LOW",
+  "source_normalized_severity": "LOW",
+  "next_stage": "INVESTIGATION",
+  "investigation_required": true,
+  "human_review_required": false,
+  "triage_rule_id": "TRIAGE-RULE-005",
+  "triage_reason": "Controlled condition did not match a supported deterministic triage pattern and remained explicitly UNKNOWN.",
+  "triage_history": [
+    {
+      "timestamp": "2026-08-27T16:34:00Z",
+      "stage": "Triage Record Created",
+      "details": "Controlled sanitized triage record prepared for Lab 17 policy evaluation."
+    },
+    {
+      "timestamp": "2026-08-27T16:34:01Z",
+      "stage": "Triage Decision Assigned",
+      "details": "Condition classified as UNKNOWN and routed to INVESTIGATION."
+    }
+  ],
+  "requested_action": "TEMPORARY_BLOCK_SOURCE"
+}

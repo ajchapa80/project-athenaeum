@@ -1,0 +1,26 @@
+{
+  "record_id": "AR-17000000-0000-4000-8000-000000000002",
+  "triage_id": "TR-17000000-0000-4000-8000-000000000002",
+  "triage_classification": "KNOWN_COMMON",
+  "triage_confidence": "HIGH",
+  "source_normalized_severity": "HIGH",
+  "next_stage": "POLICY_EVALUATION",
+  "investigation_required": false,
+  "human_review_required": false,
+  "triage_rule_id": "TRIAGE-RULE-003",
+  "triage_reason": "Controlled repeated authentication-failure condition matched a documented deterministic triage pattern.",
+  "triage_history": [
+    {
+      "timestamp": "2026-08-27T16:31:00Z",
+      "stage": "Triage Record Created",
+      "details": "Controlled sanitized triage record prepared for Lab 17 policy evaluation."
+    },
+    {
+      "timestamp": "2026-08-27T16:31:01Z",
+      "stage": "Triage Decision Assigned",
+      "details": "Condition classified as KNOWN_COMMON and routed to POLICY_EVALUATION."
+    }
+  ],
+  "requested_action": "TEMPORARY_BLOCK_SOURCE",
+  "controlled_approval_response": "PENDING"
+}
