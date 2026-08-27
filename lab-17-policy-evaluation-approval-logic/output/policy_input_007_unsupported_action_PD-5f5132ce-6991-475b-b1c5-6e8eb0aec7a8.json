@@ -1,0 +1,56 @@
+{
+    "policy_decision_id": "PD-5f5132ce-6991-475b-b1c5-6e8eb0aec7a8",
+    "policy_version": "1.0",
+    "policy_timestamp": "2026-08-27T18:07:47Z",
+    "record_id": "AR-17000000-0000-4000-8000-000000000007",
+    "triage_id": "TR-17000000-0000-4000-8000-000000000007",
+    "source_triage_classification": "KNOWN_COMMON",
+    "source_triage_confidence": "HIGH",
+    "source_normalized_severity": "MEDIUM",
+    "source_next_stage": "POLICY_EVALUATION",
+    "source_investigation_required": false,
+    "source_human_review_required": false,
+    "source_triage_rule_id": "TRIAGE-RULE-002",
+    "requested_action": "UNSUPPORTED_ACTION",
+    "action_risk": "UNKNOWN",
+    "policy_rule_id": "POLICY-RULE-002",
+    "policy_outcome": "NOT_AUTHORIZED",
+    "policy_reason": "The requested action is not present in the public-safe supported-action catalog.",
+    "approval_required": false,
+    "approval_id": null,
+    "approval_status": "NOT_REQUIRED",
+    "final_workflow_state": "NO_ACTION_AUTHORIZED",
+    "decision_notes": [
+        "Unsupported actions fail closed and cannot become READY_FOR_ACTION."
+    ],
+    "policy_history": [
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Record Created",
+            "details": "A new Policy Decision record was created while preserving the original AR and TR identities."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Evaluation Started",
+            "details": "Deterministic Lab 17 policy evaluation began. No defensive action was executed."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Rule Matched",
+            "details": "The requested action is not present in the public-safe supported-action catalog.",
+            "rule_id": "POLICY-RULE-002"
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Final Workflow State Assigned",
+            "details": "Final workflow state assigned as NO_ACTION_AUTHORIZED.",
+            "rule_id": "POLICY-RULE-002"
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Output Prepared",
+            "details": "Policy Decision JSON output was prepared for audit and validation. No defensive action was executed.",
+            "rule_id": "POLICY-RULE-002"
+        }
+    ]
+}

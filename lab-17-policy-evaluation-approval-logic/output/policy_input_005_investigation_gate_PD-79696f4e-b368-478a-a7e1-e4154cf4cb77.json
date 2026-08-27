@@ -1,0 +1,56 @@
+{
+    "policy_decision_id": "PD-79696f4e-b368-478a-a7e1-e4154cf4cb77",
+    "policy_version": "1.0",
+    "policy_timestamp": "2026-08-27T18:07:47Z",
+    "record_id": "AR-17000000-0000-4000-8000-000000000005",
+    "triage_id": "TR-17000000-0000-4000-8000-000000000005",
+    "source_triage_classification": "UNKNOWN",
+    "source_triage_confidence": "LOW",
+    "source_normalized_severity": "LOW",
+    "source_next_stage": "INVESTIGATION",
+    "source_investigation_required": true,
+    "source_human_review_required": false,
+    "source_triage_rule_id": "TRIAGE-RULE-005",
+    "requested_action": "TEMPORARY_BLOCK_SOURCE",
+    "action_risk": "MEDIUM",
+    "policy_rule_id": "POLICY-RULE-001",
+    "policy_outcome": "DEFERRED_TO_INVESTIGATION",
+    "policy_reason": "The source triage record remains in the INVESTIGATION lane. The requested action cannot override an unresolved investigation requirement.",
+    "approval_required": false,
+    "approval_id": null,
+    "approval_status": "NOT_REQUIRED",
+    "final_workflow_state": "INVESTIGATION",
+    "decision_notes": [
+        "Investigation-lane protection took priority over the requested action."
+    ],
+    "policy_history": [
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Record Created",
+            "details": "A new Policy Decision record was created while preserving the original AR and TR identities."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Evaluation Started",
+            "details": "Deterministic Lab 17 policy evaluation began. No defensive action was executed."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Rule Matched",
+            "details": "The source triage record remains in the INVESTIGATION lane. The requested action cannot override an unresolved investigation requirement.",
+            "rule_id": "POLICY-RULE-001"
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Final Workflow State Assigned",
+            "details": "Final workflow state assigned as INVESTIGATION.",
+            "rule_id": "POLICY-RULE-001"
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Output Prepared",
+            "details": "Policy Decision JSON output was prepared for audit and validation. No defensive action was executed.",
+            "rule_id": "POLICY-RULE-001"
+        }
+    ]
+}

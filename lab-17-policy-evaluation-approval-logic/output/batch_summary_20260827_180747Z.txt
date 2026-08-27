@@ -1,0 +1,152 @@
+LAB 17 - POLICY EVALUATION AND APPROVAL LOGIC
+CONTROLLED BATCH SUMMARY
+============================================================
+Batch Started: 2026-08-27T18:07:47Z
+Batch Completed: 2026-08-27T18:07:47Z
+
+OBSERVED TOTALS
+------------------------------------------------------------
+Inputs Discovered: 7
+
+Policy Outcomes:
+  AUTHORIZED: 1
+  REQUIRES_APPROVAL: 3
+  DEFERRED_TO_INVESTIGATION: 1
+  NOT_AUTHORIZED: 2
+
+Approval Records Created: 3
+
+Approval Statuses:
+  PENDING: 1
+  APPROVED: 1
+  DENIED: 1
+
+Final Workflow States:
+  READY_FOR_ACTION: 2
+  AWAITING_APPROVAL: 1
+  INVESTIGATION: 1
+  NO_ACTION_AUTHORIZED: 3
+
+Policy Decision Records Created: 7
+Failed: 0
+
+============================================================
+PER-RECORD TRACEABILITY
+============================================================
+
+Record 1
+------------------------------------------------------------
+Source File: policy_input_001_preauthorized_low_risk.json
+Processing Result: SUCCESS
+Alert Record ID: AR-17000000-0000-4000-8000-000000000001
+Triage Decision ID: TR-17000000-0000-4000-8000-000000000001
+Policy Decision ID: PD-bb8c2410-dde0-4850-bd34-c10efc7952ee
+Requested Action: ADD_MONITORING_NOTE
+Action Risk: LOW
+Policy Rule: POLICY-RULE-004
+Policy Outcome: AUTHORIZED
+Approval Required: false
+Approval Status: NOT_REQUIRED
+Final Workflow State: READY_FOR_ACTION
+Approval Record ID: Not Required
+
+Record 2
+------------------------------------------------------------
+Source File: policy_input_002_approval_pending.json
+Processing Result: SUCCESS
+Alert Record ID: AR-17000000-0000-4000-8000-000000000002
+Triage Decision ID: TR-17000000-0000-4000-8000-000000000002
+Policy Decision ID: PD-062eeb15-ee8d-4988-97af-c57c469b3262
+Requested Action: TEMPORARY_BLOCK_SOURCE
+Action Risk: MEDIUM
+Policy Rule: POLICY-RULE-005
+Policy Outcome: REQUIRES_APPROVAL
+Approval Required: true
+Approval Status: PENDING
+Final Workflow State: AWAITING_APPROVAL
+Approval Record ID: AP-4b4c69d5-46e0-47eb-8e3e-e8fa894599c0
+
+Record 3
+------------------------------------------------------------
+Source File: policy_input_003_approval_approved.json
+Processing Result: SUCCESS
+Alert Record ID: AR-17000000-0000-4000-8000-000000000003
+Triage Decision ID: TR-17000000-0000-4000-8000-000000000003
+Policy Decision ID: PD-10e004b4-374a-42e2-a28c-c49a6881540f
+Requested Action: TEMPORARY_BLOCK_SOURCE
+Action Risk: MEDIUM
+Policy Rule: POLICY-RULE-005
+Policy Outcome: REQUIRES_APPROVAL
+Approval Required: true
+Approval Status: APPROVED
+Final Workflow State: READY_FOR_ACTION
+Approval Record ID: AP-1274c641-82e6-4e86-ad72-9b11e6315cb5
+
+Record 4
+------------------------------------------------------------
+Source File: policy_input_004_approval_denied.json
+Processing Result: SUCCESS
+Alert Record ID: AR-17000000-0000-4000-8000-000000000004
+Triage Decision ID: TR-17000000-0000-4000-8000-000000000004
+Policy Decision ID: PD-0d267286-2c58-412c-a650-69d32c569637
+Requested Action: TEMPORARY_BLOCK_SOURCE
+Action Risk: MEDIUM
+Policy Rule: POLICY-RULE-005
+Policy Outcome: REQUIRES_APPROVAL
+Approval Required: true
+Approval Status: DENIED
+Final Workflow State: NO_ACTION_AUTHORIZED
+Approval Record ID: AP-da968340-b58b-4f46-9f90-3fad3d2291e8
+
+Record 5
+------------------------------------------------------------
+Source File: policy_input_005_investigation_gate.json
+Processing Result: SUCCESS
+Alert Record ID: AR-17000000-0000-4000-8000-000000000005
+Triage Decision ID: TR-17000000-0000-4000-8000-000000000005
+Policy Decision ID: PD-79696f4e-b368-478a-a7e1-e4154cf4cb77
+Requested Action: TEMPORARY_BLOCK_SOURCE
+Action Risk: MEDIUM
+Policy Rule: POLICY-RULE-001
+Policy Outcome: DEFERRED_TO_INVESTIGATION
+Approval Required: false
+Approval Status: NOT_REQUIRED
+Final Workflow State: INVESTIGATION
+Approval Record ID: Not Required
+
+Record 6
+------------------------------------------------------------
+Source File: policy_input_006_prohibited_high_risk.json
+Processing Result: SUCCESS
+Alert Record ID: AR-17000000-0000-4000-8000-000000000006
+Triage Decision ID: TR-17000000-0000-4000-8000-000000000006
+Policy Decision ID: PD-fc557b85-169a-4174-ae61-2cfd4d3a1550
+Requested Action: DISABLE_USER_ACCOUNT
+Action Risk: HIGH
+Policy Rule: POLICY-RULE-003
+Policy Outcome: NOT_AUTHORIZED
+Approval Required: false
+Approval Status: NOT_REQUIRED
+Final Workflow State: NO_ACTION_AUTHORIZED
+Approval Record ID: Not Required
+
+Record 7
+------------------------------------------------------------
+Source File: policy_input_007_unsupported_action.json
+Processing Result: SUCCESS
+Alert Record ID: AR-17000000-0000-4000-8000-000000000007
+Triage Decision ID: TR-17000000-0000-4000-8000-000000000007
+Policy Decision ID: PD-5f5132ce-6991-475b-b1c5-6e8eb0aec7a8
+Requested Action: UNSUPPORTED_ACTION
+Action Risk: UNKNOWN
+Policy Rule: POLICY-RULE-002
+Policy Outcome: NOT_AUTHORIZED
+Approval Required: false
+Approval Status: NOT_REQUIRED
+Final Workflow State: NO_ACTION_AUTHORIZED
+Approval Record ID: Not Required
+
+============================================================
+SAFETY STATEMENT
+------------------------------------------------------------
+Lab 17 evaluated policy and approval state only. No defensive action was executed.

@@ -1,0 +1,30 @@
+{
+    "approval_id": "AP-1274c641-82e6-4e86-ad72-9b11e6315cb5",
+    "approval_version": "1.0",
+    "approval_timestamp": "2026-08-27T18:07:47Z",
+    "record_id": "AR-17000000-0000-4000-8000-000000000003",
+    "triage_id": "TR-17000000-0000-4000-8000-000000000003",
+    "policy_decision_id": "PD-10e004b4-374a-42e2-a28c-c49a6881540f",
+    "requested_action": "TEMPORARY_BLOCK_SOURCE",
+    "action_risk": "MEDIUM",
+    "approval_status": "APPROVED",
+    "reviewer_type": "CONTROLLED_HUMAN_REVIEWER",
+    "approval_reason": "Controlled human approval explicitly granted for validation purposes.",
+    "approval_history": [
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Approval Record Created",
+            "details": "A separate Approval Record was created because the matched policy requires explicit human approval."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Approval State Recorded",
+            "details": "Controlled approval state recorded as APPROVED."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Final Approval State Confirmed",
+            "details": "Approval processing completed with state APPROVED."
+        }
+    ]
+}

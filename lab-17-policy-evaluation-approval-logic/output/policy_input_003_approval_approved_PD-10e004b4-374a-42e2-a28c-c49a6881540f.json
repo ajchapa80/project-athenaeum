@@ -1,0 +1,62 @@
+{
+    "policy_decision_id": "PD-10e004b4-374a-42e2-a28c-c49a6881540f",
+    "policy_version": "1.0",
+    "policy_timestamp": "2026-08-27T18:07:47Z",
+    "record_id": "AR-17000000-0000-4000-8000-000000000003",
+    "triage_id": "TR-17000000-0000-4000-8000-000000000003",
+    "source_triage_classification": "KNOWN_COMMON",
+    "source_triage_confidence": "HIGH",
+    "source_normalized_severity": "HIGH",
+    "source_next_stage": "POLICY_EVALUATION",
+    "source_investigation_required": false,
+    "source_human_review_required": false,
+    "source_triage_rule_id": "TRIAGE-RULE-003",
+    "requested_action": "TEMPORARY_BLOCK_SOURCE",
+    "action_risk": "MEDIUM",
+    "policy_rule_id": "POLICY-RULE-005",
+    "policy_outcome": "REQUIRES_APPROVAL",
+    "policy_reason": "TEMPORARY_BLOCK_SOURCE is a supported medium-risk action that requires explicit human approval under the public demonstration policy.",
+    "approval_required": true,
+    "approval_id": "AP-1274c641-82e6-4e86-ad72-9b11e6315cb5",
+    "approval_status": "APPROVED",
+    "final_workflow_state": "READY_FOR_ACTION",
+    "decision_notes": [
+        "Explicit controlled human approval satisfied the approval-required policy. No action was executed."
+    ],
+    "policy_history": [
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Record Created",
+            "details": "A new Policy Decision record was created while preserving the original AR and TR identities."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Evaluation Started",
+            "details": "Deterministic Lab 17 policy evaluation began. No defensive action was executed."
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Rule Matched",
+            "details": "TEMPORARY_BLOCK_SOURCE is a supported medium-risk action that requires explicit human approval under the public demonstration policy.",
+            "rule_id": "POLICY-RULE-005"
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Final Workflow State Assigned",
+            "details": "Final workflow state assigned as READY_FOR_ACTION.",
+            "rule_id": "POLICY-RULE-005"
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Approval Requirement Assigned",
+            "details": "A separate Approval Record was created because the matched policy requires explicit human approval.",
+            "rule_id": "POLICY-RULE-005"
+        },
+        {
+            "timestamp": "2026-08-27T18:07:47Z",
+            "stage": "Policy Output Prepared",
+            "details": "Policy Decision JSON output was prepared for audit and validation. No defensive action was executed.",
+            "rule_id": "POLICY-RULE-005"
+        }
+    ]
+}
