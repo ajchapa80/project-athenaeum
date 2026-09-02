@@ -1,0 +1,597 @@
+PROJECT ATHENAEUM
+LAB 19 - CONTROLLED ACTION EXECUTION BOUNDARY
+REQUIREMENTS, SAFETY CONTRACTS, AND VALIDATION DESIGN
+VERSION 1.0
+
+======================================================================
+1. PURPOSE
+======================================================================
+
+Lab 19 defines the vendor-neutral contract between an existing
+READY_FOR_ACTION eligibility result and any future controlled action.
+
+It answers:
+
+What must be proven before an eligible, approved security response may
+execute, and what evidence is required before any condition may be marked
+resolved?
+
+This is a requirements and design lab with tabletop acceptance cases. It does
+not implement or operate an execution subsystem.
+
+======================================================================
+2. PRESERVED BASELINE
+======================================================================
+
+Lab 19 preserves all validated Project Athenaeum work through Lab 18,
+including:
+
+- Alert Record (AR) source preservation and traceability;
+- Triage Record (TR) deterministic processing;
+- Policy Decision (PD) evaluation;
+- Approval Record (AP) boundaries;
+- READY_FOR_ACTION as eligibility rather than execution;
+- live isolated-lab evidence collection;
+- read-only Business Guardian investigation processing;
+- conservative HUMAN_REVIEW_REQUIRED routing;
+- repeatability and no-action/no-resolution safety behavior.
+
+Lab 19 does not rebuild those capabilities.
+
+======================================================================
+3. SCOPE
+======================================================================
+
+IN SCOPE
+
+- vendor-neutral action-boundary requirements;
+- public-safe record responsibilities;
+- record relationships and traceability;
+- deterministic state transitions;
+- approval freshness and binding rules;
+- target-validation requirements;
+- duplicate and idempotency requirements;
+- execution, verification, rollback, and outcome responsibilities;
+- tabletop safety cases;
+- PASS/FAIL criteria;
+- public/private boundary analysis.
+
+OUT OF SCOPE
+
+- production or prototype execution code;
+- endpoint commands or configuration changes;
+- action adapters or connectors;
+- remediation;
+- live rollback;
+- private Business Guardian implementation changes;
+- VM startup or lab traffic;
+- policy-catalog or action-selection implementation;
+- production schema design;
+- Lab 20 implementation.
+
+======================================================================
+4. EXECUTION BOUNDARY
+======================================================================
+
+READY_FOR_ACTION
+        |
+        v
+VALIDATED ACTION REQUEST
+        |
+        v
+AUTHORIZATION AND APPROVAL-FRESHNESS VALIDATION
+        |
+        v
+TARGET VALIDATION
+        |
+        v
+DUPLICATE AND IDEMPOTENCY PROTECTION
+        |
+        v
+CONTROLLED EXECUTION
+        |
+        v
+INDEPENDENT VERIFICATION
+        |
+        +------------------------------+
+        |                              |
+        v                              v
+VERIFIED INTENDED OUTCOME       ROLLBACK REQUIRED
+        |                              |
+        |                              v
+        |                       ROLLBACK EXECUTION
+        |                              |
+        |                              v
+        |                       ROLLBACK VERIFICATION
+        |                              |
+        +---------------+--------------+
+                        |
+                        v
+                  OUTCOME / AUDIT
+                        |
+                        v
+                RESOLUTION ELIGIBILITY
+
+Every transition is conditional. A missing, stale, denied, mismatched,
+ambiguous, unsupported, duplicated, failed, or unverifiable condition blocks
+execution or resolution as applicable.
+
+======================================================================
+5. FROZEN ARCHITECTURAL RULES
+======================================================================
+
+R1. READY_FOR_ACTION is eligibility only.
+
+R2. An executor may not decide whether an action is authorized.
+
+R3. Missing, stale, mismatched, denied, or unverifiable approval fails closed.
+
+R4. Approval must bind to the intended action and target.
+
+R5. The target must be explicit, unique, in scope, and validated before
+execution.
+
+R6. Unsupported actions fail closed.
+
+R7. Duplicate requests must not cause duplicate execution.
+
+R8. A repeated execution attempt requires an explicit permitted retry state;
+it may not be inferred from a prior failure or timeout.
+
+R9. Command submission does not equal success.
+
+R10. Execution success does not equal verification.
+
+R11. Verification must be independent of the executor's success response
+wherever technically practical.
+
+R12. Verification failure, unavailability, or inconclusive evidence prohibits
+resolution.
+
+R13. Reversible actions require a defined rollback trigger, method, and
+verification expectation before execution.
+
+R14. Rollback completion must itself be independently verified.
+
+R15. No condition may become resolved solely because an action returned
+success.
+
+R16. Prior AR, TR, PD, and AP records remain immutable historical decisions.
+Future execution records reference them; they do not replace them.
+
+R17. Every validation, execution, verification, rollback, and outcome state
+must remain visible in the audit chain.
+
+R18. Unknown or contradictory evidence fails closed and remains visible.
+
+R19. Successful rollback proves that the attempted change was reversed; it
+does not prove that the original security condition was resolved.
+
+R20. Outcome/audit recording must preserve the complete chronological
+execution history. It may not overwrite or hide earlier action requests,
+execution attempts, verification failures, rollback activity, or prior
+decisions.
+
+======================================================================
+6. PUBLIC-SAFE RECORD RESPONSIBILITIES
+======================================================================
+
+The following definitions describe responsibilities only. They are not
+proprietary production schemas.
+
+6.1 ACTION REQUEST RECORD (AQR)
+
+Purpose:
+Bind one requested action to the existing AR/TR/PD/AP decision chain.
+
+Responsibilities:
+- unique action-request identity;
+- references to the relevant AR, TR, PD, and AP identities;
+- requested action category and version;
+- intended target identity and target type;
+- scope or tenant context when applicable;
+- request creation and expiration timestamps;
+- approval identity, decision, scope, and validity interval;
+- expected result and independent verification requirement;
+- reversibility classification and rollback requirement;
+- request status and validation warnings;
+- no embedded secrets or executable credentials.
+
+6.2 EXECUTION RECORD (EXR)
+
+Purpose:
+Record executor-side validation and any permitted execution attempt without
+granting authorization.
+
+Responsibilities:
+- unique execution identity;
+- AQR reference and immutable correlation identifier;
+- executor identity and supported-action version;
+- validation results for approval, target, support, and duplicate checks;
+- idempotency key and prior-attempt disposition;
+- attempt number and permitted retry basis;
+- start, submission, completion, and timeout timestamps;
+- execution state and bounded result summary;
+- partial-execution indicator;
+- verification-required indicator;
+- no claim that execution success proves the intended condition.
+
+6.3 VERIFICATION RECORD (VR)
+
+Purpose:
+Record an independent observation of the intended post-action condition.
+
+Responsibilities:
+- unique verification identity;
+- references to AQR and EXR;
+- verification method, verifier identity, and independence statement;
+- expected condition and observed condition;
+- evidence references and observation timestamps;
+- succeeded, failed, unavailable, or inconclusive result;
+- confidence limitations and missing evidence;
+- rollback recommendation when applicable;
+- resolution-eligibility effect.
+
+6.4 ROLLBACK RECORD (RBR)
+
+Purpose:
+Record a required rollback and its independently verified outcome.
+
+Responsibilities:
+- unique rollback identity;
+- references to AQR, EXR, and triggering VR;
+- rollback trigger and authorization basis;
+- defined restoration target;
+- rollback attempt identity and timestamps;
+- rollback execution result;
+- independent rollback-verification method and evidence references;
+- verified, failed, unavailable, or inconclusive restoration result;
+- escalation and unresolved-state requirement.
+
+6.5 OUTCOME/AUDIT RECORD (OAR)
+
+Purpose:
+Provide a complete, immutable summary of the decision-to-outcome chain and
+determine whether resolution is eligible.
+
+Responsibilities:
+- unique outcome identity;
+- references to AR, TR, PD, AP, AQR, EXR, VR, and RBR when present;
+- ordered state-transition history and timestamps;
+- validation failures and blocked-transition reasons;
+- execution, verification, and rollback outcomes kept distinct;
+- final resolution-eligibility decision and supporting verification reference;
+- explicit unresolved reason when positive verification is absent;
+- evidence-integrity and audit-completeness indicators;
+- sanitization boundary for public reporting.
+
+History behavior:
+- preserve each AQR, EXR, VR, optional RBR, and its relationships;
+- preserve chronological ordering and the original state of each event;
+- append or reference later outcomes without replacing earlier history;
+- retain blocked, failed, partial, inconclusive, and rollback states;
+- represent an execution failure followed by successful rollback as two
+  distinct facts, not as a generic successful or completed outcome.
+
+6.6 TRACEABILITY CHAIN
+
+AR -> TR -> PD -> AP -> AQR -> EXR -> VR -> optional RBR -> OAR
+
+Each record has its own identity and lifecycle. A future record may reference
+an earlier record but may not overwrite, reinterpret, or silently replace it.
+
+======================================================================
+7. DETERMINISTIC STATE MODEL
+======================================================================
+
+READY_FOR_ACTION
+  Meaning: The existing Lab 17 upstream state indicates potential eligibility
+  for execution validation.
+  Allowed next state: EXECUTION_VALIDATION_PENDING.
+  Prohibition: No command may execute from this state.
+  Implementation boundary: Lab 19 consumes this conceptually but does not
+  implement a consumer, executor, or action adapter.
+
+EXECUTION_VALIDATION_PENDING
+  Meaning: Approval, target, support, scope, expiry, and duplicate checks are
+  pending or incomplete.
+  Allowed next states: EXECUTING or NOT_RESOLUTION_ELIGIBLE.
+
+EXECUTING
+  Meaning: All pre-execution validations passed and one bounded attempt is in
+  progress.
+  Allowed next states: EXECUTION_FAILED or
+  EXECUTION_COMPLETED_UNVERIFIED.
+
+EXECUTION_FAILED
+  Meaning: The action did not complete as intended, timed out, or returned an
+  unacceptable result.
+  Allowed next states: ROLLBACK_REQUIRED or NOT_RESOLUTION_ELIGIBLE.
+
+EXECUTION_COMPLETED_UNVERIFIED
+  Meaning: The executor reports completion, but the intended condition has not
+  been independently verified.
+  Allowed next states: VERIFICATION_SUCCEEDED, VERIFICATION_FAILED, or
+  VERIFICATION_INCONCLUSIVE.
+
+VERIFICATION_SUCCEEDED
+  Meaning: Independent evidence positively confirms the intended condition.
+  Allowed next state: RESOLUTION_ELIGIBLE.
+
+VERIFICATION_FAILED
+  Meaning: Independent evidence contradicts or does not confirm the intended
+  condition.
+  Allowed next states: ROLLBACK_REQUIRED or NOT_RESOLUTION_ELIGIBLE.
+
+VERIFICATION_INCONCLUSIVE
+  Meaning: Verification is unavailable, incomplete, stale, or ambiguous.
+  Allowed next states: ROLLBACK_REQUIRED when required by policy, otherwise
+  NOT_RESOLUTION_ELIGIBLE.
+
+ROLLBACK_REQUIRED
+  Meaning: The execution contract requires restoration because of failure,
+  partial execution, adverse verification, or another frozen trigger.
+  Allowed next state: ROLLBACK_EXECUTING.
+
+ROLLBACK_EXECUTING
+  Meaning: One authorized rollback attempt is in progress.
+  Allowed next states: ROLLBACK_VERIFIED or ROLLBACK_FAILED.
+
+ROLLBACK_VERIFIED
+  Meaning: Independent evidence confirms restoration to the defined safe
+  condition.
+  Allowed next state: NOT_RESOLUTION_ELIGIBLE, followed by reassessment or
+  human review as appropriate. Successful rollback proves reversal of the
+  attempted change; it does not prove that the original security condition was
+  resolved. A separate evidence chain would be required to evaluate that
+  underlying condition.
+
+ROLLBACK_FAILED
+  Meaning: Restoration failed or could not be verified.
+  Allowed next state: NOT_RESOLUTION_ELIGIBLE with escalation.
+
+RESOLUTION_ELIGIBLE
+  Meaning: Positive independent verification permits a separate resolution
+  decision. This state does not itself mark the condition resolved.
+
+NOT_RESOLUTION_ELIGIBLE
+  Meaning: The evidence does not permit resolution. The condition remains
+  unresolved and the reason remains auditable.
+
+======================================================================
+8. APPROVAL FRESHNESS AND TARGET VALIDATION MATRIX
+======================================================================
+
+Condition                     Required decision                  Transition
+----------------------------  ---------------------------------  -----------------------------
+Approval present and current  Continue validation                Remain pending
+Approval missing              Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Approval stale/expired        Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Approval denied               Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Approval unverifiable         Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Wrong action in approval      Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Wrong target in approval      Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Target unique and in scope    Continue validation                Remain pending
+Target ambiguous              Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Target nonexistent            Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Target outside scope          Fail closed                        NOT_RESOLUTION_ELIGIBLE
+Target changed after approval Require new validation/approval    NOT_RESOLUTION_ELIGIBLE
+Action supported              Continue duplicate check           Remain pending
+Action unsupported            Fail closed                        NOT_RESOLUTION_ELIGIBLE
+All checks passed             Permit one bounded attempt         EXECUTING
+
+======================================================================
+9. FAILURE AND ROLLBACK DECISION TABLE
+======================================================================
+
+Observed condition              Required response                 Resolution effect
+------------------------------  --------------------------------  ---------------------
+Pre-execution validation fails  Do not execute; audit reason      Prohibited
+Duplicate already completed     Return prior disposition          Based on prior VR only
+Duplicate currently executing   Do not execute again              Prohibited pending VR
+Submission rejected             Record execution failure          Prohibited
+Execution timeout               Treat as uncertain; verify state   Prohibited
+Execution partial               Require rollback assessment        Prohibited
+Execution reports success       Require independent verification   Still prohibited
+Verification succeeds           Record positive VR                 Eligible, not resolved
+Verification fails              Roll back when required            Prohibited
+Verification unavailable        Remain unresolved; escalate        Prohibited
+Rollback required               Execute only defined rollback      Prohibited
+Rollback reports success        Verify restoration independently   Prohibited pending proof
+Rollback verification succeeds Record ROLLBACK_VERIFIED, then      Original condition remains
+                               NOT_RESOLUTION_ELIGIBLE             unresolved; reassess/review
+Rollback verification fails     Escalate; record failure           Prohibited
+Rollback execution fails        Escalate; preserve evidence        Prohibited
+
+======================================================================
+10. TABLETOP ACCEPTANCE-CASE MATRIX
+======================================================================
+
+ID   Case                              Expected behavior / allowed transition
+---- --------------------------------- ---------------------------------------
+T01  Valid authorization               Continue to remaining validations only.
+T02  Missing approval                  Fail closed; no execution.
+T03  Stale approval                    Fail closed; require new approval.
+T04  Denied approval                   Fail closed; no execution or retry.
+T05  Approval for wrong target         Fail closed; no target substitution.
+T06  Approval for wrong action         Fail closed; no action substitution.
+T07  Ambiguous target                  Fail closed; require explicit identity.
+T08  Nonexistent target                Fail closed; no execution.
+T09  Unsupported action                Fail closed; no fallback action.
+T10  Duplicate action request          Return prior/current disposition; do not
+                                         execute twice.
+T11  Repeated execution attempt        Block unless an explicit retry contract
+                                         and current authorization permit it.
+T12  Execution success                 Move only to
+                                         EXECUTION_COMPLETED_UNVERIFIED.
+T13  Execution failure                 Move to EXECUTION_FAILED; evaluate
+                                         rollback; prohibit resolution.
+T14  Partial execution                 Treat as failure/uncertain; require
+                                         rollback assessment and verification.
+T15  Verification success              Move to VERIFICATION_SUCCEEDED, then
+                                         RESOLUTION_ELIGIBLE.
+T16  Verification failure              Move to VERIFICATION_FAILED; prohibit
+                                         resolution; roll back when required.
+T17  Verification unavailable          Move to VERIFICATION_INCONCLUSIVE; keep
+                                         unresolved.
+T18  Rollback required                 Move only to ROLLBACK_EXECUTING after
+                                         rollback authorization is validated.
+T19  Rollback success response         Remain unverified until independent
+                                         restoration evidence exists.
+T20  Rollback verification failure     Move to ROLLBACK_FAILED; escalate and
+                                         keep unresolved.
+T21  Rollback failure                  Move to ROLLBACK_FAILED; preserve full
+                                         evidence and escalate.
+T22  Resolution attempted without VR   Reject transition; record prohibited
+                                         attempt; keep unresolved.
+
+Clarification for T19-T21:
+Successful independent rollback verification moves through ROLLBACK_VERIFIED
+to NOT_RESOLUTION_ELIGIBLE. It proves restoration of the attempted change, not
+resolution of the original security condition. Reassessment or human review
+is required as appropriate.
+
+======================================================================
+11. PUBLIC-SAFE THREAT AND SAFETY ANALYSIS
+======================================================================
+
+Threat / failure mode                 Required control
+------------------------------------  ----------------------------------------
+Eligibility confused with authority   Separate AQR validation from upstream
+                                      READY_FOR_ACTION.
+Executor self-authorizes              Executor consumes an external approval
+                                      reference and may not create approval.
+Expired approval reused               Freshness and validity interval check.
+Action/target substitution            Exact approval binding and target match.
+Duplicate delivery                    Stable idempotency key and prior-attempt
+                                      lookup.
+Timeout followed by blind retry       Treat outcome as uncertain and verify
+                                      before any retry.
+Unsupported action fallback           Fail closed; no nearest-action mapping.
+False success from executor           Independent verification requirement.
+Verification by same success signal   Separate verifier evidence and identity.
+Partial execution hidden              Explicit partial state and rollback gate.
+Rollback assumed successful           Independent rollback verification.
+Premature resolution                  OAR requires positive VR reference.
+Audit gaps                            Immutable ordered references and visible
+                                      blocked-transition reasons. Later events
+                                      append to history and never replace an
+                                      earlier request, failure, verification,
+                                      or rollback fact.
+Evidence or log as instruction        Treat all collected content as untrusted
+                                      evidence, never executable direction.
+
+Residual uncertainty:
+
+- Exact production time windows, target-authority sources, retry limits, and
+  verifier implementations remain future private implementation decisions.
+- Some actions may be non-reversible. They require stricter eligibility and
+  are excluded from the first controlled implementation candidate.
+- Independence may be constrained by a target platform. Any limitation must
+  be explicit and may block resolution eligibility.
+
+======================================================================
+12. PASS / FAIL CRITERIA
+======================================================================
+
+DESIGN VALIDATION PASS requires all of the following:
+
+- all T01-T22 cases have deterministic expected outcomes;
+- unsafe cases fail closed;
+- no executor grants its own authorization;
+- approval is bound to action and target and checked for freshness;
+- targets are explicit and validated;
+- unsupported actions do not execute;
+- duplicate requests cannot cause duplicate execution;
+- command submission is distinct from execution completion;
+- execution completion is distinct from verification;
+- verification failure or unavailability prohibits resolution;
+- reversible actions define rollback before execution;
+- rollback completion requires independent verification;
+- successful rollback leads to NOT_RESOLUTION_ELIGIBLE and does not prove the
+  original security condition resolved;
+- resolution eligibility requires positive independent verification;
+- prior AR/TR/PD/AP records remain preserved and traceable;
+- OAR preserves complete chronological history without collapsing or hiding
+  earlier requests, attempts, failures, verification, or rollback activity;
+- no public artifact exposes private implementation detail;
+- no action is executed and no endpoint is modified during Lab 19.
+
+FAIL applies if any unsafe case can reach EXECUTING or RESOLUTION_ELIGIBLE, if
+record relationships are ambiguous, if duplicate execution is possible, if
+success can bypass verification, if rollback can be assumed without evidence,
+or if private implementation details enter public artifacts.
+
+INCOMPLETE applies when a requirement cannot be evaluated without guessing.
+The uncertainty must remain visible and the affected transition must remain
+blocked.
+
+======================================================================
+13. INTERNAL CONSISTENCY REVIEW
+======================================================================
+
+Review checks:
+
+- Every state used by a tabletop case exists in the state model: PASS.
+- Every allowed transition respects frozen architectural rules: PASS.
+- Every unsafe approval, target, support, duplicate, verification, rollback,
+  and resolution condition fails closed: PASS.
+- Execution completion cannot directly reach resolution eligibility: PASS.
+- Rollback success cannot be accepted without verification: PASS.
+- ROLLBACK_VERIFIED transitions to NOT_RESOLUTION_ELIGIBLE and does not imply
+  resolution of the original condition: PASS.
+- OAR history preserves chronological requests, attempts, failures,
+  verification, and rollback activity without overwrite or collapse: PASS.
+- Existing AR/TR/PD/AP identities remain preserved: PASS.
+- Public artifacts describe responsibilities without production schemas:
+  PASS.
+- No implementation, endpoint activity, or remediation occurred: PASS.
+
+LAB 19 DESIGN VALIDATION RESULT: PASS
+
+This PASS validates the frozen design contract only. It explicitly confirms:
+
+- no action was executed;
+- no endpoint was modified;
+- no remediation occurred;
+- no live executor exists as a result of this lab;
+- no condition was marked resolved.
+
+======================================================================
+14. PUBLIC / PRIVATE BOUNDARY
+======================================================================
+
+PUBLIC-SAFE
+
+- vendor-neutral lifecycle and diagrams;
+- high-level record responsibilities and relationships;
+- deterministic state names and transitions;
+- approval, target, duplicate, failure, and rollback rules;
+- tabletop acceptance cases;
+- sanitized design-validation results;
+- public-safe threat and safety analysis.
+
+PRIVATE
+
+- Business Guardian source code;
+- action adapters and connectors;
+- proprietary action-selection logic;
+- production policy and permission catalogs;
+- customer-specific authorization;
+- credentials, tokens, keys, and certificates;
+- production verification and rollback implementation;
+- commercial orchestration logic;
+- private runtime configuration and raw evidence.
+
+======================================================================
+15. COMPLETION AND STOP CONDITIONS
+======================================================================
+
+Lab 19 stops after the requirements/design package and internal consistency
+review.
+
+No implementation may begin under this lab. No VM may be started. No endpoint
+may be changed. No repository commit, push, or publication is authorized. The
+Master Index v1.7 remains unchanged. Lab 20 does not begin.
+
+END OF REQUIREMENTS AND VALIDATION PLAN

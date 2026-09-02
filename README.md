@@ -588,9 +588,49 @@ No Business Guardian source code, connector internals, credentials, certificates
 
 ---
 
+# Defining the Controlled Execution Boundary
+
+### [Lab 19 — Controlled Action Execution Boundary: Requirements, Safety Contracts, and Validation Design](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-19-controlled-action-execution-boundary-requirements-safety-contracts-validation-design/README.md)
+
+Lab 18 proved that live evidence could reach investigation safely. Lab 19 addressed the next architectural question before any execution code was written:
+
+> What must be proven before an eligible, approved security response may execute, and what evidence is required before any condition may be marked resolved?
+
+Lab 19 froze a vendor-neutral execution contract beginning at the existing `READY_FOR_ACTION` boundary:
+
+```text
+READY_FOR_ACTION
+      ↓
+Execution Validation
+      ↓
+Controlled Execution
+      ↓
+Independent Verification
+      ↓
+Rollback and Rollback Verification When Required
+      ↓
+Outcome / Audit
+      ↓
+Resolution Eligibility
+```
+
+The design preserves the complete record chain:
+
+```text
+AR → TR → PD → AP → AQR → EXR → VR → optional RBR → OAR
+```
+
+Twenty-two deterministic tabletop cases confirmed that missing or stale approval, invalid targets, unsupported actions, duplicates, failed or inconclusive verification, and rollback failures remain blocked and auditable.
+
+Lab 19 is design-only. It created no action consumer, executor, adapter, remediation capability, or resolved condition. Successful rollback proves reversal of an attempted change; it does not prove that the original security condition was resolved.
+
+**Final design validation: PASS — DESIGN CONTRACT ONLY**
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete through **Lab 18 — Controlled Adversary Simulation and End-to-End Detection Validation**.
+Project Athenaeum is complete through **Lab 19 — Controlled Action Execution Boundary: Requirements, Safety Contracts, and Validation Design**.
 
 The technical progression now looks like this:
 
@@ -618,6 +658,8 @@ Determine Action Eligibility
 Validate Live Evidence End to End
       ↓
 Route Conservatively to Human Review
+      ↓
+Define the Controlled Execution Safety Contract
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -633,6 +675,8 @@ Lab 16 added deterministic triage and decision routing.
 Lab 17 added deterministic policy evaluation, approval control, fail-closed authorization behavior, and separate Policy Decision and Approval Record identities.
 
 Lab 18 validated the live read-only evidence path twice and preserved the no-action, no-resolution boundary.
+
+Lab 19 defined and tabletop-validated the contracts required before future controlled execution, verification, rollback, audit, or resolution eligibility.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -658,9 +702,11 @@ Lab 18 asked:
 
 **Can live lab evidence travel through the complete detection and investigation path without losing traceability or crossing into action?**
 
-Before defining another implementation lab, the project will compare the validated public lifecycle against the private Business Guardian capability roadmap. That review will identify what still needs technical validation and what has portfolio value without duplicating private work.
+Lab 19 asked:
 
-Any later move toward controlled execution and proving a defensive result remains a separate boundary.
+**What must be proven before an eligible, approved security response may execute, and what evidence is required before any condition may be marked resolved?**
+
+Lab 20 is the next planned boundary and has not started. It may validate controlled orchestration using synthetic or dry-run behavior only after a separately reviewed and frozen scope. No live executor or remediation capability exists as a result of Lab 19.
 
 Conceptually:
 
@@ -684,11 +730,7 @@ Verify the Result
 Audit / Outcome
 ```
 
-The next public lab will not automatically be created just because this is the next box in the diagram.
-
-Before selecting it, the public Project Athenaeum roadmap will be compared against work already completed in the private Business Guardian repository.
-
-That protects the project from duplicate implementation and keeps proprietary product behavior private.
+The next implementation step must reuse the frozen Lab 19 contract, preserve the public/private boundary, and avoid duplicating private Business Guardian work.
 
 Whatever comes next must preserve the same rule:
 
