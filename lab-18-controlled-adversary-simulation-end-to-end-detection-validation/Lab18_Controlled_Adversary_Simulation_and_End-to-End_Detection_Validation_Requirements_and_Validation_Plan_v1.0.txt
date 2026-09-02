@@ -1,0 +1,721 @@
+Lab 18 - Controlled Adversary Simulation and End-to-End Detection Validation
+Requirements and Validation Plan
+
+Version:
+1.0
+
+Date:
+2026-08-28
+
+======================================================================
+1. PURPOSE AND OBJECTIVE
+======================================================================
+
+Lab Number:
+18
+
+Lab Title:
+Controlled Adversary Simulation and End-to-End Detection Validation
+
+Purpose:
+
+The purpose of Lab 18 is to perform a controlled, authorized, end-to-end
+validation of the Project Athenaeum / Business Guardian detection and
+investigation workflow using owned, isolated virtual machines.
+
+Objective:
+
+Lab 18 must prove that a deliberately generated, bounded test event can be
+observed across the complete read-only evidence path:
+
+Kali
+    -> Windows 11 workstation
+    -> Wazuh
+    -> Business Guardian read-only evidence connector
+    -> investigation workflow
+    -> sanitized validation evidence
+
+The lab validates detection, evidence collection, traceability, investigation
+workflow behavior, and safe documentation boundaries. It does not authorize
+remediation, action execution, production use, or a determination that the
+underlying condition is resolved.
+
+These requirements are frozen before any Lab 18 VM activity begins.
+
+======================================================================
+2. ARCHITECTURAL POSITION AFTER LABS 15-17
+======================================================================
+
+Lab 15 established structured alert records, validation states, stable record
+identity, processing history, and source traceability.
+
+Lab 16 established deterministic alert triage and next-stage routing without
+treating severity or classification as proof of malicious, benign, safe, or
+resolved status.
+
+Lab 17 established deterministic policy and approval boundaries without
+executing defensive action.
+
+Lab 18 validates the live evidence and investigation path that feeds and
+supports those documented control concepts. It tests whether authorized lab
+activity can be detected, collected read-only, investigated, traced, and
+converted into sanitized evidence without crossing into remediation or action
+execution.
+
+Lab 18 does not replace or reimplement Labs 15-17. It demonstrates how live
+Wazuh evidence and the private Business Guardian investigation capability fit
+into the documented lifecycle.
+
+The private Business Guardian read-only investigation vertical slice has
+already been validated against a passing baseline of 264 tests. Lab 18 may
+reference that validated baseline as readiness evidence. It must not expose,
+copy, or reproduce proprietary implementation details from the private
+repository.
+
+======================================================================
+3. END-TO-END VALIDATION PATH
+======================================================================
+
+The frozen validation path is:
+
+1. Kali generates only an explicitly permitted controlled test condition.
+
+2. The owned Windows 11 workstation receives or produces the expected local
+   operating-system or security evidence.
+
+3. The Wazuh agent and Wazuh server ingest, preserve, and expose relevant
+   detection or event evidence.
+
+4. The private Business Guardian connector performs read-only evidence
+   collection from the authorized Wazuh source.
+
+5. The Business Guardian investigation workflow creates or presents an
+   investigation view that preserves source evidence, uncertainty, and
+   traceability.
+
+6. Selected evidence is manually reviewed and sanitized for Project
+   Athenaeum documentation.
+
+7. Public-safe Lab Notes, Screenshot Log entries, screenshots, and later
+   validation results document what was observed without exposing private
+   implementation details, credentials, sensitive configuration, or unsafe
+   operational data.
+
+Each stage must be validated independently. Evidence observed at a later stage
+must not be used to claim that an earlier stage worked unless traceability back
+to that earlier stage is preserved.
+
+======================================================================
+4. AUTHORIZED LAB BOUNDARIES
+======================================================================
+
+All Lab 18 activity is confined to owned and authorized isolated virtual machines under the operator's control.
+
+Authorization applies only to the specifically identified Lab 18 VM
+environment and its isolated lab network. It does not extend to public
+internet hosts, third-party systems, employer systems, school systems,
+neighbors, shared networks, cloud services, or any device not explicitly
+owned and included in the lab.
+
+Before controlled activity begins, the operator must verify:
+
+- the intended VMs are running;
+- the VMs are attached only to the expected isolated lab network;
+- the Windows 11 target identity and IP address match the documented lab
+  target;
+- the Kali source identity and IP address match the documented lab source;
+- the Wazuh server and agent relationship is healthy;
+- no production or unrelated network route is in scope;
+- the test activity and stop conditions are understood.
+
+If the environment identity or network boundary cannot be confirmed, the test
+must not begin.
+
+======================================================================
+5. SYSTEMS IN SCOPE
+======================================================================
+
+The following systems are in scope only when they are the owned, isolated Lab
+18 instances:
+
+- Kali Linux VM used as the controlled test source;
+- BusinessGuardian-Win11-Workstation or the explicitly documented owned
+  Windows 11 lab workstation VM;
+- BusinessGuardian-Wazuh-Server or the explicitly documented owned Wazuh lab
+  server VM;
+- the Wazuh agent installed on the Windows 11 lab workstation;
+- the authorized Wazuh dashboard, API, indexer, or evidence source needed for
+  read-only validation;
+- the private Business Guardian read-only evidence connector and investigation
+  workflow used only against the authorized lab Wazuh source;
+- the local Project Athenaeum Lab 18 documentation and AI artifact folders;
+- manually selected sanitized evidence derived from the authorized test.
+
+======================================================================
+6. SYSTEMS AND NETWORKS OUT OF SCOPE
+======================================================================
+
+The following are out of scope:
+
+- the public internet as a target;
+- any third-party IP address, domain, endpoint, account, or service;
+- the host operating system except for normal VM operation and evidence
+  capture;
+- home, guest, corporate, school, public, or shared networks;
+- routers, access points, printers, phones, tablets, cameras, and other local
+  devices not explicitly designated as Lab 18 VMs;
+- cloud infrastructure or externally hosted services;
+- production or customer Business Guardian environments;
+- any Wazuh deployment other than the owned lab deployment;
+- credentials, secrets, tokens, or private data unrelated to the controlled
+  lab;
+- either Git repository as a target of test activity;
+- any system whose ownership, authorization, identity, or isolation is
+  uncertain.
+
+No discovery, probing, authentication activity, exploitation, or traffic may
+be directed toward an out-of-scope system or network.
+
+======================================================================
+7. PERMITTED CONTROLLED TEST ACTIVITY
+======================================================================
+
+Permitted activity must be minimal, bounded, reversible where applicable, and
+selected only to produce an expected observable event in the owned lab.
+
+Permitted categories include:
+
+- connectivity verification between the explicitly documented lab VMs;
+- Wazuh agent-health and evidence-source verification;
+- a small, rate-limited network discovery or connection attempt directed only
+  at the owned Windows 11 lab workstation;
+- a small, rate-limited set of controlled failed-authentication events using
+  a lab-only account or otherwise approved lab mechanism;
+- a benign controlled Windows event created specifically for detection and
+  evidence validation;
+- read-only inspection of Windows, Wazuh, and Business Guardian evidence;
+- manual comparison of timestamps, identifiers, source/target details, rule
+  information, event context, and investigation records;
+- repeat execution of the same approved test condition when required to prove
+  repeatability.
+
+The exact test event must be selected and documented before execution. Only
+one bounded test path should be introduced at a time so evidence can be traced
+without ambiguity.
+
+======================================================================
+8. PROHIBITED ACTIVITY
+======================================================================
+
+Lab 18 prohibits:
+
+- activity against any system not explicitly in scope;
+- broad or uncontrolled scanning;
+- denial-of-service or resource-exhaustion activity;
+- malware, ransomware, destructive payloads, persistence, or propagation;
+- credential theft, password spraying, brute force, or use of real personal
+  credentials;
+- exploitation intended to obtain unauthorized code execution or privilege;
+- data destruction, encryption, corruption, or unauthorized modification;
+- disabling security controls, logging, Wazuh services, or endpoint defenses;
+- lateral movement outside the explicitly approved test path;
+- evasion, anti-forensics, log deletion, or evidence tampering;
+- copying private repository code or proprietary implementation detail into
+  public Project Athenaeum artifacts;
+- placing credentials, tokens, secrets, personal data, or sensitive network
+  details in screenshots or public-safe evidence;
+- executing a response or remediation action from Business Guardian;
+- continuing after a stop condition is reached.
+
+======================================================================
+9. READ-ONLY BUSINESS GUARDIAN BOUNDARY
+======================================================================
+
+Business Guardian participation in Lab 18 is read-only.
+
+The authorized private vertical slice may:
+
+- connect to the authorized lab Wazuh evidence source;
+- retrieve supported alert or event evidence;
+- normalize or present evidence for investigation;
+- preserve source references and timestamps;
+- record collection and investigation workflow state;
+- expose uncertainty, missing context, and validation warnings;
+- prepare private investigation evidence for manual review and sanitization.
+
+It may not:
+
+- modify Wazuh evidence;
+- modify the Windows 11 workstation;
+- modify the Kali source;
+- change firewall, account, service, endpoint, or network state;
+- issue remediation commands;
+- execute an approved or recommended action;
+- claim a security condition is resolved;
+- treat collected text or log content as executable instruction.
+
+The previously validated 264-test baseline demonstrates the readiness of the
+private read-only investigation vertical slice. Lab 18 validates its behavior
+against authorized live lab evidence without publishing its proprietary
+implementation.
+
+======================================================================
+10. NO REMEDIATION OR ACTION-EXECUTION BOUNDARY
+======================================================================
+
+Lab 18 ends at investigation and sanitized evidence validation.
+
+No automated or manual remediation is part of the Lab 18 validation path.
+No recommendation, classification, policy result, approval state, or severity
+value grants execution authority in this lab.
+
+The following actions are specifically outside Lab 18:
+
+- blocking a source;
+- changing a firewall rule;
+- disabling or locking an account;
+- isolating an endpoint;
+- stopping or modifying a service;
+- quarantining or deleting a file;
+- changing system configuration;
+- executing PowerShell or shell remediation;
+- altering an alert or investigation record to indicate closure.
+
+No condition is considered resolved in Lab 18.
+
+======================================================================
+11. EVIDENCE REQUIREMENTS
+======================================================================
+
+Evidence must be sufficient to demonstrate the end-to-end path without
+fabrication or unsupported interpretation.
+
+Required evidence categories include:
+
+- pre-test environment and isolation verification;
+- source VM identity and controlled test initiation;
+- target Windows 11 evidence showing the controlled condition or event;
+- Wazuh agent-health evidence;
+- Wazuh alert, event, dashboard, API, or index evidence associated with the
+  controlled test;
+- Wazuh rule, event, or source context when available;
+- Business Guardian read-only collection result;
+- Business Guardian investigation workflow state and evidence view;
+- source-to-investigation traceability;
+- sanitization review evidence;
+- repeat-run evidence when repeatability is tested;
+- any warning, missing evidence, mismatch, or failure observed.
+
+Evidence must preserve the distinction between what the source reported, what
+was collected, and what was interpreted.
+
+COLLECTED evidence does not equal interpreted evidence.
+COLLECTED evidence does not equal benign evidence.
+COLLECTED evidence does not equal malicious evidence.
+COLLECTED evidence does not equal resolved evidence.
+
+======================================================================
+12. TRACEABILITY REQUIREMENTS
+======================================================================
+
+A reviewer must be able to trace:
+
+Controlled Test Activity
+    -> Kali source identity and timestamp
+    -> Windows 11 target identity and observed event
+    -> Wazuh source evidence and detection timestamp
+    -> Wazuh rule/event/source reference when available
+    -> Business Guardian collection record or source reference
+    -> Business Guardian investigation workflow evidence
+    -> sanitized Project Athenaeum validation evidence
+
+Traceability should preserve, when available and safe to document:
+
+- test identifier;
+- source VM and target VM roles;
+- timestamps and time zone or UTC representation;
+- source and destination addresses in sanitized or lab-safe form;
+- Windows event identifiers and provider information;
+- Wazuh alert, event, rule, agent, or source identifiers;
+- Business Guardian collection and investigation references;
+- evidence filenames;
+- screenshot filenames;
+- observed status at each stage;
+- warnings, gaps, or failures.
+
+Missing identifiers or context must be recorded as unavailable. They must not
+be invented or silently substituted.
+
+======================================================================
+13. SANITIZATION AND PUBLICATION REQUIREMENTS
+======================================================================
+
+Before evidence enters public Project Athenaeum material, it must be reviewed
+for:
+
+- credentials, tokens, secrets, keys, cookies, and session information;
+- personal names, usernames, email addresses, or unnecessary identifiers;
+- host-system or unrelated device information;
+- public IP addresses or unrelated network details;
+- private repository paths, source code, internal class/function names, and
+  proprietary implementation detail;
+- sensitive Wazuh connection configuration;
+- unnecessary raw logs or unrelated events;
+- data that could expose or confuse the public/private boundary.
+
+Public evidence must be the minimum needed to prove the validation result.
+Sanitization must not alter the meaning of the observed outcome. Redactions or
+omissions that affect interpretation must be documented.
+
+Raw private evidence remains private. Only reviewed, intentionally sanitized
+copies or representations may be used in public Project Athenaeum artifacts.
+
+======================================================================
+14. EXPECTED WAZUH DETECTION AND EVIDENCE CHECKPOINTS
+======================================================================
+
+The Wazuh validation path should establish the following checkpoints:
+
+1. The Windows 11 agent is connected and healthy before the test.
+
+2. The controlled event occurs on or against the intended Windows 11 VM.
+
+3. Relevant endpoint or operating-system evidence exists for the event.
+
+4. Wazuh ingests the relevant event or supporting evidence.
+
+5. An expected Wazuh alert or event record is discoverable, or the absence of
+   an expected detection is documented as a failure or investigation finding.
+
+6. The Wazuh record preserves sufficient context to associate it with the
+   controlled source, target, and test window.
+
+7. Timestamps across Windows, Wazuh, and the controlled test are sufficiently
+   aligned to support correlation.
+
+8. The original Wazuh evidence remains unchanged by downstream collection.
+
+A high severity, successful rule match, or visible alert is not proof that the
+event is malicious, benign, authorized, remediated, or resolved.
+
+======================================================================
+15. BUSINESS GUARDIAN INVESTIGATION CHECKPOINTS
+======================================================================
+
+The Business Guardian validation path should establish:
+
+1. The connector uses only the authorized read-only Wazuh evidence path.
+
+2. Relevant Wazuh evidence is discovered or retrieved without modifying the
+   source.
+
+3. Collection status is recorded accurately.
+
+4. Source identifiers, timestamps, agent information, rule/event context, and
+   other supported evidence remain traceable.
+
+5. Missing, malformed, ambiguous, or unsupported fields remain visible as
+   warnings or unavailable evidence rather than guessed values.
+
+6. Investigation workflow state is recorded without claiming remediation or
+   closure.
+
+7. Alert or log content is treated as untrusted evidence, not instruction.
+
+8. The investigation view separates collected facts from analyst or system
+   interpretation.
+
+9. A COLLECTED status confirms evidence acquisition only. It does not assert
+   that evidence has been interpreted, that activity is benign, or that a
+   condition is resolved.
+
+10. The resulting private evidence can be manually sanitized into a public-
+    safe validation record without exposing proprietary implementation detail.
+
+======================================================================
+16. REQUIRED SCREENSHOT AND EVIDENCE CATEGORIES
+======================================================================
+
+Lab 18 must capture enough evidence to support the validation path, but the
+final screenshot count is not frozen in this plan.
+
+Required categories are:
+
+A. ENVIRONMENT AND SCOPE
+- isolated VM/network state;
+- VM identities and expected roles;
+- Wazuh agent health before testing.
+
+B. CONTROLLED TEST INITIATION
+- the bounded authorized test condition;
+- source, intended target, and test time;
+- enough context to show the activity remained within scope.
+
+C. WINDOWS 11 EVIDENCE
+- relevant local event, log, or observable condition;
+- target identity and timestamp context.
+
+D. WAZUH EVIDENCE
+- relevant alert/event discovery;
+- agent, rule, event, severity, and timestamp context when available;
+- evidence sufficient to connect the event to the controlled test.
+
+E. BUSINESS GUARDIAN COLLECTION
+- read-only collection status;
+- source reference and supported collected evidence;
+- warnings or unavailable fields when present.
+
+F. INVESTIGATION WORKFLOW
+- investigation state;
+- collected-versus-interpreted evidence separation;
+- traceability and unresolved-status evidence.
+
+G. REPEATABILITY
+- repeat test initiation when authorized;
+- second-run Wazuh and Business Guardian evidence;
+- proof that prior evidence was not overwritten or modified.
+
+H. SANITIZATION AND FINAL VALIDATION
+- public-safe evidence selection;
+- expected-versus-observed result summary;
+- documented PASS, FAIL, warning, and gap outcomes.
+
+Screenshots must follow the established Project Athenaeum naming pattern and
+must be recorded in the Lab 18 Screenshot Log. Duplicate screenshots that add
+no validation value should not be captured merely to increase the count.
+
+======================================================================
+17. PASS / FAIL ACCEPTANCE CRITERIA
+======================================================================
+
+PASS requires all of the following:
+
+- all activity remained inside the owned, authorized isolated VM environment;
+- the selected controlled test was permitted and bounded;
+- the Windows 11 target produced the expected event or observable evidence;
+- Wazuh ingested relevant evidence;
+- the expected Wazuh detection/evidence record was found, or an explicitly
+  defined evidence-only outcome was satisfied;
+- Business Guardian collected supported evidence through the read-only path;
+- Business Guardian did not modify Wazuh, Windows, Kali, or network state;
+- source-to-investigation traceability was preserved;
+- COLLECTED was not treated as interpreted, benign, malicious, or resolved;
+- no remediation or defensive action was executed;
+- no condition was marked resolved;
+- required evidence categories were documented;
+- public evidence was sanitized without exposing proprietary detail;
+- repeatability requirements passed when the repeat run was performed;
+- no stop condition was violated;
+- observed results were documented honestly, including warnings and gaps.
+
+FAIL applies if any required condition above is not met, including:
+
+- activity reached or may have reached an out-of-scope system;
+- the VM/network boundary was not verified;
+- expected Windows or Wazuh evidence was absent without a documented supported
+  alternative;
+- Business Guardian could not collect or trace the expected evidence;
+- source evidence was modified;
+- a remediation or execution boundary was crossed;
+- collected evidence was misrepresented as interpreted or resolved;
+- sensitive or proprietary information entered public evidence;
+- evidence could not be traced reliably across the workflow;
+- failures were hidden, overwritten, or reclassified to force a PASS.
+
+A partial path is not an end-to-end PASS. Individual stages may pass while the
+overall Lab 18 result remains FAIL or INCOMPLETE.
+
+======================================================================
+18. REPEATABILITY CRITERIA
+======================================================================
+
+After the first controlled run is documented and the environment remains safe,
+the same approved test condition may be repeated.
+
+Repeatability requires:
+
+- the same authorized source and target roles;
+- the same bounded test definition;
+- the same expected evidence path;
+- equivalent Windows and Wazuh evidence categories;
+- equivalent Business Guardian collection and investigation behavior;
+- preservation of original source evidence;
+- preservation of first-run screenshots, notes, and validation evidence;
+- new run timestamps and run-specific evidence references;
+- no silent overwriting of prior outputs or records;
+- documented explanation for expected nondeterministic values such as unique
+  identifiers, ingestion timestamps, or record ordering;
+- consistent safety and read-only boundaries across runs.
+
+Repeatability does not require byte-identical live evidence. It requires the
+same controlled condition to produce materially consistent and traceable
+workflow outcomes.
+
+======================================================================
+19. STOP CONDITIONS
+======================================================================
+
+Testing must stop immediately if:
+
+- any source, target, route, or system identity is uncertain;
+- activity may be leaving the isolated lab network;
+- an unexpected non-lab system responds;
+- test volume or behavior exceeds the documented bound;
+- VM, host, Wazuh, or network stability is degraded unexpectedly;
+- the Wazuh agent or server becomes unhealthy in a way that could invalidate
+  evidence;
+- credentials, secrets, private data, or unrelated evidence appear in a
+  planned public capture;
+- Business Guardian attempts or appears able to modify source or endpoint
+  state;
+- any remediation or action-execution behavior is triggered;
+- evidence integrity or timestamps cannot be trusted;
+- the operator cannot distinguish the controlled event from unrelated
+  activity;
+- a prohibited activity occurs or is about to occur;
+- authorization or ownership becomes unclear.
+
+After a stop condition, preserve existing evidence, document what happened,
+and do not resume until the cause is understood and the scope remains
+authorized.
+
+======================================================================
+20. FAILURE-HANDLING EXPECTATIONS
+======================================================================
+
+Lab 18 failures must fail safely and remain visible.
+
+Required behavior:
+
+- stop the affected test path when safety or scope is uncertain;
+- do not broaden activity to compensate for missing evidence;
+- do not increase test intensity merely to force an alert;
+- do not fabricate timestamps, identifiers, source context, or interpretations;
+- record the stage at which the failure occurred;
+- preserve available source evidence and prior-run evidence;
+- distinguish no event, no ingestion, no detection, collection failure,
+  investigation failure, traceability failure, and sanitization failure;
+- keep warnings separate from confirmed failures;
+- allow an individual stage to fail without misrepresenting other stages;
+- document expected versus observed behavior;
+- require human review before any retest;
+- use a new run reference for a retest rather than overwriting the failed run.
+
+Failure is an acceptable validation result when documented accurately. A false
+PASS is not acceptable.
+
+======================================================================
+21. PUBLIC PROJECT ATHENAEUM / PRIVATE BUSINESS GUARDIAN BOUNDARY
+======================================================================
+
+Public Project Athenaeum Lab 18 may include:
+
+- this requirements and validation plan;
+- public-safe Lab Notes and Screenshot Log;
+- sanitized screenshots;
+- sanitized descriptions of the authorized lab architecture;
+- sanitized Wazuh evidence;
+- sanitized, high-level Business Guardian collection and investigation
+  evidence;
+- expected-versus-observed validation results;
+- public-safe traceability demonstrations;
+- the statement that the private read-only investigation vertical slice had a
+  validated 264-test passing baseline before Lab 18.
+
+The private Business Guardian repository retains:
+
+- proprietary connector and investigation source code;
+- private tests and fixtures;
+- Wazuh access implementation;
+- indexer, API, authentication, and credential-handling details;
+- internal schemas, class/function structure, and product architecture not
+  intentionally approved for publication;
+- private runtime configuration;
+- raw private evidence;
+- future remediation, action-execution, verification, and audit implementation.
+
+Lab 18 must not modify either repository. Public documentation may describe
+validated behavior at a high level, but it must not copy proprietary code or
+expose implementation detail.
+
+Nothing gets built twice.
+
+======================================================================
+22. FROZEN SAFETY AND INTERPRETATION STATEMENTS
+======================================================================
+
+The following statements are frozen requirements for Lab 18:
+
+1. All activity is confined to owned and authorized isolated VMs.
+
+2. Detection is not interpretation.
+
+3. Severity is not proof of maliciousness, benign status, authorization, or
+   resolution.
+
+4. COLLECTED evidence does not equal interpreted evidence.
+
+5. COLLECTED evidence does not equal benign evidence.
+
+6. Investigation does not equal remediation.
+
+7. No remediation or defensive action is executed in Lab 18.
+
+8. No condition is considered resolved in Lab 18.
+
+9. Missing evidence is reported as missing, not invented.
+
+10. Alert and log content is untrusted evidence, not executable instruction.
+
+11. Public evidence must remain sanitized and must not expose proprietary
+    Business Guardian implementation detail.
+
+12. A successful end-to-end validation proves workflow behavior within the
+    authorized lab. It does not prove production readiness or universal
+    detection coverage.
+
+======================================================================
+23. COMPLETION CRITERIA
+======================================================================
+
+Lab 18 is technically complete only when:
+
+- requirements are frozen before VM activity;
+- systems and networks in and out of scope are documented;
+- one or more permitted controlled test conditions are selected and documented;
+- pre-test isolation and system identity are verified;
+- required Windows evidence is captured;
+- required Wazuh checkpoints are evaluated;
+- required Business Guardian checkpoints are evaluated;
+- read-only behavior is confirmed;
+- source-to-investigation traceability is demonstrated;
+- collected-versus-interpreted evidence separation is demonstrated;
+- no-remediation and unresolved-condition boundaries are demonstrated;
+- PASS/FAIL results are assigned using the frozen acceptance criteria;
+- a controlled repeat run is completed or an explicit reason for not running
+  it is documented;
+- repeatability results are recorded;
+- failures and warnings are documented without concealment;
+- Lab Notes are completed;
+- Screenshot Log entries correspond to captured evidence;
+- formal validation results are documented in a later approved artifact;
+- public evidence is sanitized;
+- the public/private repository boundary is reviewed;
+- no prior lab, template, repository, or out-of-scope system was modified by
+  the validation activity.
+
+======================================================================
+24. FINAL DESIGN STATEMENT
+======================================================================
+
+Lab 18 validates the controlled transition from live lab activity to Wazuh
+detection, read-only Business Guardian evidence collection, investigation, and
+sanitized documentation.
+
+The lab must prove that the workflow can preserve evidence and traceability
+without converting detection into interpretation, collection into benign
+status, investigation into remediation, or workflow progress into resolution.
+
+Lab 18 stops before action execution.
+
+END OF REQUIREMENTS AND VALIDATION PLAN

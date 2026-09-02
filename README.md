@@ -83,6 +83,8 @@ Current areas include:
 - Deterministic cybersecurity triage
 - Evidence-quality-first decision logic
 - Investigation and policy-evaluation routing
+- End-to-end detection and investigation validation
+- Live read-only evidence integration
 - Policy and authorization controls
 - Human approval workflows
 - Fail-closed security behavior
@@ -545,9 +547,50 @@ Execution remains a separate future layer.
 
 ---
 
+# Proving the Live Evidence Path
+
+### [Lab 18 — Controlled Adversary Simulation and End-to-End Detection Validation](https://github.com/ajchapa80/project-athenaeum/blob/main/lab-18-controlled-adversary-simulation-end-to-end-detection-validation/README.md)
+
+Labs 15–17 proved the record, triage, policy, and approval layers with controlled data. Lab 18 tested whether the existing architecture could preserve the same boundaries when processing live evidence from the isolated lab.
+
+The validated path was:
+
+```text
+Kali controlled source
+      ↓
+Windows endpoint evidence
+      ↓
+Wazuh detection and traceability
+      ↓
+Business Guardian read-only collection
+      ↓
+Investigation workflow
+      ↓
+HUMAN_REVIEW_REQUIRED
+```
+
+Two independent, timestamped canary runs produced materially consistent results. Wazuh preserved source and agent traceability, the private Business Guardian investigation slice collected the supporting evidence read-only, and the workflow stopped at human review.
+
+The existing private validation baseline remained **264/264 tests passed**.
+
+Lab 18 also confirmed the safety boundary:
+
+- `COLLECTED` means evidence was retrieved, not interpreted
+- Severity does not authorize action
+- No remediation or action execution occurred
+- No condition was marked resolved
+- Transient listeners, tunnels, and tokens were cleared
+- The three-VM Hyper-V environment remained stable after testing
+
+**Final technical validation: PASS**
+
+No Business Guardian source code, connector internals, credentials, certificates, raw evidence, or proprietary investigation logic are published in this repository.
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete through **Lab 17 — Policy Evaluation and Approval Logic**.
+Project Athenaeum is complete through **Lab 18 — Controlled Adversary Simulation and End-to-End Detection Validation**.
 
 The technical progression now looks like this:
 
@@ -571,6 +614,10 @@ Evaluate Policy
 Require Approval When Necessary
       ↓
 Determine Action Eligibility
+      ↓
+Validate Live Evidence End to End
+      ↓
+Route Conservatively to Human Review
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -584,6 +631,8 @@ Lab 15 added persistent alert identity and traceability.
 Lab 16 added deterministic triage and decision routing.
 
 Lab 17 added deterministic policy evaluation, approval control, fail-closed authorization behavior, and separate Policy Decision and Approval Record identities.
+
+Lab 18 validated the live read-only evidence path twice and preserved the no-action, no-resolution boundary.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -605,7 +654,13 @@ Lab 17 asked:
 
 **Is the proposed response actually allowed?**
 
-The remaining lifecycle moves toward controlled execution and proving the result.
+Lab 18 asked:
+
+**Can live lab evidence travel through the complete detection and investigation path without losing traceability or crossing into action?**
+
+Before defining another implementation lab, the project will compare the validated public lifecycle against the private Business Guardian capability roadmap. That review will identify what still needs technical validation and what has portfolio value without duplicating private work.
+
+Any later move toward controlled execution and proving a defensive result remains a separate boundary.
 
 Conceptually:
 
@@ -718,6 +773,7 @@ My current lab infrastructure includes:
 
 - Windows 11 host computer
 - Oracle VirtualBox
+- Microsoft Hyper-V for the validated three-VM Lab 18 environment
 - Kali Linux security workstation
 - Ubuntu Linux practice virtual machine
 - Metasploitable 2 vulnerable target
@@ -763,6 +819,10 @@ All cybersecurity exercises are performed using personally owned or authorized s
 - Policy Decision records
 - Approval Records
 - `AR → TR → PD → AP` traceability
+- Live endpoint-to-investigation traceability
+- Read-only evidence-connector validation
+- Controlled adversary-simulation design
+- Sanitized evidence publication boundaries
 - Audit-oriented decision history
 - Automated testing
 - Repeatability testing

@@ -1,0 +1,113 @@
+Lab 18 - Controlled Adversary Simulation and End-to-End Detection Validation
+Sanitized Validation Results
+
+Version: 1.0
+Validation dates: 2026-09-01 through 2026-09-02
+Overall result: PASS
+Technical Validation: PASS
+
+======================================================================
+1. VALIDATED SCOPE
+======================================================================
+
+The validation was confined to owned and authorized virtual machines on the
+isolated BusinessGuardianLab network:
+
+- Kali Linux controlled source: 192.168.70.30/24
+- Windows 11 workstation target: 192.168.70.11/24
+- Wazuh server: 192.168.70.20/24
+
+No lab VM used a default gateway or DNS for the test path. No public or
+third-party system was targeted.
+
+======================================================================
+2. CONTROLLED ACTIVITY
+======================================================================
+
+The approved activity was a benign, timestamped canary delivered from Kali to
+the Windows workstation inside the isolated lab. Windows retrieved one canary
+file and created one controlled Application event. The activity was bounded to
+the authorized workstation and stopped as soon as sufficient evidence existed.
+
+No scanning, exploitation, persistence, credential theft, privilege
+escalation, malware, lateral movement, denial-of-service, or security-control
+weakening occurred.
+
+======================================================================
+3. END-TO-END RESULT
+======================================================================
+
+Validated path:
+
+Kali
+    -> Windows 11 workstation
+    -> Wazuh
+    -> Business Guardian read-only evidence collection
+    -> investigation workflow
+    -> sanitized validation evidence
+
+Observed results:
+
+- Each run generated a new Windows Application event and a distinct Wazuh
+  alert within its own test window.
+- Windows produced the expected controlled event.
+- Wazuh ingested the event through the active Windows agent.
+- Wazuh preserved agent, workstation, provider, event, rule, timestamp, and
+  run-specific traceability fields.
+- Business Guardian collected endpoint context and related alert evidence
+  through the existing read-only path.
+- TLS verification remained enabled for the read-only evidence path.
+- The investigation workflow reported sufficient evidence and routed the
+  result to HUMAN_REVIEW_REQUIRED.
+- No action was executed.
+- No condition was marked resolved.
+
+COLLECTED indicates evidence acquisition only. It does not mean the evidence
+was interpreted, benign, malicious, remediated, or resolved.
+
+======================================================================
+4. REPEATABILITY
+======================================================================
+
+Two independent runs used the same bounded canary method with distinct
+timestamps and run-specific evidence references. Both runs produced materially
+consistent Windows, Wazuh, and Business Guardian workflow outcomes without
+overwriting prior evidence.
+
+The private Business Guardian validation baseline remained 264/264 tests
+passed. Proprietary implementation and test details are not included in this
+public artifact.
+
+Repeatability result: PASS
+
+======================================================================
+5. SAFETY, CLEANUP, AND STABILITY
+======================================================================
+
+- Business Guardian remained read-only.
+- No remediation or defensive action occurred.
+- No account, firewall, endpoint, service, or Wazuh configuration was changed
+  for response purposes.
+- Nothing was marked resolved.
+- The Kali one-request listener was stopped.
+- Temporary SSH tunnels and transient tokens were cleared.
+- Wazuh manager, indexer, dashboard, and the Windows agent remained healthy.
+- The three Hyper-V VMs remained stable with no observed soft-lockup, RCU
+  stall, watchdog timeout, NMI timeout, or severe clock-starvation evidence.
+
+Final safety and stability result: PASS
+
+======================================================================
+6. PUBLIC / PRIVATE BOUNDARY
+======================================================================
+
+This document contains only sanitized validation behavior and results. It does
+not include Business Guardian source code, connector internals, investigation
+logic, credentials, certificates, tokens, private paths, raw evidence, or
+runtime configuration.
+
+Lab 18 demonstrates workflow behavior in an authorized isolated lab. It does
+not claim production readiness, universal detection coverage, malicious or
+benign interpretation, remediation success, or authority to execute an action.
+
+END OF SANITIZED VALIDATION RESULTS
