@@ -1,0 +1,20 @@
+{
+  "evidence_type": "sanitized_controlled_action_audit",
+  "scenario": "partial_execution_with_verified_rollback",
+  "synthetic_only": true,
+  "execution": {
+    "attempt_id": "EXR-DEMO-003",
+    "result": "EXECUTION_FAILED",
+    "partial_execution": true
+  },
+  "rollback": {
+    "rollback_id": "RBR-DEMO-001",
+    "required": true,
+    "verification_result": "ROLLBACK_VERIFIED"
+  },
+  "outcome": {
+    "resolution_state": "NOT_RESOLUTION_ELIGIBLE",
+    "reason": "Verified reversal does not prove resolution of the original condition"
+  },
+  "live_endpoint_modified": false
+}

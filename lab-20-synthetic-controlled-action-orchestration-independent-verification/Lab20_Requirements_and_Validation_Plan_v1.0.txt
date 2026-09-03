@@ -1,0 +1,298 @@
+LAB 20 — SYNTHETIC CONTROLLED ACTION ORCHESTRATION
+AND INDEPENDENT VERIFICATION
+
+REQUIREMENTS AND VALIDATION PLAN
+VERSION 1.0
+
+
+1. PURPOSE
+
+Lab 20 validates the first controlled-action orchestration layer for
+Business Guardian.
+
+The purpose is to determine whether an eligible defensive action can be
+processed through deterministic safety controls, synthetic execution,
+independent verification, rollback handling, resolution gating, and
+audit preservation without introducing live endpoint remediation.
+
+
+2. PROBLEM STATEMENT
+
+Previous Project Athenaeum work established alert processing,
+investigation, policy evaluation, approval handling, and action
+eligibility.
+
+Lab 19 established that READY_FOR_ACTION means eligibility only.
+
+Lab 20 must prove that action eligibility cannot silently become action
+execution or resolution without additional controls.
+
+
+3. IMPORTANCE
+
+Automated defensive action can change system state.
+
+A safe response platform must therefore validate authorization, target
+identity, action support, duplicate delivery, execution outcome, and
+independent verification before treating an action as successful.
+
+Failure to establish these conditions must result in a fail-closed
+outcome.
+
+
+4. SCOPE
+
+Lab 20 includes:
+
+- trusted synthetic action-eligibility input
+- controlled action-request processing
+- authorization validation
+- synthetic target validation
+- duplicate-execution protection
+- allowlisted synthetic action execution
+- independent synthetic verification
+- clean-failure handling
+- partial-execution handling
+- synthetic rollback when required
+- independent rollback verification
+- resolution-eligibility evaluation
+- chronological audit preservation
+- deterministic testing
+
+
+5. OUT OF SCOPE
+
+Lab 20 does not include:
+
+- production endpoint remediation
+- VM interaction
+- Wazuh Active Response
+- shell or PowerShell remediation
+- production action adapters
+- customer systems
+- live rollback
+- production target authority
+- retry execution
+- generative-AI authorization
+- generative-AI verification
+
+
+6. TRUST AND INPUT BOUNDARY
+
+Lab 20 consumes a controlled trusted eligibility representation.
+
+The trusted input establishes the upstream facts required for the
+synthetic test boundary without recreating the earlier policy engine.
+
+The Lab 20 implementation must not duplicate the policy-evaluation
+system established by earlier Project Athenaeum work.
+
+
+7. CONTROLLED ACTION REQUIREMENTS
+
+A controlled action request must:
+
+- preserve upstream traceability
+- identify an allowlisted action
+- identify an explicit target
+- satisfy required authorization conditions
+- remain bound to the trusted eligibility context
+- pass validation before execution
+- fail closed when required information cannot be proven
+
+
+8. AUTHORIZATION REQUIREMENTS
+
+Preauthorized processing is permitted only when the trusted eligibility
+context explicitly establishes that additional approval is not required.
+
+When approval is required:
+
+- approval must exist
+- approval must not be pending
+- approval must not be denied
+- approval must remain valid for the request
+- approval must correspond to the intended action and target
+
+Missing approval never means approval.
+
+
+9. TARGET VALIDATION REQUIREMENTS
+
+The synthetic target must be:
+
+- explicit
+- uniquely identifiable
+- supported by the controlled environment
+- authorized for the requested synthetic action
+
+Invalid, ambiguous, nonexistent, or unauthorized targets must fail
+closed before execution.
+
+
+10. DUPLICATE-EXECUTION REQUIREMENTS
+
+A controlled request must not create multiple execution attempts merely
+because it is delivered more than once.
+
+Duplicate delivery must:
+
+- preserve the original attempt
+- avoid a second action invocation
+- preserve audit evidence of the duplicate condition
+
+Lab 20 v1 does not authorize automatic retries.
+
+
+11. EXECUTION REQUIREMENTS
+
+Only an allowlisted synthetic action may execute.
+
+Execution must occur only after validation succeeds.
+
+Execution results must distinguish at minimum:
+
+- successful completion
+- clean failure before state change
+- partial or uncertain state change
+
+Execution completion must not be treated as verification.
+
+
+12. INDEPENDENT VERIFICATION REQUIREMENTS
+
+Verification must remain separate from the execution component.
+
+The execution component may not verify its own result.
+
+Independent verification must support:
+
+- positive confirmation
+- negative confirmation
+- unavailable evidence
+- conflicting or inconclusive evidence
+
+Only positive independent verification may permit
+RESOLUTION_ELIGIBLE.
+
+
+13. ROLLBACK REQUIREMENTS
+
+Rollback is required when the controlled contract determines that a
+partial or adverse state change requires reversal.
+
+Clean failure with positive evidence that no state change occurred does
+not require rollback.
+
+Rollback must be independently verified.
+
+ROLLBACK_VERIFIED must result in NOT_RESOLUTION_ELIGIBLE.
+
+Verified reversal does not prove correction of the original security
+condition.
+
+
+14. RESOLUTION-ELIGIBILITY REQUIREMENTS
+
+RESOLUTION_ELIGIBLE may occur only when:
+
+- the request is valid
+- required authorization is satisfied
+- the target is valid
+- execution completes successfully
+- independent verification positively confirms the expected state
+
+Execution success alone is insufficient.
+
+Verification failure, unavailability, or conflicting evidence must
+prevent resolution eligibility.
+
+
+15. AUDIT REQUIREMENTS
+
+Audit history must remain chronological and non-collapsing.
+
+The history must preserve relevant evidence of:
+
+- blocked requests
+- execution attempts
+- clean failures
+- partial failures
+- verification results
+- rollback requirements
+- rollback attempts
+- rollback verification
+- duplicate delivery
+- final resolution-eligibility outcome
+
+Later success must not erase earlier failure.
+
+
+16. SAFETY REQUIREMENTS
+
+Lab 20 must remain synthetic and in-memory.
+
+No VM, endpoint, production system, customer system, account, file,
+firewall, service, or network control may be modified.
+
+No live remediation or rollback may occur.
+
+
+17. PUBLIC / PRIVATE BOUNDARY
+
+The implementation remains private.
+
+Public evidence may include:
+
+- high-level architecture
+- safety requirements
+- workflow states
+- validation methodology
+- validation results
+- sanitized representative records
+- test totals
+
+Public evidence must not expose proprietary orchestration code,
+production adapter design, customer policy, tenant authorization,
+credentials, sensitive configuration, or future live-remediation
+implementation details.
+
+
+18. FROZEN VALIDATION MATRIX
+
+The implementation must satisfy the separately documented 22-case
+validation matrix without weakening the safety contract.
+
+
+19. ACCEPTANCE CRITERIA
+
+Lab 20 passes only if:
+
+- all 22 frozen validation cases pass
+- blocked paths avoid prohibited component invocation
+- duplicate delivery does not cause duplicate execution
+- execution remains separate from verification
+- independent positive verification is required for resolution
+- rollback cannot establish resolution
+- audit history remains complete
+- Lab 20-specific tests pass
+- the full Business Guardian regression suite passes
+- no live endpoint activity occurs
+
+
+20. STOP CONDITIONS
+
+Testing must stop for human review if:
+
+- live endpoint interaction occurs unexpectedly
+- an unsupported action can execute
+- authorization failure permits execution
+- duplicate delivery produces a second execution
+- execution success directly produces resolution without independent
+  verification
+- rollback produces resolution eligibility
+- audit history loses prior failed or partial events
+- private implementation details would need to be exposed publicly
+
+
+END OF LAB 20 REQUIREMENTS AND VALIDATION PLAN

@@ -1,0 +1,285 @@
+LAB 20 — FROZEN 22-CASE VALIDATION MATRIX
+VERSION 1.0
+
+
+CASE 01
+Scenario:
+Valid preauthorized synthetic request.
+
+Expected:
+Controlled execution proceeds.
+Independent verification succeeds.
+Final state is RESOLUTION_ELIGIBLE.
+
+Result:
+PASS
+
+
+CASE 02
+Scenario:
+Valid explicitly approved synthetic request.
+
+Expected:
+Controlled execution proceeds.
+Approval trace remains preserved.
+Independent verification succeeds.
+Final state is RESOLUTION_ELIGIBLE.
+
+Result:
+PASS
+
+
+CASE 03
+Scenario:
+Approval is required but remains pending.
+
+Expected:
+Request is blocked before execution.
+No action invocation occurs.
+
+Result:
+PASS
+
+
+CASE 04
+Scenario:
+Required approval is denied.
+
+Expected:
+Request is blocked before execution.
+No action invocation occurs.
+
+Result:
+PASS
+
+
+CASE 05
+Scenario:
+Required approval is missing or stale.
+
+Expected:
+Request fails closed.
+No execution occurs.
+
+Result:
+PASS
+
+
+CASE 06
+Scenario:
+Approval binding does not match the intended action or target.
+
+Expected:
+Request fails closed.
+No execution occurs.
+
+Result:
+PASS
+
+
+CASE 07
+Scenario:
+Trusted upstream state is not READY_FOR_ACTION.
+
+Expected:
+Request is blocked before execution.
+
+Result:
+PASS
+
+
+CASE 08
+Scenario:
+Requested action is unsupported.
+
+Expected:
+Request fails closed.
+No unsupported action executes.
+
+Result:
+PASS
+
+
+CASE 09
+Scenario:
+Target is invalid, ambiguous, nonexistent, or unauthorized.
+
+Expected:
+Request is blocked before execution.
+
+Result:
+PASS
+
+
+CASE 10
+Scenario:
+Incoming request contains an altered provenance/reference relationship.
+
+Expected:
+Relationship mismatch is detected.
+Request fails closed.
+
+Result:
+PASS
+
+
+CASE 11
+Scenario:
+The same controlled request is delivered more than once.
+
+Expected:
+Original attempt remains preserved.
+No second execution attempt is created.
+No second action invocation occurs.
+
+Result:
+PASS
+
+
+CASE 12
+Scenario:
+Synthetic execution fails before any state change occurs.
+
+Expected:
+Execution enters EXECUTION_FAILED.
+Final state is NOT_RESOLUTION_ELIGIBLE.
+Rollback is not invoked unnecessarily.
+
+Result:
+PASS
+
+
+CASE 13
+Scenario:
+Synthetic execution partially changes state before failure.
+
+Expected:
+Partial execution is preserved as execution detail.
+Failure is recorded.
+Rollback is required and processed.
+
+Result:
+PASS
+
+
+CASE 14
+Scenario:
+Execution reports success but independent verification fails.
+
+Expected:
+Execution success does not establish resolution.
+Final state remains NOT_RESOLUTION_ELIGIBLE.
+
+Result:
+PASS
+
+
+CASE 15
+Scenario:
+Independent verification is unavailable.
+
+Expected:
+Verification cannot positively establish success.
+Outcome remains non-resolution-eligible.
+
+Result:
+PASS
+
+
+CASE 16
+Scenario:
+Rollback executes successfully and independent rollback verification
+positively confirms reversal.
+
+Expected:
+State reaches ROLLBACK_VERIFIED.
+Final state remains NOT_RESOLUTION_ELIGIBLE.
+
+Result:
+PASS
+
+
+CASE 17
+Scenario:
+Required rollback execution fails.
+
+Expected:
+Rollback failure is recorded.
+Original condition remains NOT_RESOLUTION_ELIGIBLE.
+
+Result:
+PASS
+
+
+CASE 18
+Scenario:
+Rollback verification is negative, unavailable, or conflicting.
+
+Expected:
+Rollback cannot be considered positively verified.
+Failure details remain preserved.
+Outcome remains NOT_RESOLUTION_ELIGIBLE.
+
+Result:
+PASS
+
+
+CASE 19
+Scenario:
+Independent action verification produces conflicting observations.
+
+Expected:
+Verification becomes inconclusive.
+Outcome remains NOT_RESOLUTION_ELIGIBLE.
+
+Result:
+PASS
+
+
+CASE 20
+Scenario:
+Instruction-like free text is present in request data.
+
+Expected:
+Text remains inert data.
+It cannot select, authorize, or alter the controlled action.
+
+Result:
+PASS
+
+
+CASE 21
+Scenario:
+The complete logical validation run is repeated with new identities.
+
+Expected:
+Equivalent logical outcomes are reproduced.
+New records receive new identities.
+Prior records remain preserved.
+
+Result:
+PASS
+
+
+CASE 22
+Scenario:
+Complete action audit history is inspected.
+
+Expected:
+History remains ordered, complete, append-oriented, and
+non-collapsing.
+Failed attempts, verification evidence, rollback activity, and final
+outcomes remain preserved.
+
+Result:
+PASS
+
+
+FINAL RESULT
+
+Validation cases: 22
+Passed: 22
+Failed: 0
+
+OVERALL RESULT:
+PASS

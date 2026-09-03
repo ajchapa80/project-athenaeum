@@ -1,6 +1,8 @@
 # Project Athenaeum
 ## Building Cybersecurity Skills Into a Working Security Platform
 
+**Master Index version: v1.9**
+
 Project Athenaeum started as a place to document hands-on cybersecurity and IT labs.
 
 It has grown into something much more interesting.
@@ -628,9 +630,28 @@ Lab 19 is design-only. It created no action consumer, executor, adapter, remedia
 
 ---
 
+### [Lab 20 — Synthetic Controlled Action Orchestration and Independent Verification](lab-20-synthetic-controlled-action-orchestration-independent-verification/README.md)
+
+Status: Completed and published
+
+Implemented and validated a private synthetic/in-memory controlled-action orchestration layer governed by fail-closed validation, authorization and target checks, duplicate-execution protection, independent verification, rollback handling, rollback verification, append-oriented audit history, and strict resolution-eligibility enforcement.
+
+Public evidence documents the architecture, safety contract, validation methodology, representative sanitized outcomes, and test results without exposing proprietary implementation logic.
+
+Validation milestone:
+
+- 29/29 Lab 20-specific tests passed
+- 22/22 frozen validation cases passed
+- 293/293 full Business Guardian regression tests passed
+- No live endpoint remediation occurred
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete through **Lab 19 — Controlled Action Execution Boundary: Requirements, Safety Contracts, and Validation Design**.
+Project Athenaeum is complete through **Lab 20 — Synthetic Controlled Action Orchestration and Independent Verification**.
+
+Lab 20 status: Completed and published
 
 The technical progression now looks like this:
 
@@ -706,7 +727,9 @@ Lab 19 asked:
 
 **What must be proven before an eligible, approved security response may execute, and what evidence is required before any condition may be marked resolved?**
 
-Lab 20 is the next planned boundary and has not started. It may validate controlled orchestration using synthetic or dry-run behavior only after a separately reviewed and frozen scope. No live executor or remediation capability exists as a result of Lab 19.
+Lab 20 deliberately stops before live endpoint remediation.
+
+Future work must establish additional controls before Business Guardian progresses from synthetic controlled actions toward carefully scoped defensive action against an authorized test endpoint.
 
 Conceptually:
 

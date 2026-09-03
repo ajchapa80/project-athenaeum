@@ -1,0 +1,19 @@
+{
+  "evidence_type": "sanitized_controlled_action_audit",
+  "scenario": "clean_execution_failure",
+  "synthetic_only": true,
+  "execution": {
+    "attempt_id": "EXR-DEMO-002",
+    "result": "EXECUTION_FAILED",
+    "state_change_detected": false,
+    "partial_execution": false
+  },
+  "rollback": {
+    "required": false,
+    "reason": "No synthetic state change occurred"
+  },
+  "outcome": {
+    "resolution_state": "NOT_RESOLUTION_ELIGIBLE"
+  },
+  "live_endpoint_modified": false
+}

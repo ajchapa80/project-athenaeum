@@ -1,0 +1,12 @@
+{
+  "evidence_type": "sanitized_controlled_action_audit",
+  "scenario": "duplicate_delivery",
+  "synthetic_only": true,
+  "request_id": "AQR-DEMO-004",
+  "deliveries_received": 2,
+  "execution_attempts_created": 1,
+  "adapter_invocations": 1,
+  "duplicate_execution": false,
+  "history_preserved": true,
+  "live_endpoint_modified": false
+}

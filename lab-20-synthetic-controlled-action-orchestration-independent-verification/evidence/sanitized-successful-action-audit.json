@@ -1,0 +1,24 @@
+{
+  "evidence_type": "sanitized_controlled_action_audit",
+  "scenario": "successful_synthetic_action",
+  "synthetic_only": true,
+  "action_request": {
+    "request_id": "AQR-DEMO-001",
+    "eligibility": "READY_FOR_ACTION",
+    "approval_required": false
+  },
+  "execution": {
+    "attempt_id": "EXR-DEMO-001",
+    "result": "SUCCESS",
+    "partial_execution": false
+  },
+  "verification": {
+    "verification_id": "VR-DEMO-001",
+    "independent": true,
+    "result": "VERIFICATION_SUCCEEDED"
+  },
+  "outcome": {
+    "resolution_state": "RESOLUTION_ELIGIBLE"
+  },
+  "live_endpoint_modified": false
+}
