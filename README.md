@@ -1,7 +1,7 @@
 # Project Athenaeum
 ## Building Cybersecurity Skills Into a Working Security Platform
 
-**Master Index version: v1.9**
+**Master Index version: v2.0**
 
 Project Athenaeum started as a place to document hands-on cybersecurity and IT labs.
 
@@ -647,9 +647,42 @@ Validation milestone:
 
 ---
 
+### [Lab 21 — Controlled Live-Action Readiness Requirements and Design](lab-21-controlled-live-action-readiness-requirements-design/README.md)
+
+Status: Completed and published
+
+Defined and tabletop-validated the safety contract required before
+Business Guardian may progress from synthetic controlled actions toward
+a narrowly scoped, human-approved action against an authorized test
+endpoint.
+
+Introduced the conceptual Live Action Readiness Record (LAR) and
+readiness outcomes READY, NOT_READY, and REQUIRES_HUMAN_REVIEW.
+
+Validated authoritative target identity, separate target authorization,
+approval freshness and binding, pre-execution revalidation,
+environmental drift handling, controlled adapter contracts, independent
+verification readiness, rollback readiness, duplicate-request
+protection, explicit human control, and append-oriented audit history.
+
+Frozen tabletop validation: 24/24 cases passed.
+
+Design-only milestone:
+
+- 0 live endpoint actions
+- 0 VMs accessed
+- 0 endpoint modifications
+- 0 production action adapters created
+- 0 live rollback actions
+
+Overall result:
+PASS — LIVE-ACTION READINESS CONTRACT VALIDATED BY DESIGN
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete through **Lab 20 — Synthetic Controlled Action Orchestration and Independent Verification**.
+Project Athenaeum is complete through **Lab 21 — Controlled Live-Action Readiness Requirements and Design**.
 
 Lab 20 status: Completed and published
 

@@ -1,0 +1,466 @@
+LAB 21 — CONTROLLED LIVE-ACTION READINESS
+24-CASE TABLETOP VALIDATION PLAN
+
+VERSION 1.0
+
+
+PURPOSE
+
+This tabletop validation plan evaluates whether the Lab 21 live-action
+readiness design fails closed and preserves human control across the
+conditions that must be satisfied before a future live endpoint action.
+
+No live action is executed during these cases.
+
+
+READINESS OUTCOMES
+
+READY
+NOT_READY
+REQUIRES_HUMAN_REVIEW
+
+
+GLOBAL RULE
+
+READY means readiness prerequisites have been demonstrated.
+
+READY does not authorize execution by itself.
+
+
+CASE 01 — FULLY READY CONTROLLED TEST
+
+Scenario:
+The target is authoritatively identified, explicitly authorized, located
+in the approved isolated lab environment, the requested action is
+supported, approval is current and correctly bound, required
+preconditions match, adapter readiness is confirmed, independent
+verification is ready, required rollback capability is ready, and human
+approval requirements are satisfied.
+
+Expected result:
+READY
+
+Safety expectation:
+No action executes during Lab 21.
+
+Validation result:
+PASS
+
+
+CASE 02 — AMBIGUOUS TARGET IDENTITY
+
+Scenario:
+The available information cannot uniquely establish the intended
+endpoint.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+No execution eligibility is inferred from ambiguous identity.
+
+Validation result:
+PASS
+
+
+CASE 03 — TARGET IDENTIFIED BUT NOT AUTHORIZED
+
+Scenario:
+The endpoint identity is known, but the target is not authorized for
+the proposed live action.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Correct identity does not imply authorization.
+
+Validation result:
+PASS
+
+
+CASE 04 — TARGET MISMATCH
+
+Scenario:
+The authoritative endpoint identity does not match the target bound to
+the controlled action request.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+The request cannot silently shift to another endpoint.
+
+Validation result:
+PASS
+
+
+CASE 05 — REQUIRED APPROVAL MISSING
+
+Scenario:
+The future live action requires human approval, but no approval record is
+available.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Missing approval never means approval.
+
+Validation result:
+PASS
+
+
+CASE 06 — APPROVAL DENIED
+
+Scenario:
+The required approval explicitly denies the proposed action.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Denied approval cannot be overridden by readiness logic.
+
+Validation result:
+PASS
+
+
+CASE 07 — APPROVAL PENDING
+
+Scenario:
+Required approval exists but remains pending.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Pending approval does not permit live-action readiness.
+
+Validation result:
+PASS
+
+
+CASE 08 — APPROVAL STALE
+
+Scenario:
+Approval was previously valid but no longer satisfies the defined
+freshness requirement at readiness evaluation time.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Historical approval does not remain valid indefinitely.
+
+Validation result:
+PASS
+
+
+CASE 09 — APPROVAL BOUND TO WRONG ACTION
+
+Scenario:
+Approval is current but authorizes a different controlled action.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Action binding must match.
+
+Validation result:
+PASS
+
+
+CASE 10 — APPROVAL BOUND TO WRONG TARGET
+
+Scenario:
+Approval is current but applies to another endpoint.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Target binding must match.
+
+Validation result:
+PASS
+
+
+CASE 11 — UNSUPPORTED LIVE ACTION
+
+Scenario:
+The requested operation is not part of the controlled live-action
+allowlist.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Unsupported actions fail closed.
+
+Validation result:
+PASS
+
+
+CASE 12 — ADAPTER UNAVAILABLE
+
+Scenario:
+The controlled action is known, but no approved live adapter is
+available for the intended target.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Readiness cannot proceed without an available supported adapter.
+
+Validation result:
+PASS
+
+
+CASE 13 — INCOMPLETE ADAPTER CONTRACT
+
+Scenario:
+An adapter exists but does not declare all required safety information,
+such as supported preconditions, expected state change, verification
+contract, rollback behavior, or timeout handling.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Presence of executable code does not establish adapter readiness.
+
+Validation result:
+PASS
+
+
+CASE 14 — VERIFIER UNAVAILABLE
+
+Scenario:
+The action adapter could theoretically execute, but no independent
+verification path is currently available.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Execution readiness cannot exist without required verification readiness.
+
+Validation result:
+PASS
+
+
+CASE 15 — VERIFIER NOT INDEPENDENT
+
+Scenario:
+The proposed verifier determines success only by repeating the action
+adapter's return value.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Adapter self-reporting cannot satisfy independent verification.
+
+Validation result:
+PASS
+
+
+CASE 16 — REQUIRED ROLLBACK UNAVAILABLE
+
+Scenario:
+The proposed action requires rollback capability, but rollback cannot be
+performed.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Required rollback must be ready before execution.
+
+Validation result:
+PASS
+
+
+CASE 17 — ROLLBACK VERIFICATION UNAVAILABLE
+
+Scenario:
+Rollback could be attempted, but there is no independent method to
+verify that rollback actually restored the intended prior state.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Unverifiable rollback does not satisfy rollback readiness.
+
+Validation result:
+PASS
+
+
+CASE 18 — ENVIRONMENT STATE DRIFT
+
+Scenario:
+The endpoint satisfied readiness requirements earlier, but material
+target or environment state has changed before the future execution
+point.
+
+Expected result:
+NOT_READY
+
+Alternative:
+REQUIRES_HUMAN_REVIEW may be used when the significance of the drift
+cannot be determined safely.
+
+Safety expectation:
+Stale readiness evidence cannot silently authorize live action.
+
+Validation result:
+PASS
+
+
+CASE 19 — PRECONDITION FAILURE
+
+Scenario:
+A required action precondition no longer matches the current endpoint
+state during final revalidation.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+Execution must not proceed against unexpected current state.
+
+Validation result:
+PASS
+
+
+CASE 20 — DUPLICATE LIVE-ACTION REQUEST
+
+Scenario:
+The same future live-action request is delivered more than once.
+
+Expected result:
+The duplicate must not create additional execution eligibility or imply
+a second endpoint modification.
+
+The original request history remains preserved.
+
+Safety expectation:
+Duplicate delivery is not a retry authorization.
+
+Validation result:
+PASS
+
+
+CASE 21 — INSTRUCTION-LIKE TEXT ATTEMPTS TO ALTER ACTION
+
+Scenario:
+Alert or request data contains language instructing the system to run a
+different command, change the target, bypass approval, or otherwise alter
+the controlled operation.
+
+Expected result:
+The text remains inert data.
+
+The readiness decision and controlled action remain unchanged by the
+instruction-like content.
+
+Safety expectation:
+Free text cannot become executable authority.
+
+Validation result:
+PASS
+
+
+CASE 22 — NON-REVERSIBLE FIRST LIVE ACTION
+
+Scenario:
+A non-reversible or high-impact operation is proposed as the first live
+endpoint action.
+
+Expected result:
+NOT_READY
+
+Safety expectation:
+The first live-action milestone must remain low-risk and reversible.
+
+Validation result:
+PASS
+
+
+CASE 23 — PREVIOUS FAILURE LATER CORRECTED
+
+Scenario:
+An earlier readiness evaluation produced NOT_READY.
+
+The failed condition is later corrected and a new readiness evaluation
+is performed.
+
+Expected result:
+A new LAR may produce READY if all current requirements are satisfied.
+
+The previous NOT_READY record remains preserved.
+
+Safety expectation:
+Later success does not erase prior failed readiness evidence.
+
+Validation result:
+PASS
+
+
+CASE 24 — COMPLETE AUDIT HISTORY REVIEW
+
+Scenario:
+The complete readiness history is reviewed after failed and successful
+evaluations.
+
+Expected result:
+The history remains chronological, append-oriented, complete, and
+non-collapsing.
+
+Failed readiness decisions, later reevaluations, reason information, and
+final outcomes remain traceable.
+
+Safety expectation:
+Historical evidence cannot be silently rewritten or discarded.
+
+Validation result:
+PASS
+
+
+FINAL ACCEPTANCE SUMMARY
+
+Frozen tabletop cases:
+24
+
+Expected passed cases:
+24
+
+Expected failed cases:
+0
+
+Live actions executed:
+0
+
+VMs accessed:
+0
+
+Endpoints modified:
+0
+
+Production adapters created:
+0
+
+Live rollback actions:
+0
+
+
+FINAL EXPECTED RESULT
+
+PASS — LIVE-ACTION READINESS CONTRACT VALIDATED BY DESIGN
+
+
+END OF LAB 21 TABLETOP VALIDATION PLAN

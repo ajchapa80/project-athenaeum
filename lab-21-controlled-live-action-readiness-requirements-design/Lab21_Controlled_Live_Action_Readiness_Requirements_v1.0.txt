@@ -1,0 +1,663 @@
+LAB 21 — CONTROLLED LIVE-ACTION READINESS
+REQUIREMENTS AND DESIGN
+
+VERSION 1.0
+
+
+1. PURPOSE
+
+Lab 21 defines the requirements that Business Guardian must satisfy
+before a synthetic controlled action may progress toward a narrowly
+scoped, human-approved defensive action against an authorized test
+endpoint.
+
+Lab 21 is a requirements-and-design milestone.
+
+No live action is executed.
+
+
+2. PROBLEM STATEMENT
+
+Previous Project Athenaeum work established:
+
+- normalized security records
+- deterministic triage
+- investigation workflows
+- evidence handling
+- policy evaluation
+- approval handling
+- action eligibility
+- execution safety contracts
+- synthetic action execution
+- independent synthetic verification
+- synthetic rollback handling
+- resolution gating
+
+Synthetic action control does not prove that a system is ready to
+change real endpoint state.
+
+Live action introduces additional risks involving identity,
+authorization, stale information, environmental drift, adapter
+behavior, verification availability, rollback readiness, and
+operational safety.
+
+Lab 21 defines the missing readiness boundary.
+
+
+3. IMPORTANCE
+
+A live defensive action may change the state of an operating system,
+account, service, file, firewall, process, network control, or other
+endpoint resource.
+
+Readiness must therefore be proven before execution is considered.
+
+The controlling principle is:
+
+SYNTHETIC EXECUTION CAPABILITY DOES NOT IMPLY AUTHORIZATION TO CHANGE
+A REAL ENDPOINT.
+
+When a required condition cannot be proven, the system must fail
+closed or require human review.
+
+
+4. DESIGN SCOPE
+
+Lab 21 includes requirements for:
+
+- live-action readiness evaluation
+- target identity
+- target authorization
+- approval validity
+- approval freshness
+- approval binding
+- environment authorization
+- pre-execution revalidation
+- environmental drift
+- adapter capability
+- verifier independence
+- rollback readiness
+- duplicate-request handling
+- human approval
+- audit preservation
+- timeout behavior
+- connectivity failure
+- non-reversible-action restrictions
+- deterministic readiness outcomes
+
+
+5. OUT OF SCOPE
+
+Lab 21 does not include:
+
+- real endpoint modification
+- VM interaction
+- production remediation adapters
+- Wazuh Active Response
+- PowerShell remediation
+- shell remediation
+- production systems
+- customer systems
+- automatic retry
+- multi-endpoint execution
+- irreversible live actions
+- production approval thresholds
+- customer or tenant policy implementation
+- credential management
+- production secrets
+- live rollback
+- generative-AI authorization
+- generative-AI verification
+
+
+6. CONCEPTUAL LIVE ACTION READINESS RECORD
+
+Lab 21 introduces the conceptual:
+
+LAR — Live Action Readiness Record
+
+The LAR represents the result of a readiness evaluation associated
+with an existing controlled action request.
+
+Conceptual traceability:
+
+AR → TR → PD → AP → AQR → LAR
+
+The LAR must reference prior records without replacing or rewriting
+them.
+
+Lab 21 does not create a live execution record.
+
+
+7. READINESS OUTCOMES
+
+Lab 21 defines three readiness outcomes:
+
+READY
+
+All mandatory readiness conditions have been proven.
+
+READY does not authorize execution by itself.
+
+
+NOT_READY
+
+One or more mandatory readiness requirements failed.
+
+Execution must not proceed.
+
+
+REQUIRES_HUMAN_REVIEW
+
+The available information is insufficient, conflicting, or otherwise
+not safe for an automatic readiness decision.
+
+Human review does not automatically create READY status.
+
+
+8. TARGET IDENTITY REQUIREMENTS
+
+A live-action target must be uniquely and authoritatively identified.
+
+Target identity must not rely solely on:
+
+- display name
+- free-text nickname
+- IP address alone
+- unverified user-entered hostname
+
+The future implementation must use authoritative endpoint identity
+information suitable for the target platform and environment.
+
+Lab 21 does not define the final production target-authority mechanism.
+
+
+9. TARGET AUTHORIZATION REQUIREMENTS
+
+Target identity and target authorization are separate.
+
+A correctly identified endpoint must not become eligible for live
+action unless the environment explicitly authorizes the requested
+operation against that target.
+
+The future readiness process must prove:
+
+TARGET IDENTITY CONFIRMED
+
+AND
+
+TARGET AUTHORIZATION CONFIRMED
+
+
+10. ENVIRONMENT REQUIREMENTS
+
+The first future live-action test must be restricted to an endpoint
+that is:
+
+- user owned
+- explicitly authorized
+- isolated
+- non-production
+- designated for controlled testing
+
+Production and customer systems are outside the Lab 21 design boundary.
+
+
+11. APPROVAL REQUIREMENTS
+
+The first future live action requires explicit human approval.
+
+When approval is required, it must:
+
+- exist
+- not be pending
+- not be denied
+- remain current
+- remain appropriately bound
+- correspond to the intended action
+- correspond to the intended target
+- correspond to the intended request
+- correspond to the authorized environment
+
+
+12. APPROVAL FRESHNESS REQUIREMENTS
+
+Approval freshness must be evaluated during live-action readiness.
+
+An approval that was valid earlier must not automatically remain valid
+indefinitely.
+
+The exact production freshness interval is not defined by this public
+lab.
+
+Approval freshness thresholds remain a future private policy decision.
+
+
+13. APPROVAL BINDING REQUIREMENTS
+
+Approval for one action or target must not authorize a materially
+different operation.
+
+Conceptually:
+
+ACTION A → TARGET A
+
+must not authorize:
+
+ACTION A → TARGET B
+
+or:
+
+ACTION B → TARGET A
+
+or a materially altered action request.
+
+
+14. PRE-EXECUTION REVALIDATION REQUIREMENTS
+
+Live-action readiness must be revalidated as close as practical to
+execution.
+
+Earlier validation may become stale if endpoint or environment state
+changes.
+
+A future pre-execution checkpoint must compare required preconditions
+with current observations.
+
+A mismatch must block readiness or require human review.
+
+
+15. ENVIRONMENTAL DRIFT REQUIREMENTS
+
+Relevant endpoint or environment drift must not be ignored.
+
+If current state materially differs from the state used to establish
+readiness, the system must not rely on stale conclusions.
+
+Possible outcomes are:
+
+NOT_READY
+
+or:
+
+REQUIRES_HUMAN_REVIEW
+
+
+16. CONTROLLED ACTION REQUIREMENTS
+
+Live actions must use controlled, allowlisted action identities.
+
+Free text must not directly become executable behavior.
+
+Required conceptual model:
+
+CONTROLLED ACTION ID
+        ↓
+AUTHORIZED ADAPTER
+        ↓
+DEFINED OPERATION
+
+Instruction-like text contained in alert or request data must remain
+inert.
+
+
+17. ADAPTER CONTRACT REQUIREMENTS
+
+Every future live-action adapter must define:
+
+- supported action
+- supported target or platform
+- required authorization
+- required preconditions
+- expected state change
+- known failure modes
+- partial-change behavior
+- independent verification requirement
+- rollback capability
+- rollback limitations
+- timeout behavior
+- sanitized audit outputs
+
+An adapter must not operate outside its declared contract.
+
+
+18. FIRST LIVE-ACTION RISK REQUIREMENTS
+
+The first future live-action test must use a controlled action that is:
+
+- low risk
+- reversible
+- narrowly scoped
+- independently observable
+- harmless to normal lab operation
+
+The first live action must not include high-impact actions such as:
+
+- disabling a user
+- deleting a file
+- terminating an essential service
+- isolating a system
+- changing production firewall policy
+- resetting credentials
+- performing irreversible modification
+
+
+19. INDEPENDENT VERIFICATION REQUIREMENTS
+
+Execution success must remain separate from verification.
+
+The execution adapter must not verify its own result solely through its
+return value.
+
+A future verifier must independently observe meaningful endpoint state.
+
+Verification must support:
+
+- positive verification
+- failed verification
+- unavailable verification
+- conflicting or inconclusive verification
+
+Only positive independent verification may support future resolution
+eligibility.
+
+
+20. VERIFIER INDEPENDENCE REQUIREMENTS
+
+The verifier must not simply repeat the action adapter's output.
+
+An adapter reporting a successful command or return code is execution
+evidence only.
+
+It is not sufficient independent verification.
+
+
+21. VERIFICATION TIMING REQUIREMENTS
+
+Verification must occur after execution within a defined observation
+window.
+
+Production observation timing is not defined by Lab 21.
+
+If sufficient current evidence cannot be obtained, the result must not
+be treated as successful verification.
+
+
+22. ROLLBACK READINESS REQUIREMENTS
+
+If a controlled action requires rollback capability, rollback readiness
+must be established before execution.
+
+The system must know:
+
+- expected rollback operation
+- rollback availability
+- rollback prerequisites
+- rollback verification method
+- rollback failure handling
+
+Rollback must not be invented after an adverse execution event occurs.
+
+
+23. ROLLBACK VERIFICATION REQUIREMENTS
+
+Rollback must be independently verified.
+
+The existing invariant remains:
+
+ROLLBACK_VERIFIED
+→ NOT_RESOLUTION_ELIGIBLE
+
+Verified rollback proves reversal.
+
+It does not prove resolution of the original security condition.
+
+
+24. NON-REVERSIBLE ACTION REQUIREMENTS
+
+Non-reversible actions are outside the first live-action milestone.
+
+A non-reversible action proposed as the first live test must result in:
+
+NOT_READY
+
+Future non-reversible actions require separate safety design.
+
+
+25. HUMAN CONTROL REQUIREMENTS
+
+Explicit human approval is mandatory for the first future live action.
+
+Before approval, the operator must be able to understand:
+
+- intended action
+- target endpoint
+- reason for action
+- expected state change
+- risk
+- reversibility
+- independent verification method
+- rollback readiness
+- failure behavior
+
+
+26. DUPLICATE-REQUEST REQUIREMENTS
+
+Duplicate delivery must not create duplicate endpoint modification.
+
+The duplicate-execution protection demonstrated synthetically in
+Lab 20 must remain part of the live-action boundary.
+
+Automatic retry is not authorized by Lab 21.
+
+
+27. RETRY REQUIREMENTS
+
+Lab 21 does not introduce automatic retry.
+
+A future retry policy must define separate authorization and readiness
+requirements.
+
+A failed or inconclusive live action must not automatically execute
+again.
+
+
+28. CONNECTIVITY FAILURE REQUIREMENTS
+
+Live-action readiness and future execution must account for:
+
+- endpoint disconnection
+- unavailable agent
+- unavailable network path
+- unavailable verification source
+
+Connectivity loss must not be interpreted as execution or verification
+success.
+
+If a state change may have occurred but cannot be verified, human review
+is required.
+
+
+29. PARTIAL EXECUTION REQUIREMENTS
+
+Partial execution remains execution evidence rather than a separate
+workflow state.
+
+A partial modification may require rollback according to the declared
+adapter contract.
+
+Partial execution must never be silently treated as successful action
+completion.
+
+
+30. TIMEOUT REQUIREMENTS
+
+Live execution and verification must have bounded timeout behavior.
+
+Timeout must not equal success.
+
+Lab 21 does not define production timeout durations.
+
+
+31. AUDIT REQUIREMENTS
+
+Readiness history must remain chronological and append-oriented.
+
+The future LAR should preserve evidence sufficient to explain:
+
+- what request was evaluated
+- what target was identified
+- whether the target was authorized
+- what approval was evaluated
+- whether approval was current
+- whether preconditions matched
+- whether drift was detected
+- whether the adapter was ready
+- whether independent verification was ready
+- whether rollback was ready
+- whether human approval was present
+- why the final readiness result was produced
+
+
+32. HISTORY PRESERVATION REQUIREMENTS
+
+A later successful readiness evaluation must not overwrite an earlier
+failed evaluation.
+
+Example:
+
+LAR-001 = NOT_READY
+LAR-002 = READY
+
+Both records must remain part of the history.
+
+
+33. GENERATIVE AI BOUNDARY
+
+Generative AI may eventually assist with:
+
+- explanation
+- summarization
+- risk description
+- recommendations
+
+Generative AI must not:
+
+- authorize live execution
+- override deterministic policy
+- choose arbitrary executable commands
+- establish authoritative target identity
+- independently verify action success
+- declare resolution
+
+
+34. READINESS FAILURE CATEGORIES
+
+Public-safe conceptual reason categories include:
+
+TARGET_NOT_CONFIRMED
+TARGET_NOT_AUTHORIZED
+APPROVAL_INVALID
+APPROVAL_STALE
+APPROVAL_MISMATCH
+ENVIRONMENT_DRIFT
+ACTION_UNSUPPORTED
+ADAPTER_NOT_READY
+VERIFIER_NOT_READY
+ROLLBACK_NOT_READY
+PRECONDITION_FAILED
+AUDIT_NOT_READY
+HUMAN_REVIEW_REQUIRED
+
+Exact private reason-code implementation is not defined by this public
+design.
+
+
+35. SAFETY BOUNDARY
+
+Lab 21 performs:
+
+- requirements design
+- readiness-model design
+- failure analysis
+- tabletop validation
+- public-safe documentation
+
+Lab 21 performs no:
+
+- VM access
+- endpoint connection
+- endpoint modification
+- account modification
+- file modification
+- firewall modification
+- service modification
+- network-control modification
+- Wazuh Active Response
+- shell remediation
+- PowerShell remediation
+- live rollback
+- production adapter execution
+
+
+36. PUBLIC / PRIVATE BOUNDARY
+
+Public Lab 21 may document:
+
+- high-level readiness architecture
+- LAR concept
+- readiness outcomes
+- safety invariants
+- target requirements
+- approval requirements
+- adapter requirements
+- verifier requirements
+- rollback requirements
+- human-control requirements
+- tabletop validation
+- design-validation results
+
+Private implementation may eventually contain:
+
+- target-authority implementation
+- approval freshness thresholds
+- adapter registries
+- readiness-evaluation code
+- verifier-source selection
+- rollback-readiness implementation
+- customer authorization logic
+- tenant policy
+- credential handling
+- execution integrations
+- production audit logic
+
+
+37. ACCEPTANCE CRITERIA
+
+Lab 21 passes only if:
+
+- all 24 frozen tabletop cases produce expected outcomes
+- READY never means automatic execution
+- target identity and target authorization remain separate
+- stale or mismatched approval blocks readiness
+- drift and failed preconditions block or escalate readiness
+- unsupported actions fail closed
+- unavailable adapters prevent readiness
+- non-independent verification prevents readiness
+- required rollback must be ready before execution
+- duplicate requests cannot imply duplicate execution
+- non-reversible first actions are rejected
+- history remains append-oriented
+- no live endpoint action occurs
+
+
+38. FINAL DESIGN RESULT
+
+If all acceptance criteria pass, the final result is:
+
+PASS — LIVE-ACTION READINESS CONTRACT VALIDATED BY DESIGN
+
+This result must not be described as live remediation validation.
+
+
+END OF LAB 21 CONTROLLED LIVE-ACTION READINESS REQUIREMENTS
