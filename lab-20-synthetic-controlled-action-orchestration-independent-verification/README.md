@@ -316,21 +316,29 @@ The public Lab 20 evidence set contains sanitized representative records rather 
 
 ### Successful Controlled Action
 
-`evidence/sanitized-successful-action-audit.json`
+[`sanitized-successful-action-audit.json`](evidence/sanitized-successful-action-audit.json)
 
 Demonstrates successful synthetic execution followed by independent positive verification before resolution eligibility.
 
 ### Clean Execution Failure
 
-`evidence/sanitized-clean-failure-audit.json`
+[`sanitized-clean-failure-audit.json`](evidence/sanitized-clean-failure-audit.json)
 
 Demonstrates a failure before state change and confirms that unnecessary rollback is not invoked.
 
 ### Partial Execution and Rollback
 
-`evidence/sanitized-rollback-audit.json`
+[`sanitized-rollback-audit.json`](evidence/sanitized-rollback-audit.json)
 
 Demonstrates partial synthetic execution, rollback, independent rollback verification, and the final `NOT_RESOLUTION_ELIGIBLE` state.
+
+### Duplicate Delivery
+
+[`sanitized-duplicate-delivery-audit.json`](evidence/sanitized-duplicate-delivery-audit.json)
+
+Demonstrates that two deliveries of the same controlled request result in only one execution attempt.
+
+These records use demonstration identities and sanitized synthetic values. They are not production or customer records.
 
 ### Duplicate Delivery
 
