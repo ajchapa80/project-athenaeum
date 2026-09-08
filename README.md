@@ -680,11 +680,43 @@ PASS — LIVE-ACTION READINESS CONTRACT VALIDATED BY DESIGN
 
 ---
 
+### [Lab 22 — First Controlled Live Defensive Action and Independent Verification](lab-22-first-controlled-live-defensive-action-independent-verification/README.md)
+
+Status: Completed and portfolio ready; publication pending
+
+Validated the first real, narrowly scoped Business Guardian defensive change on
+one authorized isolated Windows test endpoint. Phase A confirmed the exact
+target, isolated environment, temporary firewall rule, and required enabled
+pre-state, then stopped at `REQUIRES_HUMAN_REVIEW` /
+`EXPLICIT_APPROVAL_REQUIRED` without executing an action.
+
+After explicit human approval, Phase B used the existing controlled
+orchestration path to perform the single allowlisted
+`DISABLE_FIREWALL_RULE` action. Execution completed successfully, and a fresh
+independent observation—not the executor's return value—confirmed the expected
+state before the workflow reached `RESOLUTION_ELIGIBLE`.
+
+Validation milestone:
+
+- 10/10 focused production-assembly tests passed
+- 120/120 complete Lab 22 tests passed
+- 16/16 frozen Lab 22 scenarios passed
+- 413/413 full private regression tests passed
+- No automatic retry, arbitrary remote shell, AI authorization, or production/customer systems
+- Temporary rule manually restored after the lab as cleanup, not product rollback
+
+Overall result:
+PASS — FIRST CONTROLLED LIVE DEFENSIVE ACTION EXECUTED ON AN AUTHORIZED ISOLATED TEST ENDPOINT AND INDEPENDENTLY VERIFIED
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete through **Lab 21 — Controlled Live-Action Readiness Requirements and Design**.
+Project Athenaeum is technically complete and portfolio ready through **Lab 22 — First Controlled Live Defensive Action and Independent Verification**. Lab 22 publication is pending final review and commit.
 
-Lab 20 status: Completed and published
+Labs 01–21 status: Completed and published
+
+Lab 22 status: Completed and portfolio ready
 
 The technical progression now looks like this:
 
@@ -713,7 +745,15 @@ Validate Live Evidence End to End
       ↓
 Route Conservatively to Human Review
       ↓
-Define the Controlled Execution Safety Contract
+    Define the Controlled Execution Safety Contract
+      ↓
+Validate Synthetic Execution and Independent Verification
+      ↓
+Define Live-Action Readiness
+      ↓
+Execute One Human-Approved Controlled Action
+      ↓
+Independently Verify Before Resolution Eligibility
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -731,6 +771,12 @@ Lab 17 added deterministic policy evaluation, approval control, fail-closed auth
 Lab 18 validated the live read-only evidence path twice and preserved the no-action, no-resolution boundary.
 
 Lab 19 defined and tabletop-validated the contracts required before future controlled execution, verification, rollback, audit, or resolution eligibility.
+
+Lab 20 implemented and validated synthetic controlled-action orchestration and independent verification.
+
+Lab 21 defined and tabletop-validated the live-action readiness boundary.
+
+Lab 22 validated one explicitly authorized, narrowly scoped live defensive action and withheld resolution eligibility until a fresh independent observation succeeded.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -760,9 +806,7 @@ Lab 19 asked:
 
 **What must be proven before an eligible, approved security response may execute, and what evidence is required before any condition may be marked resolved?**
 
-Lab 20 deliberately stops before live endpoint remediation.
-
-Future work must establish additional controls before Business Guardian progresses from synthetic controlled actions toward carefully scoped defensive action against an authorized test endpoint.
+Lab 22 crossed the live-action boundary once, under explicit human approval, on an authorized isolated endpoint. It established a safe minimum for controlled execution; it did not establish autonomous remediation.
 
 Conceptually:
 
@@ -786,7 +830,7 @@ Verify the Result
 Audit / Outcome
 ```
 
-The next implementation step must reuse the frozen Lab 19 contract, preserve the public/private boundary, and avoid duplicating private Business Guardian work.
+Future work must reuse the validated Labs 19–22 controls, preserve the public/private boundary, and avoid duplicating private Business Guardian work.
 
 Whatever comes next must preserve the same rule:
 
