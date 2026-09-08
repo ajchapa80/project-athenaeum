@@ -682,7 +682,7 @@ PASS — LIVE-ACTION READINESS CONTRACT VALIDATED BY DESIGN
 
 ### [Lab 22 — First Controlled Live Defensive Action and Independent Verification](lab-22-first-controlled-live-defensive-action-independent-verification/README.md)
 
-Status: Completed and portfolio ready; publication pending
+Status: Completed and published
 
 Validated the first real, narrowly scoped Business Guardian defensive change on
 one authorized isolated Windows test endpoint. Phase A confirmed the exact
@@ -712,11 +712,11 @@ PASS — FIRST CONTROLLED LIVE DEFENSIVE ACTION EXECUTED ON AN AUTHORIZED ISOLAT
 
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is technically complete and portfolio ready through **Lab 22 — First Controlled Live Defensive Action and Independent Verification**. Lab 22 publication is pending final review and commit.
+Project Athenaeum is complete and published through **Lab 22 — First Controlled Live Defensive Action and Independent Verification**.
 
 Labs 01–21 status: Completed and published
 
-Lab 22 status: Completed and portfolio ready
+Lab 22 status: Completed and published
 
 The technical progression now looks like this:
 
