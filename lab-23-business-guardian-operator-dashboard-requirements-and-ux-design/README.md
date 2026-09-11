@@ -570,27 +570,27 @@ The public repository does not include the full interactive prototype archive or
 
 ### Overview
 
-
+![Business Guardian Overview](evidence/Lab23_Overview_Desktop_Final.png)
 
 ### Alert Detail
 
-
+![Business Guardian Alert Detail](evidence/Lab23_Alert_Detail_Desktop_Final.png)
 
 ### Investigation
 
-
+![Business Guardian Investigation](evidence/Lab23_Investigation_Desktop_Final.png)
 
 ### Recommended Action and Human Approval
 
-
+![Business Guardian Recommended Action and Human Approval](evidence/Lab23_Recommended_Action_Desktop_Final.png)
 
 ### Action Progress and Independent Verification
 
-
+![Business Guardian Action Progress and Independent Verification](evidence/Lab23_Action_Progress_Desktop_Final.png)
 
 ### Reports
 
-
+![Business Guardian Reports](evidence/Lab23_Reports_Desktop_Final.png)
 
 See:
 
