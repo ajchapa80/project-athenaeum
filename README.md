@@ -754,13 +754,36 @@ PASS — LAB 24 CUSTOMER DASHBOARD MVP COMPLETED, INTEGRATED, VALIDATED, AND PUS
 
 ---
 
+### [Lab 25 — Business Guardian Response Action Framework Requirements & Design](lab-25-business-guardian-response-action-framework-requirements-and-design/README.md)
+
+Status: Completed and published
+
+Designed and validated the requirements that Business Guardian must satisfy before a proposed defensive action can become executable. The framework separates administrative Asset context from authoritative technical target identity and requires deterministic pre-execution proof, least-privilege authorization, exact human-approval binding, duplicate and concurrency safety, durable reservation, independent verification, controlled rollback, and human-controlled closure.
+
+Validation milestone:
+
+- 20 security invariants passed
+- 14 conceptual contracts passed
+- 10 mandatory pre-execution proof checks passed
+- 6 least-privilege permissions defined
+- 5 action-risk classes defined
+- 25/25 deterministic design and acceptance cases passed
+- 15-condition Lab 26 entry gate passed
+
+The 25-case design permitted dispatch in 2 cases and denied dispatch in 23 cases. Lab 25 did not implement live remediation or begin Lab 26.
+
+Overall result:
+PASS — BUSINESS GUARDIAN RESPONSE ACTION FRAMEWORK DESIGNED AND VALIDATED
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete and published through **Lab 24 — Business Guardian Customer Dashboard MVP**.
+Project Athenaeum is complete and published through **Lab 25 — Business Guardian Response Action Framework Requirements & Design**.
 
-Labs 01–23 status: Completed and published
+Labs 01–24 status: Completed and published
 
-Lab 24 status: Completed and published
+Lab 25 status: Completed and published
 
 The technical progression now looks like this:
 
@@ -802,6 +825,8 @@ Independently Verify Before Resolution Eligibility
 Design the Operator-Facing Dashboard Experience
       ↓
 Implement the Customer Dashboard MVP
+      ↓
+Design the Response Action Framework
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -829,6 +854,8 @@ Lab 22 validated one explicitly authorized, narrowly scoped live defensive actio
 Lab 23 translated those validated safety boundaries into a complete operator-facing requirements and UX design baseline without extending production execution capability.
 
 Lab 24 implemented and validated the organization-scoped customer dashboard MVP while preserving server-side authorization, evidence integrity, human verification and closure boundaries, and durable workflow history.
+
+Lab 25 designed and validated the deterministic proof, authorization, reservation, verification, rollback, audit, and human-control requirements that must be satisfied before a proposed defensive action may become executable.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -865,6 +892,12 @@ Lab 23 asked:
 **How should a small-business operator safely understand, investigate, approve, monitor, and verify Business Guardian security workflows through a clear graphical interface?**
 
 Lab 24 completed the browser-based customer dashboard MVP from the reviewed Lab 23 design baseline without inventing unsupported endpoint or remediation capability.
+
+Lab 25 asked:
+
+**What must Business Guardian prove before a proposed defensive action becomes executable?**
+
+The next planned lab is **Lab 26 — First Dashboard-Controlled Defensive Action**. Lab 26 has not started, and any candidate action must first satisfy the Lab 25 entry gate.
 
 Conceptually:
 
