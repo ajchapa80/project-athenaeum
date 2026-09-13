@@ -1,0 +1,134 @@
+LAB 26 — FIRST DASHBOARD-CONTROLLED DEFENSIVE ACTION
+PUBLIC-SAFE VALIDATION RESULTS
+
+VERSION 1.0
+
+OVERALL RESULT
+
+PASS — FIRST DASHBOARD-CONTROLLED DEFENSIVE ACTION COMPLETED,
+INDEPENDENTLY VERIFIED, AND SAFELY ROLLED BACK
+
+INITIAL IMPLEMENTATION VALIDATION
+
+Lab 26 targeted: 41/41 PASS
+Historical full private regression: 896/896 PASS
+Python compilation: PASS
+JavaScript syntax: PASS
+Security review: PASS
+git diff --check: PASS
+
+TARGETED TIMING-CORRECTION VALIDATION
+
+Focused Lab 26: 52/52 PASS
+Complete dashboard: 494/494 PASS
+
+The historical 896-test private regression was not unnecessarily rerun after
+the tightly scoped timing correction. The correction was confined to the
+Lab 26 observation/evaluation timing path. Focused Lab 26 validation and the
+complete dashboard suite provided the justified regression coverage.
+
+No private tests were rerun during public publication.
+
+FAIL-CLOSED ENGINEERING RESULTS
+
+Initial live hold:
+Authorized isolated Hyper-V workstation was Off.
+Result: HELD — NO DISPATCH
+
+Timing-ordering discovery:
+The evaluation clock could be captured before a live observation completed.
+Result: FAILED CLOSED
+
+The system stopped before:
+- durable reservation
+- dispatch
+- executor invocation
+- firewall mutation
+
+Focused testing identified the equivalent concern in independent verification.
+
+Corrected ordering rule:
+
+OBSERVE
+→ COMPLETE OBSERVATION
+→ CAPTURE EVALUATION TIME
+→ EVALUATE
+
+Freshness security remained intact:
+- stale evidence still fails
+- future-dated evidence still fails
+- freshness windows were not bypassed
+- no clock-skew exception was introduced
+- corrected execution and verification paths were revalidated before the
+  successful live demonstration
+
+SANITIZED LIVE DEMONSTRATION
+
+Environment:
+Authorized isolated Microsoft Hyper-V Windows test workstation
+
+Controlled capability:
+Disable one exact pre-existing Windows Firewall allow rule
+
+Firewall rule:
+One pre-existing authorized Windows Firewall test rule
+
+Initial state: Enabled
+
+Target identity verified: PASS
+Isolation verified: PASS
+Exact firewall rule uniquely identified: PASS
+PG-01 through PG-10: ALL PASS
+Overall decision: PERMIT
+Reason: ALL_PROOF_CHECKS_POSITIVE
+Durable execution reservation: PASS
+Dispatch intent recorded before mutation: PASS
+Disable dispatch count: 1
+Disable executor result: SUCCEEDED
+Independent Disabled verification: POSITIVE
+Resulting workflow state: RESOLUTION_ELIGIBLE
+Alert automatically closed: NO
+
+ROLLBACK VALIDATION
+
+Separate rollback approval required: YES
+Rollback PG-01 through PG-10: ALL PASS
+Rollback dispatch count: 1
+Rollback executor result: SUCCEEDED
+Independent Enabled verification: POSITIVE
+Final firewall rule state: Enabled
+Original rule properties preserved: PASS
+RECOVERY_REQUIRED state: NO
+Automatic retry or redispatch: NO
+
+AUDIT AND DELIVERY
+
+Genuine lifecycle audit events: 9
+Transactional outbox delivery: COMPLETED
+Lifecycle history: IMMUTABLE AND AUDITABLE
+
+CREDENTIAL AND SAFETY BOUNDARY
+
+- Trusted interactive Windows credential handling was used.
+- Credentials were not entered into ChatGPT.
+- Credentials were not printed, logged, persisted, or committed.
+- The action was restricted to an authorized isolated test environment.
+- Arbitrary command execution was not exposed through the dashboard.
+- No customer or production system was used.
+- The endpoint was restored to its original Enabled firewall-rule state.
+
+PUBLIC / PRIVATE BOUNDARY
+
+This artifact includes no credentials, private database contents, private
+runtime artifacts, session identifiers, proprietary source code, customer
+information, arbitrary-command mechanism, or unsupported production claim.
+
+Lab 26 validates one tightly controlled defensive capability. It does not
+establish a broad remediation catalog, autonomous AI remediation, or the
+ability to remediate arbitrary SIEM alerts.
+
+FINAL ENDPOINT STATE
+
+Pre-existing authorized Windows Firewall test rule = Enabled
+
+END OF LAB 26 PUBLIC-SAFE VALIDATION RESULTS

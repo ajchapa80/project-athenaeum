@@ -777,13 +777,36 @@ PASS — BUSINESS GUARDIAN RESPONSE ACTION FRAMEWORK DESIGNED AND VALIDATED
 
 ---
 
+### [Lab 26 — First Dashboard-Controlled Defensive Action](lab-26-first-dashboard-controlled-defensive-action/README.md)
+
+Status: Completed and published
+
+Validated Business Guardian's first dashboard-controlled defensive action against an authorized isolated Windows test workstation. The workflow required all ten deterministic proof checks, exact human approval, a durable reservation, and at-most-once dispatch before disabling one exact pre-existing firewall rule.
+
+Independent observation confirmed the Disabled state before resolution eligibility. The alert did not close automatically. A separately authorized rollback was dispatched exactly once and independently verified the rule's restoration to its original Enabled state.
+
+Validation milestone:
+
+- Initial Lab 26 targeted validation: 41/41 PASS
+- Focused timing-correction validation: 52/52 PASS
+- Complete dashboard validation: 494/494 PASS
+- Historical full private regression: 896/896 PASS
+- PG-01 through PG-10: ALL PASS for action and rollback
+- Exactly one action dispatch and one rollback dispatch
+- Final firewall-rule state: Enabled
+
+Overall result:
+PASS — FIRST DASHBOARD-CONTROLLED DEFENSIVE ACTION COMPLETED, INDEPENDENTLY VERIFIED, AND SAFELY ROLLED BACK
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete and published through **Lab 25 — Business Guardian Response Action Framework Requirements & Design**.
+Project Athenaeum is complete and published through **Lab 26 — First Dashboard-Controlled Defensive Action**.
 
-Labs 01–24 status: Completed and published
+Labs 01–25 status: Completed and published
 
-Lab 25 status: Completed and published
+Lab 26 status: Completed and published
 
 The technical progression now looks like this:
 
@@ -827,6 +850,8 @@ Design the Operator-Facing Dashboard Experience
 Implement the Customer Dashboard MVP
       ↓
 Design the Response Action Framework
+      ↓
+Execute and Verify One Dashboard-Controlled Action
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -856,6 +881,8 @@ Lab 23 translated those validated safety boundaries into a complete operator-fac
 Lab 24 implemented and validated the organization-scoped customer dashboard MVP while preserving server-side authorization, evidence integrity, human verification and closure boundaries, and durable workflow history.
 
 Lab 25 designed and validated the deterministic proof, authorization, reservation, verification, rollback, audit, and human-control requirements that must be satisfied before a proposed defensive action may become executable.
+
+Lab 26 validated one dashboard-controlled defensive action with deterministic proof, exact authorization, durable reservation, at-most-once dispatch, independent verification, separately controlled rollback, and restoration to the original endpoint state.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -897,7 +924,7 @@ Lab 25 asked:
 
 **What must Business Guardian prove before a proposed defensive action becomes executable?**
 
-The next planned lab is **Lab 26 — First Dashboard-Controlled Defensive Action**. Lab 26 has not started, and any candidate action must first satisfy the Lab 25 entry gate.
+Lab 26 completed the first dashboard-controlled defensive action defined by the Lab 25 entry gate. It intentionally proved one tightly controlled capability and did not establish broad or autonomous remediation.
 
 Conceptually:
 
