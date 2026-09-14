@@ -800,13 +800,37 @@ PASS — FIRST DASHBOARD-CONTROLLED DEFENSIVE ACTION COMPLETED, INDEPENDENTLY VE
 
 ---
 
+### [Lab 27 — Incident Reporting & Resolution Records](lab-27-incident-reporting-and-resolution-records/README.md)
+
+Status: Completed and published
+
+Implemented and validated an organization-scoped reporting layer that turns authoritative lifecycle evidence into deterministic Incident Detail Reports, immutable Resolution Records, and customer-friendly summaries without creating a second competing source of truth.
+
+Finalized Resolution Records remain immutable; corrections create superseding revisions, reopening creates additive history, and report generation cannot close an alert. Organization isolation, separately authorized human closure, auditability, uncertainty, and the distinction between human findings, deterministic decisions, and AI advisory content remain preserved.
+
+Validation milestone:
+
+- Initial focused Lab 27 validation: 32/32 PASS
+- Affected dashboard validation: 526/526 PASS
+- Full private regression: 939/939 PASS
+- Targeted customer-summary correction: 12/12 PASS
+- Complete focused Lab 27 validation: 42/42 PASS
+- Final CI unittest discovery: 907/907 PASS
+- Dedicated Lab 27 pytest: 42/42 PASS
+- Overall GitHub Actions workflow: SUCCESS
+
+Overall result:
+PASS — INCIDENT REPORTING AND IMMUTABLE RESOLUTION RECORDS IMPLEMENTED AND VALIDATED
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete and published through **Lab 26 — First Dashboard-Controlled Defensive Action**.
+Project Athenaeum is complete and published through **Lab 27 — Incident Reporting & Resolution Records**.
 
-Labs 01–25 status: Completed and published
+Labs 01–26 status: Completed and published
 
-Lab 26 status: Completed and published
+Lab 27 status: Completed and published
 
 The technical progression now looks like this:
 
@@ -852,6 +876,8 @@ Implement the Customer Dashboard MVP
 Design the Response Action Framework
       ↓
 Execute and Verify One Dashboard-Controlled Action
+      ↓
+Create Incident Reports and Immutable Resolution Records
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -883,6 +909,8 @@ Lab 24 implemented and validated the organization-scoped customer dashboard MVP 
 Lab 25 designed and validated the deterministic proof, authorization, reservation, verification, rollback, audit, and human-control requirements that must be satisfied before a proposed defensive action may become executable.
 
 Lab 26 validated one dashboard-controlled defensive action with deterministic proof, exact authorization, durable reservation, at-most-once dispatch, independent verification, separately controlled rollback, and restoration to the original endpoint state.
+
+Lab 27 implemented and validated organization-scoped incident reporting, immutable Resolution Records, deterministic customer summaries, additive correction and reopening history, and structured provenance for future governed learning.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -925,6 +953,10 @@ Lab 25 asked:
 **What must Business Guardian prove before a proposed defensive action becomes executable?**
 
 Lab 26 completed the first dashboard-controlled defensive action defined by the Lab 25 entry gate. It intentionally proved one tightly controlled capability and did not establish broad or autonomous remediation.
+
+Lab 27 completed the incident-reporting and Resolution Record layer without allowing reports to rewrite authoritative evidence or trigger closure.
+
+The next major step is the **post-Lab-27 Architecture Checkpoint**. It has not started, and Lab 28 has not started.
 
 Conceptually:
 
