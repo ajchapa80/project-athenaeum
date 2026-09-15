@@ -824,13 +824,34 @@ PASS — INCIDENT REPORTING AND IMMUTABLE RESOLUTION RECORDS IMPLEMENTED AND VAL
 
 ---
 
+### [Lab 28 — Technician Portal Requirements & UX Design](lab-28-technician-portal-requirements-and-ux-design/README.md)
+
+Status: Completed and published
+
+Designed and froze the technician-facing portal architecture for multi-customer security operations. The design uses persistent active-customer context, an evidence-left and AI-right Incident Workspace, structured advisory Copilot presentation, governed Response Action preparation, explicit human approval, audit history, and high-level fleet and update concepts.
+
+Validation milestone:
+
+- 19/19 major screen contracts completed
+- 37/37 reusable component definitions completed
+- 50/50 deterministic UX and design acceptance cases passed
+- 17/17 Lab 29 entry-gate conditions satisfied
+- 8/8 core technician journeys defined
+
+The design follows the principles **Instrument panel, not dashboard** and **Cybersecurity aesthetic without cybersecurity clutter**. It includes no AI Execute control and keeps proposal, approval, execution, independent verification, rollback, resolution eligibility, and human closure separate.
+
+Overall result:
+PASS — TECHNICIAN PORTAL REQUIREMENTS AND UX DESIGN COMPLETED, FROZEN, AND VISUALLY VALIDATED
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete and published through **Lab 27 — Incident Reporting & Resolution Records**.
+Project Athenaeum is complete and published through **Lab 28 — Technician Portal Requirements & UX Design**.
 
-Labs 01–26 status: Completed and published
+Labs 01–27 status: Completed and published
 
-Lab 27 status: Completed and published
+Lab 28 status: Completed and published
 
 The technical progression now looks like this:
 
@@ -878,6 +899,8 @@ Design the Response Action Framework
 Execute and Verify One Dashboard-Controlled Action
       ↓
 Create Incident Reports and Immutable Resolution Records
+      ↓
+Design the Technician Portal Experience
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -911,6 +934,8 @@ Lab 25 designed and validated the deterministic proof, authorization, reservatio
 Lab 26 validated one dashboard-controlled defensive action with deterministic proof, exact authorization, durable reservation, at-most-once dispatch, independent verification, separately controlled rollback, and restoration to the original endpoint state.
 
 Lab 27 implemented and validated organization-scoped incident reporting, immutable Resolution Records, deterministic customer summaries, additive correction and reopening history, and structured provenance for future governed learning.
+
+Lab 28 designed and froze the multi-customer Technician Portal UX, including persistent customer context, evidence and advisory separation, governed response presentation, audit history, accessibility, and explicit human-authority boundaries.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -956,7 +981,9 @@ Lab 26 completed the first dashboard-controlled defensive action defined by the 
 
 Lab 27 completed the incident-reporting and Resolution Record layer without allowing reports to rewrite authoritative evidence or trigger closure.
 
-The next major step is the **post-Lab-27 Architecture Checkpoint**. It has not started, and Lab 28 has not started.
+Lab 28 completed the Technician Portal requirements and UX design. Its frozen visual direction was subsequently validated through Lab 29, which is not published by this task.
+
+The post-Lab-27 Architecture Checkpoint has not started.
 
 Conceptually:
 
