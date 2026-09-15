@@ -845,13 +845,36 @@ PASS — TECHNICIAN PORTAL REQUIREMENTS AND UX DESIGN COMPLETED, FROZEN, AND VIS
 
 ---
 
+### [Lab 29 — Technician Portal MVP](lab-29-technician-portal-mvp/README.md)
+
+Status: Completed and published
+
+Implemented and validated the high-fidelity Technician Portal designed in Lab 28. The MVP provides authenticated technician access, server-authoritative organization context, tenant-aware incident work, structured AI advisory assistance, governed Response Action preparation and approval, controlled execution of one fixed defensive lab capability, independent verification, separately governed rollback, customer-safe audit history, and final safe-state restoration.
+
+The authority model remains explicit: **AI may propose; authorized human and policy approve; deterministic Business Guardian controls execute and verify.** The incident did not close automatically, and the live validation produced exactly one forward dispatch and one separately approved rollback dispatch.
+
+Validation milestone:
+
+- Focused Lab 29 validation passed
+- Lab 26 and Lab 27 behavior remained intact
+- Tenant isolation and stale-context protection passed
+- Action idempotency and rollback governance passed
+- Audit projection and customer-safe filtering passed
+- Final private CI: 1,014/1,014 discovered tests passed
+- Lab 27 workflow pytest step passed
+
+Overall result:
+PASS — TECHNICIAN PORTAL MVP IMPLEMENTED, INTEGRATED, AND VALIDATED
+
+---
+
 # Where Project Athenaeum Stands Today
 
-Project Athenaeum is complete and published through **Lab 28 — Technician Portal Requirements & UX Design**.
+Project Athenaeum is complete and published through **Lab 29 — Technician Portal MVP**.
 
-Labs 01–27 status: Completed and published
+Labs 01–28 status: Completed and published
 
-Lab 28 status: Completed and published
+Lab 29 status: Completed and published
 
 The technical progression now looks like this:
 
@@ -901,6 +924,8 @@ Execute and Verify One Dashboard-Controlled Action
 Create Incident Reports and Immutable Resolution Records
       ↓
 Design the Technician Portal Experience
+      ↓
+Implement and Validate the Technician Portal MVP
 ```
 
 Labs 11–12 established and validated the first alert-processing MVP.
@@ -936,6 +961,8 @@ Lab 26 validated one dashboard-controlled defensive action with deterministic pr
 Lab 27 implemented and validated organization-scoped incident reporting, immutable Resolution Records, deterministic customer summaries, additive correction and reopening history, and structured provenance for future governed learning.
 
 Lab 28 designed and froze the multi-customer Technician Portal UX, including persistent customer context, evidence and advisory separation, governed response presentation, audit history, accessibility, and explicit human-authority boundaries.
+
+Lab 29 implemented and validated that design as an integrated Technician Portal MVP with server-authoritative organization context, bounded AI advisory assistance, governed response actions, independent verification, separately approved rollback, customer-safe audit history, and no automatic incident closure.
 
 Each layer extends the previous validated baseline instead of replacing it.
 
@@ -981,9 +1008,11 @@ Lab 26 completed the first dashboard-controlled defensive action defined by the 
 
 Lab 27 completed the incident-reporting and Resolution Record layer without allowing reports to rewrite authoritative evidence or trigger closure.
 
-Lab 28 completed the Technician Portal requirements and UX design. Its frozen visual direction was subsequently validated through Lab 29, which is not published by this task.
+Lab 28 completed the Technician Portal requirements and UX design. Lab 29 implemented and validated that frozen direction as the Technician Portal MVP.
 
 The post-Lab-27 Architecture Checkpoint is complete, approved, and frozen. It established the high-level architecture used by the Technician Portal design.
+
+Lab 30 has not started and is not published by this task.
 
 Conceptually:
 
