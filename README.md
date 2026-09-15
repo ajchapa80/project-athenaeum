@@ -1,7 +1,7 @@
 # Project Athenaeum
 ## Building Cybersecurity Skills Into a Working Security Platform
 
-**Master Index version: v2.0**
+**Master Index version: v2.9**
 
 Project Athenaeum started as a place to document hands-on cybersecurity and IT labs.
 
@@ -983,7 +983,7 @@ Lab 27 completed the incident-reporting and Resolution Record layer without allo
 
 Lab 28 completed the Technician Portal requirements and UX design. Its frozen visual direction was subsequently validated through Lab 29, which is not published by this task.
 
-The post-Lab-27 Architecture Checkpoint has not started.
+The post-Lab-27 Architecture Checkpoint is complete, approved, and frozen. It established the high-level architecture used by the Technician Portal design.
 
 Conceptually:
 
